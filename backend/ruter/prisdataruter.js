@@ -15,8 +15,12 @@ ruter.get('/findall', async function(req, res) {
         res.status(500).json({ message: error.message })
     }
  })
-// hent alle data for en måned
+// TODO:
+// spørringer basert på pris
+// hent alle data innenfor spesifisert tid
 // hent alle data for en vare
+// hent alle data for en butikk
+
 
 
 export default ruter
