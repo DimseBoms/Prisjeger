@@ -1,17 +1,22 @@
 import express from 'express'
+import prisdataModell from '../dao/dataModels/prisdataModel.js'
 const ruter = express.Router()
 
-// hent alle data
+// home
 ruter.get('/', (req, res) => {
     res.send('Home Page')
 })
+// returnerer all prishistorikk
+ruter.get('/findall', async function(req, res) {
+    try {
+        const prisdata = await prisdataModell.find()
+        res.json(prisdata)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+ })
 // hent alle data for en måned
-ruter.get('/:måned', (req, res) => {
-    
-})
 // hent alle data for en vare
-ruter.get('/:varenr', (req, res) => {
-    
-})
+
 
 export default ruter

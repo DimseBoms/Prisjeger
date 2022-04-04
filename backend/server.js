@@ -16,6 +16,6 @@ db.once('open', () => console.log('Koblet til database'))
 
 // setter opp middleware og lovlige datatyper
 app.use(express.json())
-app.use('/prisdata', prisdataruter)
+app.use('/prisapi', prisdataruter)
 
 app.listen(port, () => console.log(`Backend server startet på port: ${port}`))
