@@ -1,7 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import prisdataruter from './ruter/prisdataruter'
+import prisdataruter from './ruter/prisdataruter.js'
 
 // initialiserer express og henter nødvendige variabler fra .env
 dotenv.config()

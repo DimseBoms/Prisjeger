@@ -3,7 +3,7 @@ const ruter = express.Router()
 
 // hent alle data
 ruter.get('/', (req, res) => {
-
+    res.send('Home Page')
 })
 // hent alle data for en måned
 ruter.get('/:måned', (req, res) => {
@@ -14,4 +14,4 @@ ruter.get('/:varenr', (req, res) => {
     
 })
 
-module.exports = ruter
+export default ruter
