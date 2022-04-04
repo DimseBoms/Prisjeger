@@ -1,5 +1,5 @@
 import express from 'express'
-import prisdataModell from '../dao/dataModels/prisdataModel.js'
+import prisdataModell from '../datamodeller/prisdataModell.js'
 const ruter = express.Router()
 
 // home
