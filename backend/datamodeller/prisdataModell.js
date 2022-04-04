@@ -10,7 +10,7 @@ const Prisdata = new mongoose.Schema({
     },
     varer: {
         type: Object
-    }
-})
+    }},
+    { collection: 'prisdata' })
 
 export default mongoose.model('Prisdata', Prisdata)

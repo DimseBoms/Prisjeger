@@ -9,6 +9,7 @@ const port = process.env.PORT || 8000
 const app = express()
 
 // databasetilkobling
+mongoose.pluralize(null); // må være der for å unngå mongoose idioti
 mongoose.connect(process.env.MONGODB_CONN_URI)
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
