@@ -16,8 +16,6 @@ db.once('open', () => console.log('Koblet til database'))
 
 // setter opp middleware og lovlige datatyper
 app.use(express.json())
-
-// oppsett av ruter
 app.use('/prisdata', prisdataruter)
 
 app.listen(port, () => console.log(`Backend server startet på port: ${port}`))
