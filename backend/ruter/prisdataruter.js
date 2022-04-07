@@ -1,5 +1,6 @@
 import express from 'express'
 import prisdataModell from '../datamodeller/prisdataModell.js'
+import varelisteModell from '../datamodeller/varelisteModell.js'
 const ruter = express.Router()
 
 // home
@@ -15,6 +16,15 @@ ruter.get('/findall', async function(req, res) {
         res.status(500).json({ message: error.message })
     }
  })
+ // returnerer vareliste
+ruter.get('/vareliste', async function(req, res) {
+    try {
+        const vareliste = await varelisteModell.findOne()
+        res.json(vareliste)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
 // TODO:
 // spørringer basert på pris
 // hent alle data innenfor spesifisert tid
