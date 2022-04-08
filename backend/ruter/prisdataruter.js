@@ -8,7 +8,7 @@ ruter.get('/', (req, res) => {
     res.send('Home Page')
 })
 // returnerer all prishistorikk
-ruter.get('/findall', async function(req, res) {
+ruter.get('/historikk', async function(req, res) {
     try {
         const prisdata = await prisdataModell.find()
         res.json(prisdata)
@@ -20,7 +20,7 @@ ruter.get('/findall', async function(req, res) {
 ruter.get('/vareliste', async function(req, res) {
     try {
         const vareliste = await varelisteModell.findOne()
-        res.json(vareliste)
+        res.json(vareliste.varer)
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

@@ -28,21 +28,35 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import prisdataService from "../axios/prisdata-service";
 
 class Pristabell extends React.Component {
   constructor() {
     super()
     this.state = {
-      apiResponse: {}
+      varehistorikk: {},
+      vareliste: []
     }
   }
   componentDidMount() {
     PrisDataService.getAll().then((response) => {
-      this.setState({ apiResponse: response.data })
-      console.log(this.state.apiResponse)
+      this.setState({ varehistorikk: response.data })
+      console.log(this.state.varehistorikk)
     })
-}
+    prisdataService.getVareliste().then((response) => {
+      this.setState({ vareliste: response.data })
+      console.log(this.state.vareliste)
+    })
+  }
   render() {
+    let tabellJsx = this.state.vareliste.map((vare, index) => {
+      return (
+        <tr key={index}>
+          <td>{vare}</td>
+        </tr>
+      )
+    })
+    console.log(tabellJsx)
     return (
       <>
         <div className="content">
@@ -67,9 +81,7 @@ class Pristabell extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        {/* TODO: Bygg opp dynamisk tabell her */}
-                      </tr>
+                      {tabellJsx}
                     </tbody>
                   </Table>
                 </CardBody>
