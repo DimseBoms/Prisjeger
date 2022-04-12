@@ -18,7 +18,8 @@
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
-    "reactstrap": "8.9.0"
+    "reactstrap": "8.9.0",
+    "tesseract.js": "^2.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
