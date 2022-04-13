@@ -7,6 +7,9 @@ class PrisDataService {
     getVareliste() {
       return http.get('/vareliste');
     }
+    getButikkliste() {
+      return http.get('/butikkliste');
+    }
   }
   
   export default new PrisDataService();

@@ -34,29 +34,31 @@ class Pristabell extends React.Component {
   constructor() {
     super()
     this.state = {
-      varehistorikk: {},
-      vareliste: []
+      vareliste: [],
+      butikkliste: [],
     }
   }
   componentDidMount() {
-    PrisDataService.getAll().then((response) => {
-      this.setState({ varehistorikk: response.data })
-      console.log(this.state.varehistorikk)
-    })
     prisdataService.getVareliste().then((response) => {
       this.setState({ vareliste: response.data })
-      console.log(this.state.vareliste)
+    })
+    prisdataService.getButikkliste().then((response) => {
+      this.setState({ butikkliste: response.data })
     })
   }
   render() {
     let tabellJsx = this.state.vareliste.map((vare, index) => {
-      return (
+       return (
         <tr key={index}>
           <td>{vare}</td>
         </tr>
       )
     })
-    console.log(tabellJsx)
+    let butikkJsx = this.state.butikkliste.map((butikk, index) => {
+      return (
+        <th key={index}>{butikk}</th>
+      )
+    })
     return (
       <>
         <div className="content">
@@ -71,13 +73,8 @@ class Pristabell extends React.Component {
                     <thead className="text-primary">
                       <tr>
                         <th>Vare</th>
-                        <th>Butikk1</th>
-                        <th>Butikk2</th>
-                        <th>Butikk3</th>
-                        <th>Butikk4</th>
-                        <th>Butikk5</th>
-                        <th>Butikk6</th>
-                        <th className="text-right">Pris</th>
+                        {butikkJsx}
+                        <th className="text-right">Gjennomsnitt</th>
                       </tr>
                     </thead>
                     <tbody>

@@ -25,6 +25,15 @@ ruter.get('/vareliste', async function(req, res) {
         res.status(500).json({ message: error.message })
     }
 })
+// returnerer butikkliste
+ruter.get('/butikkliste', async function (req, res) {
+    try {
+        const prisdata = await prisdataModell.findOne()
+        res.json(prisdata.butikker)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
 // TODO:
 // spørringer basert på pris
 // hent alle data innenfor spesifisert tid
