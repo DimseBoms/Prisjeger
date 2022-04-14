@@ -17,7 +17,8 @@
 
 */
 import React from "react";
-import PrisDataService from "../axios/prisdata-service"
+import PrisdataService from "../axios/prisdata-service";
+import { useState } from "react";
 // reactstrap components
 import {
   Card,
@@ -27,208 +28,79 @@ import {
   Table,
   Row,
   Col,
+  InputGroup,
+  InputGroupText,
+  InputGroupAddon,
+  Input,
 } from "reactstrap";
-import prisdataService from "../axios/prisdata-service";
+import { useEffect } from "react";
 
-class Pristabell extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      vareliste: [],
-      butikkliste: [],
-    }
-  }
-  componentDidMount() {
-    prisdataService.getVareliste().then((response) => {
-      this.setState({ vareliste: response.data })
-    })
-    prisdataService.getButikkliste().then((response) => {
-      this.setState({ butikkliste: response.data })
-    })
-  }
-  render() {
-    let tabellJsx = this.state.vareliste.map((vare, index) => {
-       return (
+function FiltrertVareliste({vareListe, vareFilter}) {
+  const filtrertVareliste = vareListe.filter(v => {
+    return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
+  })
+  return (
+    <>
+      {filtrertVareliste.map((vare, index) => (
         <tr key={index}>
           <td>{vare}</td>
-        </tr>
-      )
-    })
-    let butikkJsx = this.state.butikkliste.map((butikk, index) => {
-      return (
-        <th key={index}>{butikk}</th>
-      )
-    })
-    return (
-      <>
-        <div className="content">
-          <Row>
-            <Col>
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">Pristabell</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <Table responsive>
-                    <thead className="text-primary">
-                      <tr>
-                        <th>Vare</th>
-                        {butikkJsx}
-                        <th className="text-right">Gjennomsnitt</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {tabellJsx}
-                    </tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      </>
-    )
-  }
+        </tr> 
+      ))}
+    </>
+  )
 }
 
-// function Tables() {
-//   return (
-//     <>
-//       <div className="content">
-//         <Row>
-//           <Col md="12">
-//             <Card>
-//               <CardHeader>
-//                 <CardTitle tag="h4">Simple Table</CardTitle>
-//               </CardHeader>
-//               <CardBody>
-//                 <Table responsive>
-//                   <thead className="text-primary">
-//                     <tr>
-//                       <th>Name</th>
-//                       <th>Country</th>
-//                       <th>City</th>
-//                       <th className="text-right">Salary</th>
-//                     </tr>
-//                   </thead>
-//                   <tbody>
-//                     <tr>
-//                       <td>Dakota Rice</td>
-//                       <td>Niger</td>
-//                       <td>Oud-Turnhout</td>
-//                       <td className="text-right">$36,738</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Minerva Hooper</td>
-//                       <td>Curaçao</td>
-//                       <td>Sinaai-Waas</td>
-//                       <td className="text-right">$23,789</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Sage Rodriguez</td>
-//                       <td>Netherlands</td>
-//                       <td>Baileux</td>
-//                       <td className="text-right">$56,142</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Philip Chaney</td>
-//                       <td>Korea, South</td>
-//                       <td>Overland Park</td>
-//                       <td className="text-right">$38,735</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Doris Greene</td>
-//                       <td>Malawi</td>
-//                       <td>Feldkirchen in Kärnten</td>
-//                       <td className="text-right">$63,542</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Mason Porter</td>
-//                       <td>Chile</td>
-//                       <td>Gloucester</td>
-//                       <td className="text-right">$78,615</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Jon Porter</td>
-//                       <td>Portugal</td>
-//                       <td>Gloucester</td>
-//                       <td className="text-right">$98,615</td>
-//                     </tr>
-//                   </tbody>
-//                 </Table>
-//               </CardBody>
-//             </Card>
-//           </Col>
-//           <Col md="12">
-//             <Card className="card-plain">
-//               <CardHeader>
-//                 <CardTitle tag="h4">Table on Plain Background</CardTitle>
-//                 <p className="card-category">
-//                   Here is a subtitle for this table
-//                 </p>
-//               </CardHeader>
-//               <CardBody>
-//                 <Table responsive>
-//                   <thead className="text-primary">
-//                     <tr>
-//                       <th>Name</th>
-//                       <th>Country</th>
-//                       <th>City</th>
-//                       <th className="text-right">Salary</th>
-//                     </tr>
-//                   </thead>
-//                   <tbody>
-//                     <tr>
-//                       <td>Dakota Rice</td>
-//                       <td>Niger</td>
-//                       <td>Oud-Turnhout</td>
-//                       <td className="text-right">$36,738</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Minerva Hooper</td>
-//                       <td>Curaçao</td>
-//                       <td>Sinaai-Waas</td>
-//                       <td className="text-right">$23,789</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Sage Rodriguez</td>
-//                       <td>Netherlands</td>
-//                       <td>Baileux</td>
-//                       <td className="text-right">$56,142</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Philip Chaney</td>
-//                       <td>Korea, South</td>
-//                       <td>Overland Park</td>
-//                       <td className="text-right">$38,735</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Doris Greene</td>
-//                       <td>Malawi</td>
-//                       <td>Feldkirchen in Kärnten</td>
-//                       <td className="text-right">$63,542</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Mason Porter</td>
-//                       <td>Chile</td>
-//                       <td>Gloucester</td>
-//                       <td className="text-right">$78,615</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Jon Porter</td>
-//                       <td>Portugal</td>
-//                       <td>Gloucester</td>
-//                       <td className="text-right">$98,615</td>
-//                     </tr>
-//                   </tbody>
-//                 </Table>
-//               </CardBody>
-//             </Card>
-//           </Col>
-//         </Row>
-//       </div>
-//     </>
-//   );
-// }
+function Pristabell() {
+  // initialiserer React komponent med de nødvendige state variablene
+
+    const [vareListe, setVareListe] = useState([])
+    const [varefilter, setVarefilter] = useState("")
+    const [butikkliste, setButikkliste] = useState([])
+
+    useEffect(() => {
+      PrisdataService.getVareliste().then((response) => {
+        setVareListe(response.data)
+      })
+    }, [])
+
+  return (
+    <>
+      <div className="content">
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Pristabell</CardTitle>
+                  <InputGroup className="no-border">
+                    <Input placeholder="Filtrering" id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText>
+                        <i className="nc-icon nc-zoom-split" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+              </CardHeader>
+              <CardBody>
+                <Table responsive>
+                  <thead className="text-primary">
+                    <tr>
+                      <th>Vare</th>
+                      
+                      <th className="text-right">Gjennomsnitt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <FiltrertVareliste vareListe={vareListe} vareFilter={varefilter}/>
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </>
+  )
+  }
+
 
 export default Pristabell;
