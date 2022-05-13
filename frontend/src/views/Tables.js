@@ -102,5 +102,4 @@ function Pristabell() {
   )
   }
 
-
 export default Pristabell;
