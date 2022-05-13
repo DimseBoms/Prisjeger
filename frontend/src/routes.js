@@ -25,6 +25,7 @@ import TableList from "views/Tables.js";
 import Maps from "views/Map.js";
 import UserPage from "views/User.js";
 import UpgradeToPro from "views/Upgrade.js";
+import Handleliste from "views/Handleliste.js"
 
 var routes = [
   {
@@ -64,9 +65,16 @@ var routes = [
   },
   {
     path: "/tables",
-    name: "Table List",
+    name: "Filter",
     icon: "nc-icon nc-tile-56",
     component: TableList,
+    layout: "/admin",
+  },
+  {
+    path: "/handleliste",
+    name: "Handleliste",
+    icon: "nc-icon nc-tile-56",
+    component: Handleliste,
     layout: "/admin",
   },
   {
