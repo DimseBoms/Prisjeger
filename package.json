@@ -4,6 +4,6 @@
     "concurrently": "^7.1.0"
   },
   "scripts": {
-    "start": "concurrently \"npm start --prefix ./backend\" \"npm start --prefix ./frontend\""
+    "start": "concurrently \"npm i --prefix ./backend && npm start --prefix ./backend\" \"npm i --prefix ./frontend && npm start --prefix ./frontend\""
   }
 }
