@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "axios": "^0.26.1"
+    "axios": "^0.26.1",
+    "concurrently": "^7.1.0"
+  },
+  "scripts": {
+    "start": "concurrently \"cd backend && npm run devStart\" \"cd frontend && npm start\""
   }
 }
