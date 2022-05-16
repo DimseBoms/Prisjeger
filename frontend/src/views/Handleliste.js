@@ -32,12 +32,11 @@ import {
   InputGroupText,
   InputGroupAddon,
   Input,
-  Button,
-  Label,
+  Button
 } from "reactstrap";
 import { useEffect } from "react";
 
-function FiltrertVareliste({vareListe, vareFilter}) {
+function FiltrertVareliste({vareListe, vareFilter, handleliste, setHandleliste}) {
   const filtrertVareliste = vareListe.filter(v => {
     return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
   })
@@ -46,9 +45,51 @@ function FiltrertVareliste({vareListe, vareFilter}) {
       {filtrertVareliste.map((vare, index) => (
         <tr key={index}>
           <td>{vare}</td>
+          {LagKnapp(vare, index, handleliste, setHandleliste)}
         </tr> 
       ))}
     </>
+  )
+}
+
+// Denne funksjonen returnerer et jsx komponent som skal benyttes til å lage
+// og redigere handlelister 
+function LagKnapp(vare, index, handleliste, setHandleliste) {
+  let vareString = vare
+  // Denne deklarasjonen gjør vare om til en lokal variabel som kan benyttes i
+  // det anonyme funksjonskallet som skal kjøre på button.onClick()
+  return (
+    <td>
+      <Button
+        className="btn-round"
+        color="primary"
+        // Funksjonskall som skal oppdatere handleliste
+        onClick={() => {
+          // Itererer og teller gjennom handleliste for å se om varen
+          // er lagt til i handlelisten fra før
+          let vareFinnes = false
+          Object.keys(handleliste).forEach((element) => {
+            // Hvis vare finnes i tabell og den allerede er lagt til i handlelisten
+            if (handleliste[element] > 0 && element == vareString) {
+              vareFinnes = true
+            }
+          })
+          // Hvis vare er lagt til i handlelisten fra før skal den inkrementeres
+          if (vareFinnes) {
+            let nyHandleliste = handleliste
+            nyHandleliste[vareString] = handleliste[vareString] + 1
+            setHandleliste(nyHandleliste)
+            console.log(`${vare} inkrementert`)
+          } else {
+            let nyHandleliste = handleliste
+            nyHandleliste[vareString] = 1
+            setHandleliste(nyHandleliste)
+          }
+          console.log(`Nåværende handleliste: ${JSON.stringify(handleliste)}`)
+        }}>
+          +
+        </Button>
+    </td>
   )
 }
 
@@ -58,6 +99,7 @@ function Pristabell() {
     const [vareListe, setVareListe] = useState([])
     const [varefilter, setVarefilter] = useState("")
     const [butikkliste, setButikkliste] = useState([])
+    const [handleliste, setHandleliste] = useState({})
 
     useEffect(() => {
       PrisdataService.getVareliste().then((response) => {
@@ -86,58 +128,17 @@ function Pristabell() {
                 <Table responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th className="text-center">Vare</th>
-                      <th className="text-center">Ant</th>
-                      <th className="text-center">Bel</th>
-                      <th className="text-center">Legg til</th>
-                      <th className="text-center">Fjern</th>
+                      <th>Vare</th>
+                      <th className="text-right">Gjennomsnitt</th>
                     </tr>
                   </thead>
                   <tbody>
-
-                    <td>
-                      <FiltrertVareliste vareListe={vareListe} vareFilter={varefilter}/>
-                    </td> 
-
-                    <td>                      
-                      <Input
-                        className="text-center"
-                        placeholder="antall">
-                        antall
-                      </Input>
-                    </td>
-
-                    <td>                      
-                      <Input
-                        className="text-center"
-                        placeholder="delsum">
-                        delsum
-                      </Input>
-                    </td>
-                    
-                    <td>
-                      <div className="text-center">                   
-                        <Button
-                          className="btn-round"
-                          color="primary"
-                          type="submit">
-                            +
-                        </Button>
-
-                        </div>                    
-                      </td>
-
-                      <td>   
-                      <div className="text-center">                   
-                        <Button
-                          className="btn-round"
-                          color="primary"
-                          type="submit">
-                            -
-                        </Button>
-                        </div>                    
-                      </td>
-
+                      <FiltrertVareliste
+                        vareListe={vareListe}
+                        vareFilter={varefilter}
+                        handleliste={handleliste}
+                        setHandleliste={setHandleliste}
+                      />
                   </tbody>
                 </Table>
               </CardBody>
