@@ -36,126 +36,133 @@ import {
 } from "reactstrap";
 // core components
 
-function removeData(chart) {
-  chart.data.labels.pop();
-  chart.data.datasets.forEach((dataset) => {
-      dataset.data.pop();
-  });
-  chart.update();
-}
-
-function test(chart) {
-  try {
-    var utTekst = chart.data.datasets[0];
-    console.log(utTekst);  
-  } catch (err) {
-    console.log("Krasj");
-  }
-}
+import PrisdataService from "../axios/prisdata-service";
 
 function Dashboard() {
+  //Oppdatere chart
   const [chart, setChart] = useState([]);
 
+  //Vareliste
+  const [vareListe, setVareListe] = useState([])
+
+  useEffect(() => {
+    PrisdataService.getAll().then((response) => {
+      setVareListe(response.data)
+    })
+  }, [])
+
+  //Labels
+  const labels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  //Datasets
+  const datasets = [
+    //Rema 1000
+    {
+      label: 'Rema 1000',
+      data: [1, 1, 1, 1, 20, 27, 30, 34, 42, 45, 55, 63],
+      fill: true,
+      borderColor: "#ce13136d",
+      backgroundColor: "transparent",
+      pointBorderColor: "#ce13136d",
+      pointHoverRadius: 4,
+      pointBorderWidth: 8,
+    },
+    //Meny
+    {
+      label: 'Meny',
+      data: [0, 5, 10, 12, 20, 27, 30, 34, 42, 45, 55, 63],
+      fill: true,
+      borderColor: "#ce13136d",
+      backgroundColor: "transparent",
+      pointBorderColor: "#ce13136d",
+      pointHoverRadius: 4,
+      pointBorderWidth: 8,
+    },
+    //Kiwi
+    {
+      label: 'Kiwi',
+      labelTextColor: "#00ff11",
+      data: [59, 36, 50, 17, 20, 27, 45, 67, 69, 43, 21, 43],
+      fill: true,
+      borderColor: "#00ff11",
+      backgroundColor: "transparent",
+      pointBorderColor: "#00ff11",
+      pointHoverRadius: 4,
+      pointBorderWidth: 8,
+    },
+    //Spar
+    {
+      label: 'Spar',
+      data: [59.75, 49.7, 55.75, 39.75, 49.75, 49.75, 49.75, 59.75, 39.75, 49.75, 49.75, 49.75],
+      fill: true,
+      borderColor: "#ef8157",
+      backgroundColor: "transparent",
+      pointBorderColor: "#ef8157",
+      pointHoverRadius: 4,
+      pointBorderWidth: 8,
+    },
+    //Joker
+    {
+      label: 'Joker',
+      data: [0, 60, 49, 12, 10, 27, 30, 34, 30, 45, 55, 63],
+      fill: true,
+      borderColor: "#d753c6",
+      backgroundColor: "transparent",
+      pointBorderColor: "#d753c6",
+      pointHoverRadius: 4,
+      pointBorderWidth: 8,
+    },
+  ];
+
+  //Options
+  const options = {
+    plugins: {
+      legend: { 
+        pointRadius: 1,
+        display: true, 
+        labels: {
+          font: {
+            size: 17,
+            weight: 'bold',
+          },
+        },
+        layout: {
+          padding: 20,
+        } 
+      },
+    },
+  }
+
+  //Setter chart
   useEffect(() => {
     setChart({
       data: (canvas) => {
         return {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            //Rema 1000
-            {
-              label: 'Rema 1000',
-              data: [1, 1, 1, 1, 20, 27, 30, 34, 42, 45, 55, 63],
-              fill: true,
-              borderColor: "#ce13136d",
-              backgroundColor: "transparent",
-              pointBorderColor: "#ce13136d",
-              pointHoverRadius: 4,
-              pointBorderWidth: 8,
-            },
-            //Meny
-            {
-              label: 'Meny',
-              data: [0, 5, 10, 12, 20, 27, 30, 34, 42, 45, 55, 63],
-              fill: true,
-              borderColor: "#ce13136d",
-              backgroundColor: "transparent",
-              pointBorderColor: "#ce13136d",
-              pointHoverRadius: 4,
-              pointBorderWidth: 8,
-            },
-            //Kiwi
-            {
-              label: 'Kiwi',
-              labelTextColor: "#00ff11",
-              data: [59, 36, 50, 17, 20, 27, 45, 67, 69, 43, 21, 43],
-              fill: true,
-              borderColor: "#00ff11",
-              backgroundColor: "transparent",
-              pointBorderColor: "#00ff11",
-              pointHoverRadius: 4,
-              pointBorderWidth: 8,
-            },
-            //Spar
-            {
-              label: 'Spar',
-              data: [59.75, 49.7, 55.75, 39.75, 49.75, 49.75, 49.75, 59.75, 39.75, 49.75, 49.75, 49.75],
-              fill: true,
-              borderColor: "#ef8157",
-              backgroundColor: "transparent",
-              pointBorderColor: "#ef8157",
-              pointHoverRadius: 4,
-              pointBorderWidth: 8,
-            },
-            //Joker
-            {
-              label: 'Joker',
-              data: [0, 60, 49, 12, 10, 27, 30, 34, 30, 45, 55, 63],
-              fill: true,
-              borderColor: "#d753c6",
-              backgroundColor: "transparent",
-              pointBorderColor: "#d753c6",
-              pointHoverRadius: 4,
-              pointBorderWidth: 8,
-            },
-          ],
+          labels: labels,
+          datasets: datasets,
         }
       },
-      options: {
-        plugins: {
-          legend: { 
-            pointRadius: 1,
-            display: true, 
-            labels: {
-              font: {
-                size: 17,
-                weight: 'bold',
-              },
-            },
-            layout: {
-              padding: 20,
-            } 
-          },
-        },
-      },
+      options: options,
     })
   }, [])
   
+  //Oppdatere text
   const [content,setContent] = useState("");
-  const [dataFraServer,setDataFraServer] = useState([100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]);
+
+  //Lager HMTL med chart
   return (
     <>
       <div className="content">
@@ -182,7 +189,7 @@ function Dashboard() {
                       setContent(document.getElementById("inputSøkVare").value)}>Søk vare</Button>
                   </form>
                   <Button className="btn-rectangle" onClick={e =>  
-                    test(chart)}>Oppdatere chart</Button>
+                    testVareliste({vareListe})}>Oppdatere chart</Button>
                 </div>
               </CardFooter>
             </Card>
@@ -191,6 +198,16 @@ function Dashboard() {
       </div>
     </>
   );
+}
+
+function test(datasets) {
+  for (let i = 0; i < datasets.length; i++) {
+    console.log("Henter data fra " + datasets[i].label + ": " + datasets[i].data);
+  }
+}
+
+function testVareliste(vareListe) {
+  console.log(vareListe);  
 }
 
 export default Dashboard;

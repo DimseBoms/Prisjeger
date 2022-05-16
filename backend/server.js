@@ -6,7 +6,7 @@ import cors from 'cors'
 
 // initialiserer express og henter nødvendige variabler fra .env
 dotenv.config()
-const port = 6969
+const port = process.env.PORT || 8000
 const app = express()
 
 // databasetilkobling
