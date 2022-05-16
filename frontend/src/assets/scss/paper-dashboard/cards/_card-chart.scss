@@ -30,9 +30,13 @@
   }
   .card-footer {
     margin-top: 15px;
-
     .stats{
       color: $dark-gray;
+    }
+    .hor-card-form {
+      margin-bottom: 10px;
+      display: inline-flex;
+      left: 10px;
     }
   }
 
@@ -40,7 +44,6 @@
     position: absolute;
     right: 20px;
     top: 20px;
-
     .btn{
       margin: 0;
     }

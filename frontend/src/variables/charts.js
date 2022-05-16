@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-const dashboard24HoursPerformanceChart = {
+const dashboardPrisSammenligningChart = {
   data: (canvas) => {
     return {
       labels: [
@@ -40,7 +40,7 @@ const dashboard24HoursPerformanceChart = {
           borderWidth: 3,
           tension: 0.4,
           fill: true,
-          data: [300, 310, 316, 322, 330, 326, 333, 345, 338, 354],
+          data: [300 , 310, 316, 322, 330, 326, 333, 345, 338, 354],
         },
         {
           borderColor: "#f17e5d",
@@ -166,40 +166,86 @@ const dashboardNASDAQChart = {
         "Dec",
       ],
       datasets: [
+        //Rema 1000
         {
-          data: [0, 19, 15, 20, 30, 40, 40, 50, 25, 30, 50, 70],
-          fill: false,
-          borderColor: "#fbc658",
+          label: 'Rema 1000',
+          data: [100, 100, 100, 100, 20, 27, 30, 34, 42, 45, 55, 63],
+          fill: true,
+          borderColor: "#ce13136d",
           backgroundColor: "transparent",
-          pointBorderColor: "#fbc658",
-          pointRadius: 4,
+          pointBorderColor: "#ce13136d",
           pointHoverRadius: 4,
           pointBorderWidth: 8,
-          tension: 0.4,
         },
+        //Meny
         {
+          label: 'Meny',
           data: [0, 5, 10, 12, 20, 27, 30, 34, 42, 45, 55, 63],
-          fill: false,
-          borderColor: "#51CACF",
+          fill: true,
+          borderColor: "#ce13136d",
           backgroundColor: "transparent",
-          pointBorderColor: "#51CACF",
-          pointRadius: 4,
+          pointBorderColor: "#ce13136d",
           pointHoverRadius: 4,
           pointBorderWidth: 8,
-          tension: 0.4,
+        },
+        //Kiwi
+        {
+          label: 'Kiwi',
+          labelTextColor: "#00ff11",
+          data: [59, 36, 50, 17, 20, 27, 45, 67, 69, 43, 21, 43],
+          fill: true,
+          borderColor: "#00ff11",
+          backgroundColor: "transparent",
+          pointBorderColor: "#00ff11",
+          pointHoverRadius: 4,
+          pointBorderWidth: 8,
+        },
+        //Spar
+        {
+          label: 'Spar',
+          data: [59.75, 49.7, 55.75, 39.75, 49.75, 49.75, 49.75, 59.75, 39.75, 49.75, 49.75, 49.75],
+          fill: true,
+          borderColor: "#ef8157",
+          backgroundColor: "transparent",
+          pointBorderColor: "#ef8157",
+          pointHoverRadius: 4,
+          pointBorderWidth: 8,
+        },
+        //Joker
+        {
+          label: 'Joker',
+          data: [0, 60, 49, 12, 10, 27, 30, 34, 30, 45, 55, 63],
+          fill: true,
+          borderColor: "#d753c6",
+          backgroundColor: "transparent",
+          pointBorderColor: "#d753c6",
+          pointHoverRadius: 4,
+          pointBorderWidth: 8,
         },
       ],
     };
   },
   options: {
     plugins: {
-      legend: { display: false },
+      legend: { 
+        pointRadius: 1,
+        display: true, 
+        labels: {
+          font: {
+            size: 17,
+            weight: 'bold',
+          },
+        },
+        layout: {
+          padding: 20,
+        } 
+      },
     },
   },
 };
 
 module.exports = {
-  dashboard24HoursPerformanceChart,
+  dashboardPrisSammenligningChart,
   dashboardEmailStatisticsChart,
   dashboardNASDAQChart,
 };

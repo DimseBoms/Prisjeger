@@ -1468,7 +1468,8 @@ h4, .h4 {
 h5, .h5 {
   font-size: 1.57em;
   line-height: 1.4em;
-  margin-bottom: 15px; }
+  margin-bottom: 15px;
+ }
 
 h6, .h6 {
   font-size: 1em;
@@ -1528,6 +1529,26 @@ a.text-danger:focus, a.text-danger:hover {
 .text-gray,
 a.text-gray:focus, a.text-gray:hover {
   color: #E3E3E3 !important; }
+
+.text-rema,
+a.text-rema:focus, a.text-rema:hover {
+  color: #ce13136d !important; }
+
+.text-kiwi,
+a.text-kiwi:focus, a.text-kiwi:hover {
+  color: #00ff11 !important; }
+
+.text-spar,
+a.text-spar:focus, a.text-spar:hover {
+  color: #E3E3E3 !important; }      
+
+.text-joker,
+a.text-joker:focus, a.text-joker:hover {
+  color: #d753c6 !important; }        
+
+.text-meny,
+a.text-meny:focus, a.text-meny:hover {
+  color: #E3E3E3 !important; }    
 
 .blockquote {
   border-left: none;

@@ -87,7 +87,7 @@ var routes = [
   {
     path: "/scanner",
     name: "Scanner",
-    icon: "nc-icon nc-caps-small",
+    icon: "nc-icon nc-zoom-split",
     component: Scanner,
     layout: "/admin",
   },
