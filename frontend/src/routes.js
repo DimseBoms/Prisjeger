@@ -26,6 +26,8 @@ import Maps from "views/Map.js";
 import UserPage from "views/User.js";
 import UpgradeToPro from "views/Upgrade.js";
 import Handleliste from "views/Handleliste.js"
+import HandleKlasse from "views/HandleKlasse";
+import ListeElementer from "views/ListeElementer";
 
 var routes = [
   {
@@ -75,6 +77,20 @@ var routes = [
     name: "Handleliste",
     icon: "nc-icon nc-tile-56",
     component: Handleliste,
+    layout: "/admin",
+  },
+  {
+    path: "/handleklasse",
+    name: "HandleKlasse",
+    icon: "nc-icon nc-tile-56",
+    component: HandleKlasse,
+    layout: "/admin",
+  },
+  {
+    path: "/listeelementer",
+    name: "ListeElementer",
+    icon: "nc-icon nc-tile-56",
+    component: ListeElementer,
     layout: "/admin",
   },
   {
