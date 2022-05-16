@@ -80,7 +80,9 @@ function LagKnapp(vare, index, handleliste, setHandleliste) {
             nyHandleliste[vareString] = handleliste[vareString] + 1
             setHandleliste(nyHandleliste)
             console.log(`${vare} inkrementert`)
-          } else {
+          }
+          // Hvis ikke skal det lages en ny nøkkel og så skal denne settes til en
+          else {
             let nyHandleliste = handleliste
             nyHandleliste[vareString] = 1
             setHandleliste(nyHandleliste)
