@@ -99,6 +99,7 @@ function Pristabell() {
   // initialiserer React komponent med de nødvendige state variablene
 
     const [vareListe, setVareListe] = useState([])
+    const [allHistorikk, setAllHistorikk] = useState({})
     const [varefilter, setVarefilter] = useState("")
     const [butikkliste, setButikkliste] = useState([])
     const [handleliste, setHandleliste] = useState({})
@@ -106,6 +107,10 @@ function Pristabell() {
     useEffect(() => {
       PrisdataService.getVareliste().then((response) => {
         setVareListe(response.data)
+      })
+      PrisdataService.getAll().then((response) => {
+        setAllHistorikk(response.data)
+        console.log(response.data)
       })
     }, [])
 
