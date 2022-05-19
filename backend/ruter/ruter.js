@@ -39,7 +39,6 @@ ruter.get('/butikkliste', async function (req, res) {
 // Metode for å vise all prisdata for en vare
 ruter.get('/vare/:navn', async function (req, res) {
     try {
-        let vareNavn = req.params.navn
         let prisdata = await prisdataModell.find()
         let svar = []
         prisdata.forEach((element) => {
