@@ -13,4 +13,5 @@ const Prisdata = new mongoose.Schema({
     }},
     { collection: 'prisdata' })
 
+    
 export default mongoose.model('Prisdata', Prisdata)

@@ -1,7 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import prisdataruter from './ruter/prisdataruter.js'
+import prisdataruter from './ruter/ruter.js'
 import cors from 'cors'
 
 // initialiserer express og henter nødvendige variabler fra .env
@@ -19,6 +19,6 @@ db.once('open', () => console.log('Koblet til database'))
 // setter opp middleware og lovlige datatyper
 app.use(express.json())
 app.use(cors())
-app.use('/prisapi', prisdataruter)
+app.use('/api', prisdataruter)
 
 app.listen(port, () => console.log(`Backend server startet på port: ${port}`))

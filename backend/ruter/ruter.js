@@ -1,6 +1,8 @@
 import express from 'express'
 import prisdataModell from '../datamodeller/prisdataModell.js'
 import varelisteModell from '../datamodeller/varelisteModell.js'
+import brukerModell from '../datamodeller/brukerModell.js'
+
 const ruter = express.Router()
 
 // home
@@ -33,6 +35,18 @@ ruter.get('/butikkliste', async function (req, res) {
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
+})
+ruter.get('/handlelister/:epost', async function (req, res) {
+    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+        if (error){
+            console.log(error);
+            res.status(500).json({ message: error.message })
+        }
+        else{
+            console.log("First function call : ", response);
+            res.json(response.handlelister)
+        }
+    });
 })
 // TODO:
 // spørringer basert på pris

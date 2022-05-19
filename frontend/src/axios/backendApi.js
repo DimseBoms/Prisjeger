@@ -1,6 +1,6 @@
-import http from "./axios-init";
+import http from "./axiosInit";
 
-class PrisDataService {
+class BackendApi {
     getAll() {
       return http.get('/historikk');
     }
@@ -10,6 +10,10 @@ class PrisDataService {
     getButikkliste() {
       return http.get('/butikkliste');
     }
+    getHandlelister(epost) {
+      return http.get(`/handlelister/${epost}`)
+    }
   }
   
-  export default new PrisDataService();
+  export default new BackendApi
+();

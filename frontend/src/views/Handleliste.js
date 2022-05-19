@@ -17,7 +17,7 @@
 
 */
 import React from "react";
-import PrisdataService from "../axios/prisdata-service";
+import BackendApi from "../axios/backendApi";
 import { useState } from "react";
 // reactstrap components
 import {
@@ -105,10 +105,10 @@ function Pristabell() {
     const [handleliste, setHandleliste] = useState({})
 
     useEffect(() => {
-      PrisdataService.getVareliste().then((response) => {
+      BackendApi.getVareliste().then((response) => {
         setVareListe(response.data)
       })
-      PrisdataService.getAll().then((response) => {
+      BackendApi.getAll().then((response) => {
         setAllHistorikk(response.data)
         console.log(response.data)
       })
