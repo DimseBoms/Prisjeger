@@ -36,6 +36,7 @@ ruter.get('/butikkliste', async function (req, res) {
         res.status(500).json({ message: error.message })
     }
 })
+// henter handlelister for en epost/bruker
 ruter.get('/handlelister/:epost', async function (req, res) {
     brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
         if (error){
