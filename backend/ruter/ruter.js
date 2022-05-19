@@ -44,7 +44,6 @@ ruter.get('/handlelister/:epost', async function (req, res) {
             res.status(500).json({ message: error.message })
         }
         else{
-            console.log("First function call : ", response);
             res.json(response.handlelister)
         }
     });
