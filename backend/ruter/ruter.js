@@ -30,8 +30,8 @@ ruter.get('/vareliste', async function(req, res) {
 // returnerer butikkliste
 ruter.get('/butikkliste', async function (req, res) {
     try {
-        let prisdata = await prisdataModell.findOne()
-        res.json(prisdata.butikker)
+        let prisdata = await prisdataModell.find()
+        res.json(utvinnButikker(prisdata))
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -64,6 +64,45 @@ ruter.get('/vare/:navn', async function (req, res) {
         res.status(500).json({ message: error.message })
     }
 })
+// Metode for å vise all prisdata for en butikk
+ruter.get('/butikk/:butikk', async function (req, res) {
+    try {
+        let prisdata = await prisdataModell.find()
+        let svar = []
+        prisdata.forEach((element) => {
+            try {
+                let delSvar = {
+                    dato: "",
+                    varer: {}
+                }
+                delSvar.dato = element.dato
+                let butikkIndeks = finnButikkIndeks(element, req.params.butikk)
+
+                for (let vare in element.varer) {
+                    let i = 0
+                    element.varer[vare].forEach((pris) => {
+                        // console.log(`Vare: ${vare}, pris: ${pris}, index: ${i}, butikkindeks: ${butikkIndeks}`)
+                        if (i == butikkIndeks) {
+                            delSvar.varer[vare] = pris
+                        }
+                        i++
+                    })
+                }
+
+                // element.varer.forEach((vare) => {
+                //     delSvar.varer[vare] = element.varer[req.params.navn].at(butikkIndeks)
+                // })
+                svar.push(delSvar)
+            } catch (error) {
+                console.log(error)
+            }
+        })
+        res.json(svar)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+})
 // henter handlelister for en epost/bruker
 ruter.get('/handlelister/:epost', async function (req, res) {
     brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
@@ -80,6 +119,7 @@ ruter.get('/handlelister/:epost', async function (req, res) {
 // Hjelpemetode for å hente alle nåværende butikker fra prisdata
 function utvinnButikker(prisdata) {
     let butikkArray = []
+    console.log(prisdata)
     prisdata.forEach((element) => {
         element.butikker.forEach((butikk) => {
             if (!butikkArray.includes(butikk)) butikkArray.push(butikk)
@@ -96,6 +136,16 @@ function utvinnVarer(prisdata) {
         })
     })
     return vareArray
+}
+// Hjelpemetode for å finne en butikks tilsvarende indeks i hvert element i databasen
+function finnButikkIndeks(element, butikkNavn) {
+    let i = 0
+    let svar = -1
+    element.butikker.forEach((butikk) => {
+        if (butikk == butikkNavn) svar = i
+        i++
+    })
+    return svar
 }
 
 // TODO:
