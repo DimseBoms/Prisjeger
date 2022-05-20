@@ -54,7 +54,7 @@ import {
  * @param {*} param0 
  * @returns 
  */
-function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandleliste, 
+function FiltrertVareliste({vareListe, vareFilter, handleliste, setHandleliste, 
   enhetspris, setEnhetspris, antall, setAntall, totalsum, setTotalsum, detaljer, setDetaljer, 
   redigering, setRedigering, brukersListe, setBrukersListe, allHistorikk, setAllHistorikk, 
   butikker, setButikker, vareFraDb, setVareFraDb, prisFraDb, setPrisFraDb}) {
@@ -65,67 +65,39 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
 
   console.log('UTVALGTE Data fra DB lagt i variabel allHistorikk : ' + JSON.stringify(vareFraDb))
 
-  // VIL HA: Kiwi | Bergensk Fiskesuppe | 16.90 
+  
   let verdi = []
   let i = 0
   let nyBrukersListe = brukersListe
-  let nyKey = vare
-
+  let nyKey = ""
 
   Object.keys(vareFraDb).forEach(nøkkel => {
       verdi = Object.values(vareFraDb)
-        if (detaljer === butikker[0]) {
-          prisFraDb = verdi[i][0]
-        }
-        if (detaljer === butikker[1]) {
-          prisFraDb = verdi[i][1]
-        }
-        if (detaljer === butikker[2]) {
+        if (detaljer === butikker[0]) 
+          prisFraDb = verdi[i][0]       
+        if (detaljer === butikker[1]) 
+          prisFraDb = verdi[i][1]        
+        if (detaljer === butikker[2]) 
           prisFraDb = verdi[i][2]
-        }
-        if (detaljer === butikker[3]) {
+        if (detaljer === butikker[3]) 
           prisFraDb = verdi[i][3]
-        }
-        if (detaljer === butikker[4]) {
+        if (detaljer === butikker[4]) 
           prisFraDb = verdi[i][4]
-        }
-        if (detaljer === butikker[5]) {
+        if (detaljer === butikker[5]) 
           prisFraDb = verdi[i][5]
-        }
-        i++  // IKKE STRYK MEG !
-        // KAN BYGGE OPP RAD AV BUTIKK + VARE + PRIS
-        // DETTE KAN VISES I FILTERET
+        i++ 
+
+        // konsoll:  Kiwi | Bergensk Fiskesuppe | 16.90 
         console.log("RAD AV BUTIKK + VARE + PRIS : | " +detaljer+' | '+nøkkel+' | '+prisFraDb)
-        Object.values(vareListe).forEach(element => {
-            if (element === nøkkel) {
+        Object.values(vareListe).forEach(verdi => {
+            if (verdi === nøkkel) {
               console.log("MATCH " + prisFraDb)
               // ELEMENTER SOM MATCHER = VARETEKSTER SOM LIGGER I FILTERET + HAR PRIS
-              nyBrukersListe[element] = prisFraDb
+              nyBrukersListe[verdi] = prisFraDb
             }
         })
-        console.log("LIIIIIIIIIIIIISTE " + prisFraDb )
-        setEnhetspris(nyBrukersListe[nyKey])
-
-       
+        setEnhetspris(nyBrukersListe[nyKey])     
   })
-  //setHandleliste(nyHandleliste)
-  
-    // Hvis vare finnes i tabell og den allerede er lagt til i handlelisten
-    
-    // Avocado : [1, 2, 3, 4, 5]
-
-    // NYTT MAP: Ny nøkkel = const butikk
-    // Kiwi: 1
-    // Rema 1000: 2
-  
-    
- 
-
-
-
- 
-  // console.log('Data fra DB lagt i variabel allHistorikk : ' + JSON.stringify(allHistorikk))
-
 
 
   // returnerer vareliste og iteratorknapp. Detaljer kan hentes frem/ skjules.
@@ -146,29 +118,47 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
     </>
   ) : (
     <>
-    {filtrertVareliste.map((vare, index) => (
+    {filtrertVareliste.map((vare, index) => (handleliste[vare] > 0) ? (
       <tr key={index}>
         <td>{vare}</td>
         {visRadverdier(vare, index, handleliste, setHandleliste, enhetspris, setEnhetspris, antall, 
           setAntall, totalsum, setTotalsum, detaljer, setDetaljer, redigering, setRedigering, 
           brukersListe, setBrukersListe, allHistorikk, setAllHistorikk, butikker, setButikker, 
           vareFraDb, setVareFraDb, prisFraDb, setPrisFraDb)}
-        <td>
-          <Input
-            className="justify-content: space-between"
-            type="checkbox" 
-            style={{
-              width: '2em', 
-              height: '2em'}} 
-              />
-          
-        </td>
+        {LagCheck(vare, index, handleliste, setHandleliste, enhetspris, setEnhetspris, antall, 
+          setAntall, totalsum, setTotalsum, detaljer, setDetaljer, redigering, setRedigering, 
+          brukersListe, setBrukersListe, allHistorikk, setAllHistorikk, butikker, setButikker, 
+          vareFraDb, setVareFraDb, prisFraDb, setPrisFraDb)}
       </tr> 
-    ))}
+    ) : (null))}
   </>
   )
 }
 
+
+
+
+
+function LagCheck(vare, index, handleliste, setHandleliste, enhetspris, setEnhetspris, antall, 
+  setAntall, totalsum, setTotalsum, detaljer, setDetaljer, redigering, setRedigering, 
+  brukersListe, setBrukersListe, allHistorikk, setAllHistorikk, butikker, setButikker, 
+  vareFraDb, setVareFraDb, prisFraDb, setPrisFraDb) {
+
+    return (
+      <>
+        <td>
+          <Input
+            type="checkbox" 
+            style={{
+              width: '2em', 
+              height: '2em',
+              paddingBottom: '1em'
+            }} 
+          />              
+        </td>
+      </>
+    )
+  }
 
 
 
@@ -195,15 +185,14 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
  */
 function visRadverdier(vare, index, handleliste, setHandleliste, enhetspris, setEnhetspris, 
   antall, setAntall, totalsum, setTotalsum, detaljer, setDetaljer, redigering, setRedigering, 
-  brukersListe, setBrukersListe, allHistorikk, setAllHistorikk, butikker, setButikker, vareFraDb, setVareFraDb, prisFraDb) {
+  brukersListe ) {
 
   const visantall = (!isNaN(JSON.stringify(handleliste[vare]))) ? JSON.stringify(handleliste[vare]) : 0
- // const enhetspris = (!isNaN(JSON.stringify(handleliste[vare]))) ? JSON.stringify(handleliste[prisFraDb]) : 0
-  
+
   return (
     <>
       <td className="text-center">
-        <Button 
+        <Button
           color="info"
           style={{ 
             marginRight: '.2rem', 
@@ -212,7 +201,7 @@ function visRadverdier(vare, index, handleliste, setHandleliste, enhetspris, set
             paddingLeft: '0em',
             paddingRight: '0em' 
           }} 
-          >{JSON.stringify(brukersListe[vare]*1)},-
+          >{parseFloat(JSON.stringify(brukersListe[vare]*1)).toFixed(2)},-
         </Button>
         <Button
         color="info"
@@ -223,7 +212,7 @@ function visRadverdier(vare, index, handleliste, setHandleliste, enhetspris, set
             paddingLeft: '0em',
             paddingRight: '0em' 
           }} 
-          >{visantall * JSON.stringify(brukersListe[vare]*1)},-
+          >{(visantall * parseFloat(JSON.stringify(brukersListe[vare]*1))).toFixed(2)},-
           </Button>
       </td>
     </>
@@ -304,6 +293,7 @@ function dekrementer(vare, index, handleliste, setHandleliste, enhetspris, setEn
     if (handleliste[vare] > 0) {
       antallFinnes = true
       setAntall(JSON.stringify(handleliste[vare] - 1))
+      setTotalsum(totalsum - parseFloat(brukersListe[vare]))
     }
   })
   // Dekrementerer antall på aktuell rad
@@ -328,8 +318,8 @@ function inkrementer(vare, index, handleliste, setHandleliste, enhetspris, setEn
   brukersListe, setBrukersListe, allHistorikk, setAllHistorikk, butikker, setButikker, vareFraDb, prisFraDb, setPrisFraDb) {
 
   let vareString = vare
-
-
+  //let leggTil = parseFloat(brukersListe[vare])
+  setTotalsum(totalsum + parseFloat(brukersListe[vare]))
   // Itererer handlelista og finner valgte varer
   let vareFinnes = false
   let nyBrukersListe = brukersListe
@@ -339,7 +329,6 @@ function inkrementer(vare, index, handleliste, setHandleliste, enhetspris, setEn
       vareFinnes = true
     }
   })
-  setBrukersListe(nyBrukersListe)
 
   // Hvis finnes inkrementeres antall
   if (vareFinnes) {
@@ -370,8 +359,8 @@ function inkrementer(vare, index, handleliste, setHandleliste, enhetspris, setEn
   // DENNE LOOPEN MÅ MED - HVORFOR?? - OG HVORFOR MÅ JSON.STRINGIFY KALLES PÅ NYTT I JSX??
   Object.keys(handleliste).forEach((element) => {
     setAntall(JSON.stringify(handleliste[vare] + 1))
-    setTotalsum(totalsum + (enhetspris*1))
   })
+
 }
 
 
@@ -413,13 +402,12 @@ function Handleliste() {
         setVareListe(response.data)
       })
 
-BackendApi.getButikkliste().then((response) => {
+      BackendApi.getButikkliste().then((response) => {
         setButikkliste(response.data)
       })
       BackendApi.getAll().then((response) => {
         setButikker(response.data[0].butikker)
         setVareFraDb(response.data[0].varer)
-      
         console.log('Direkte fra DB, "id_" ' + JSON.stringify(response.data[0]._id))
         console.log('Direkte fra DB, "butikker" ' + JSON.stringify(response.data[0].butikker))
         console.log('Direkte fra DB " varer" ' + JSON.stringify(response.data[0].varer))
@@ -528,7 +516,7 @@ BackendApi.getButikkliste().then((response) => {
                     <Button onClick={() =>setRedigering(true)} color="danger" size="sm">Rediger</Button>
                   </Row>
                 </Card>
-                <CardTitle tag="h2" className="text-center">Totalt beløp : {totalsum},-</CardTitle>
+                <CardTitle tag="h2" className="text-center">Totalt beløp : {totalsum.toFixed(2)}</CardTitle>
               </CardHeader>
               <CardBody>
                 <Table responsive>
