@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Et lite skript som henter nyeste versjon av prosjektet fra GitHub. Bygger det på nytt
-# lokalt og sørger for å starte de nødvendige tjenestene på nytt
+# Et lite skript som henter nyeste versjon av prosjektet fra GitHub.
+# Bygger det på nytt lokalt og sørger for å starte de nødvendige
+# tjenestene på nytt
 
 # Stopper tjenester
 systemctl stop prisjeger-backend.service
