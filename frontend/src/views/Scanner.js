@@ -19,7 +19,15 @@
 import React from "react";
 
 // reactstrap components
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import { Card,
+         CardHeader,
+         CardBody,
+         CardFooter,
+         CardTitle,
+         Row,
+         Col,
+         Input,
+         Button, } from "reactstrap";
 
 // tesseract importer
 import { useState, useRef } from 'react';
@@ -35,8 +43,6 @@ function Scanner() {
  
   const handleChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]))
-    // setImage(`${window.location.origin}/${event.target.files[0].name}`);
-    // const image = preprocessImage(canvasObj, event.target.files[0]);
   }
 
   const handleClick = () => {
@@ -69,26 +75,37 @@ function Scanner() {
       setText(text);
       // setPin(patterns);
     })
+  
   }
 
   return (
+    <>
+    <div className="content">
+    <Card>
+    <CardHeader>
+      <CardTitle tag="h5">Last opp kvittering</CardTitle>
+    </CardHeader>
     <div className="App">
       <main className="App-main">
-        <h3>Actual image uploaded</h3>
-        <img 
-           src={image} className="App-logo" alt="logo"
-           ref={imageRef} 
-           />
-        <h3>Canvas</h3>
-        <canvas ref={canvasRef} width={700} height={300}></canvas>
-          <h3>Extracted text</h3>
-        <div className="pin-box">
-          <p> {text} </p>
-        </div>
-        <input type="file" onChange={handleChange} />
-        <button onClick={handleClick} style={{height:50}}>Convert to text</button>
+        <CardBody>
+          <img 
+            src={image} className="App-logo" alt="logo"
+            ref={imageRef} 
+            />
+          <h3>Canvas</h3>
+          <canvas ref={canvasRef} width={700} height={100}></canvas>
+            <p>Extracted text</p>
+          <div className="pin-box">
+            <p> {text} </p>
+          </div>
+          <input type="file" onChange={handleChange} />
+          <Button onClick={handleClick} style={{height:50}}>Convert to text</Button>
+        </CardBody>
       </main>
     </div>
+  </Card>
+  </div>
+  </>
   );
 }
 
