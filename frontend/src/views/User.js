@@ -17,6 +17,7 @@
 
 */
 import React from "react";
+import BackendApi from "../axios/backendApi";
 
 // reactstrap components
 import {
@@ -32,6 +33,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import backendApi from "../axios/backendApi";
 
 function User() {
   return (
@@ -201,7 +203,9 @@ function User() {
                 <CardTitle tag="h5">Edit Profile</CardTitle>
               </CardHeader>
               <CardBody>
-                <Form>
+                <Form onSubmit={
+                  backendApi.postTest({testpost: "Dette er et forsøk på å sende med parameter"})
+                }>
                   <Row>
                     <Col className="pr-1" md="5">
                       <FormGroup>

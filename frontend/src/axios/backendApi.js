@@ -41,6 +41,14 @@ class BackendApi {
     getButikk(butikk, fradato, tildato) {
       return http.get(`/butikk/${butikk}/${fradato}/${tildato}`)
     }
+
+    // Post metoder
+    postTest(postObjekt) {
+      console.log("Startet postTest()")
+      http.post('/testpost', postObjekt).then(response => {
+          console.log(response)
+      });
+    }
   }
   
 
