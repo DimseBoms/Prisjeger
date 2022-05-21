@@ -72,8 +72,8 @@ function Scanner() {
       // Get full output
       let text = result.data.text
   
-      setText(text);
-      // setPin(patterns);
+      setText("Extracted text: " + text);
+      //setPin(patterns);
     })
   
   }
@@ -89,12 +89,12 @@ function Scanner() {
       <main className="App-main">
         <CardBody>
           <img 
-            src={image} className="App-logo" alt="logo"
+            src={image} className="App-logo"
             ref={imageRef} 
             />
-          <h3>Canvas</h3>
-          <canvas ref={canvasRef} width={700} height={100}></canvas>
-            <p>Extracted text</p>
+          <h3></h3>
+          <canvas ref={canvasRef} width={0} height={0}></canvas>
+            <p></p>
           <div className="pin-box">
             <p> {text} </p>
           </div>
