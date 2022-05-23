@@ -35,6 +35,12 @@ import {
 } from "reactstrap";
 import backendApi from "../axios/backendApi";
 
+
+
+
+async function handle(){
+console.log('hei')
+}
 function User() {
   return (
     <>
