@@ -43,9 +43,12 @@ import {
 
 
 
-
-const KryssAv = () => {
-  const [checked, setChecked] = React.useState(false);
+/**
+ * Funksjon for å lage checkbox for handlevisning
+ * @returns 
+ */
+function KryssAv(redigering, setRedigering) {
+  const [checked, setChecked] = useState(false);
 
   const handleChange = () => {
     setChecked(!checked);
@@ -58,14 +61,14 @@ const KryssAv = () => {
         onChange={handleChange}
       />
 
-      <p>{checked.toString()}</p>
+      <p>Tester{checked.toString()}</p>
     </>
   );
 };
 
 const Checkbox = ({ label, value, onChange }) => {
   return (
-    <span className="justify-content: space-between"
+    <span 
      >
     <label>
       <Input
