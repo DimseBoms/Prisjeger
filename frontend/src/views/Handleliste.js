@@ -18,9 +18,6 @@
 */
 import React from "react";
 import BackendApi from "../axios/backendApi";
-import { useState } from "react";
-import { useEffect } from "react";
-import jwt from 'jsonwebtoken'
 import { useState, useEffect, useRef } from "react";
 // reactstrap components
 import {
