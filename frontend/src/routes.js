@@ -26,7 +26,9 @@ import Maps from "views/Map.js";
 import UserPage from "views/User.js";
 import UpgradeToPro from "views/Upgrade.js";
 import Handleliste from "views/Handleliste.js"
-
+import Loggføring from "views/Loggføring";
+import Register from "views/Register";
+import Login from "views/Login";
 var routes = [
   {
     path: "/dashboard",
@@ -97,6 +99,27 @@ var routes = [
     name: "Upgrade to PRO",
     icon: "nc-icon nc-spaceship",
     component: UpgradeToPro,
+    layout: "/admin",
+  },
+  {
+    path: "/Loggføring",
+    name: "Loggføring",
+    icon: "nc-icon nc-bank",
+    component: Loggføring,
+    layout: "/admin",
+  },
+  {
+    path: "/Registrer",
+    name: "Registrer",
+    icon: "nc-icon nc-bank",
+    component: Register,
+    layout: "/admin",
+  },
+  {
+    path: "/Login",
+    name: "Login",
+    icon: "nc-icon nc-bank",
+    component: Login,
     layout: "/admin",
   },
 ];

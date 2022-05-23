@@ -18,6 +18,10 @@ db.once('open', () => console.log('Koblet til database'))
 
 // setter opp middleware og lovlige datatyper
 app.use(express.json())
+app.use(express.urlencoded({
+    extended: true
+  }));
+  
 app.use(cors())
 app.use('/api', prisdataruter)
 

@@ -16,9 +16,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import jwt from 'jsonwebtoken'
 import React from "react";
 // react plugin used to create charts
 import { Line, Pie } from "react-chartjs-2";
+import { useEffect } from 'react/cjs/react.production.min';
 // reactstrap components
 import {
   Card,
@@ -36,7 +38,19 @@ import {
   dashboardNASDAQChart,
 } from "variables/charts.js";
 
+
+
+
 function Dashboard() {
+  
+  
+  const brukerInfo = localStorage.getItem('token')
+      if(brukerInfo){
+        const brukerMail = jwt.decode(brukerInfo)
+        console.log(brukerMail)
+      }
+    
+    
   return (
     <>
       <div className="content">

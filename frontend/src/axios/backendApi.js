@@ -35,12 +35,42 @@ class BackendApi {
     }
     // Metode for å vise all prisdata for en butikk fra et tidspunkt
     getButikk(butikk, fradato) {
+      console.log('henter varedata')
       return http.get(`/butikk/${butikk}/${fradato}`)
     }
     // Metode for å vise all prisdata for en butikk mellom to tidspunkt
     getButikk(butikk, fradato, tildato) {
       return http.get(`/butikk/${butikk}/${fradato}/${tildato}`)
     }
+    getLogStatus(lvl, status){
+      return http.get(`/logger/${lvl}/${status}`)
+    }
+    postRegistrer(postObjekt) {
+      console.log("Startet registrering")
+      http.post(`/test`, postObjekt).then(response => {
+          console.log(response)
+      });
+    }
+    postTest(postObjekt) {
+      console.log("Startet postTest()")
+      http.post(`/testpost`, postObjekt).then(response => {
+          console.log(response)
+      });
+    } 
+
+  async loginSjekk(postObjekt) {
+      console.log("loginsjekker")
+      http.post(`/login`, postObjekt).then(response => {
+        console.log(response.data.bruker)
+        if(response.data.melding === 'innlogget'){
+          localStorage.setItem('token', response.data.bruker)  
+          //window.location.href = '/dashboard'
+        }
+        return response;
+      });
+    } 
+
+
   }
   
 

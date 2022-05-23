@@ -32,7 +32,14 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import backendApi from "../axios/backendApi";
 
+
+
+
+async function handle(){
+console.log('hei')
+}
 function User() {
   return (
     <>
@@ -201,7 +208,8 @@ function User() {
                 <CardTitle tag="h5">Edit Profile</CardTitle>
               </CardHeader>
               <CardBody>
-                <Form>
+                <Form onSubmit={
+handle()                }>
                   <Row>
                     <Col className="pr-1" md="5">
                       <FormGroup>
