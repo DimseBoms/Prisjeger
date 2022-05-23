@@ -278,6 +278,12 @@ ruter.get('/handlelister/:epost', async function (req, res) {
     );
 })
 
+// Post metoder
+ruter.post('/testpost', async function (req, res) {
+    console.log(req.body)
+    res.json("Testpost motatt")
+})
+
 // Hjelpemetode for å hente alle nåværende butikker fra prisdata
 function utvinnButikker(prisdata) {
     let butikkArray = []
