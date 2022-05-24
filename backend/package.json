@@ -1,5 +1,6 @@
 {
   "name": "prisjeger-backend",
+  "homepage": "http://prisjeger-app.duckdns.org",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",

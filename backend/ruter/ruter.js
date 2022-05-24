@@ -24,7 +24,7 @@ ruter.get('/historikk', async function(req, res) {
     }
  })
  // returnerer vareliste
-ruter.get('/test', async function(req, res) {
+ruter.get('/vareliste', async function(req, res) {
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
