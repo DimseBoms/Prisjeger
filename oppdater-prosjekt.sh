@@ -5,7 +5,7 @@
 # tjenestene på nytt
 
 # Henter nvm
-source $HOME/.nvm/nvm.sh
+source /home/pi/.nvm/nvm.sh
 
 # Stopper tjenester
 echo -e "\nStopper bakgrunnstjenester...\n"

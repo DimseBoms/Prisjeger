@@ -2,7 +2,7 @@
 
 # Henter nvm
 echo -e "\nHenter nvm...\n"
-source $HOME/.nvm/nvm.sh
+source /home/pi/.nvm/nvm.sh
 
 echo -e "\nForsøker å starte frontend...\n"
 cd /home/pi/applikasjon/prisjeger/frontend
