@@ -23,14 +23,16 @@ app.use(express.urlencoded({
   }));
 // Henter dotenv for cors config. Denne konfigurasjonen eksisterer kun på server
 // så den vil allitid være localhost dersom prosjektet kjøres lokalt på egen maskin.
-const CORS_URL = process.env.BASEURL || "http://localhost"
+const CORS_URL = process.env.BASEURL || false
 // Setter cors config
 app.use(cors())
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", CORS_URL);
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-})
+if (CORS_URL) {
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", CORS_URL);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  })
+}
 app.use('/api', prisdataruter)
 
 app.listen(port, () => console.log(`Backend server startet på port: ${port}`))
