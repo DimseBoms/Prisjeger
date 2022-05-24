@@ -21,10 +21,13 @@ app.use(express.json())
 app.use(express.urlencoded({
     extended: true
   }));
-// Tillat alle cors forespørsler
+// Henter dotenv for cors config. Denne konfigurasjonen eksisterer kun på server
+// så den vil allitid være localhost dersom prosjektet kjøres lokalt på egen maskin.
+const CORS_URL = process.env.BASEURL || "http://localhost"
+// Setter cors config
 app.use(cors())
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", CORS_URL);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 })
