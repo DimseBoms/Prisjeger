@@ -9,44 +9,79 @@ const ruter = express.Router()
 
 // home
 ruter.get('/', (req, res) => {
+    console.log("Ny forespørsel etter index")
     res.send('Home Page')
 })
 // returnerer all prishistorikk
 ruter.get('/historikk', async function(req, res) {
+    console.log("Ny forespørsel etter all prishistorikk")
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
         )        
         res.json(prisdata)
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message })
     
     }
  })
+ // henter oppdaterte priser
+ ruter.get('/siste', async function(req, res) {
+    console.log("Ny forespørsel etter siste oppdaterte priser")
+    try {
+        let prisdata = await prisdataModell.find().sort( // henter data fra databasen
+            {dato: -1}
+        )
+        let varer = utvinnVarer(prisdata)
+        let mangler = []
+        let svar = { //lager variabel som skal sendes tilbake som respons
+            butikker: [],
+            dato: new Date().toISOString().slice(0, 10), // dagens dato i ISO format
+            varer: {}
+        }  // itererer prisdata-objekt for å hente ut mest oppdaterte pris for hver eneste vare
+        prisdata.forEach((element) => {
+            for (let vare in element.varer) {
+                if (!(vare in svar.varer)) {
+                    svar.varer[vare] = element.varer[vare]
+                }
+            }
+        })
+        res.json(svar)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+})
  // returnerer vareliste
 ruter.get('/vareliste', async function(req, res) {
+    console.log("Ny forespørsel etter vareliste")
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
         )
         res.json(utvinnVarer(prisdata))
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message })
     }
 })
 // returnerer butikkliste
 ruter.get('/butikkliste', async function (req, res) {
+    console.log("Ny forespørsel etter butikkliste")
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
         )
         res.json(utvinnButikker(prisdata))
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message })
     }
 })
 // Metode for å vise all prisdata for en vare
 ruter.get('/vare/:navn', async function (req, res) {
+    console.log(`Ny forespørsel etter vare: ${req.params.navn}`)
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
@@ -66,6 +101,7 @@ ruter.get('/vare/:navn', async function (req, res) {
                 })
                 svar.push(delSvar)
             } catch (error) {
+                // Feilen som oppstår her er ikke fatal
                 // console.log(`Vare eksisterer ikke for dato: ${element.dato}`)
             }
         })
@@ -77,6 +113,7 @@ ruter.get('/vare/:navn', async function (req, res) {
 })
 // Metode for å vise all prisdata for en vare fra tidspunkt
 ruter.get('/vare/:navn/:fradato', async function (req, res) {
+    console.log(`Ny forespørsel etter vare: ${req.params.navn} fra ${req.params.fradato}`)
     try {
         let prisdata = await prisdataModell.find({
             dato: {$gte: req.params.fradato}
@@ -98,6 +135,7 @@ ruter.get('/vare/:navn/:fradato', async function (req, res) {
                 })
                 svar.push(delSvar)
             } catch (error) {
+                // Feilen som oppstår her er ikke fatal
                 // console.log(`Vare eksisterer ikke for dato: ${element.dato}`)
             }
         })
@@ -109,6 +147,7 @@ ruter.get('/vare/:navn/:fradato', async function (req, res) {
 })
 // Metode for å vise all prisdata for en vare fra tidspunkt til et tidspunkt
 ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
+    console.log(`Ny forespørsel etter vare: ${req.params.navn} fra ${req.params.fradato} til ${req.params.tildato}`)
     try {
         let prisdata = await prisdataModell.find({
             dato: {$gte: req.params.fradato, $lte: req.params.tildato}
@@ -130,6 +169,7 @@ ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
                 })
                 svar.push(delSvar)
             } catch (error) {
+                // Feilen som oppstår her er ikke fatal
                 // console.log(`Vare eksisterer ikke for dato: ${element.dato}`)
             }
         })
@@ -141,6 +181,7 @@ ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
 })
 // Metode for å vise all prisdata for en butikk
 ruter.get('/butikk/:butikk', async function (req, res) {
+    console.log(`Ny forespørsel etter butikk: ${req.params.butikk}`)
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
@@ -158,17 +199,12 @@ ruter.get('/butikk/:butikk', async function (req, res) {
                 for (let vare in element.varer) {
                     let i = 0
                     element.varer[vare].forEach((pris) => {
-                        // console.log(`Vare: ${vare}, pris: ${pris}, index: ${i}, butikkindeks: ${butikkIndeks}`)
                         if (i == butikkIndeks) {
                             delSvar.varer[vare] = pris
                         }
                         i++
                     })
                 }
-
-                // element.varer.forEach((vare) => {
-                //     delSvar.varer[vare] = element.varer[req.params.navn].at(butikkIndeks)
-                // })
                 svar.push(delSvar)
             } catch (error) {
                 console.log(error)
@@ -182,6 +218,7 @@ ruter.get('/butikk/:butikk', async function (req, res) {
 })
 // Metode for å vise all prisdata for en butikk fra en dato
 ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
+    console.log(`Ny forespørsel etter butikk: ${req.params.butikk} fra ${req.params.fradato}`)
     try {
         let prisdata = await prisdataModell.find({
             dato: {$gte: req.params.fradato}
@@ -201,17 +238,12 @@ ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
                 for (let vare in element.varer) {
                     let i = 0
                     element.varer[vare].forEach((pris) => {
-                        // console.log(`Vare: ${vare}, pris: ${pris}, index: ${i}, butikkindeks: ${butikkIndeks}`)
                         if (i == butikkIndeks) {
                             delSvar.varer[vare] = pris
                         }
                         i++
                     })
                 }
-
-                // element.varer.forEach((vare) => {
-                //     delSvar.varer[vare] = element.varer[req.params.navn].at(butikkIndeks)
-                // })
                 svar.push(delSvar)
             } catch (error) {
                 console.log(error)
@@ -225,6 +257,7 @@ ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
 })
 // Metode for å vise all prisdata for en butikk fra en dato til en dato
 ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
+    console.log(`Ny forespørsel etter butikk: ${req.params.butikk} fra ${req.params.fradato} til ${req.params.tildato}`)
     try {
         let prisdata = await prisdataModell.find({
             dato: {$gte: req.params.fradato, $lte: req.params.tildato}
@@ -244,17 +277,12 @@ ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
                 for (let vare in element.varer) {
                     let i = 0
                     element.varer[vare].forEach((pris) => {
-                        // console.log(`Vare: ${vare}, pris: ${pris}, index: ${i}, butikkindeks: ${butikkIndeks}`)
                         if (i == butikkIndeks) {
                             delSvar.varer[vare] = pris
                         }
                         i++
                     })
                 }
-
-                // element.varer.forEach((vare) => {
-                //     delSvar.varer[vare] = element.varer[req.params.navn].at(butikkIndeks)
-                // })
                 svar.push(delSvar)
             } catch (error) {
                 console.log(error)
@@ -268,6 +296,7 @@ ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
 })
 // henter handlelister for en epost/bruker
 ruter.get('/handlelister/:epost', async function (req, res) {
+    console.log(`Ny forespørsel etter handlelister for epost: ${req.params.epost}`)
     brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
         if (error){
             console.log(error);
@@ -290,7 +319,6 @@ ruter.post('/testpost', async function (req, res) {
 // Hjelpemetode for å hente alle nåværende butikker fra prisdata
 function utvinnButikker(prisdata) {
     let butikkArray = []
-    console.log(prisdata)
     prisdata.forEach((element) => {
         element.butikker.forEach((butikk) => {
             if (!butikkArray.includes(butikk)) butikkArray.push(butikk)
@@ -306,7 +334,7 @@ function utvinnVarer(prisdata) {
             if (!vareArray.includes(vare)) vareArray.push(vare)
         })
     })
-    return vareArray
+    return vareArray.sort()
 }
 // Hjelpemetode for å finne en butikks tilsvarende indeks i hvert element i databasen
 function finnButikkIndeks(element, butikkNavn) {
