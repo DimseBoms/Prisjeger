@@ -27,6 +27,10 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 import AdminLayout from "layouts/Admin.js";
 
+
+// import i18n (needs to be bundled ;)) 
+import './i18n';
+
 ReactDOM.render(
   <BrowserRouter>
     <Switch>

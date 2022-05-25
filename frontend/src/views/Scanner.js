@@ -19,7 +19,18 @@
 import React from "react";
 
 // reactstrap components
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import { Card,
+         CardHeader,
+         CardBody,
+         CardFooter,
+         CardTitle,
+         Row,
+         Col,
+         Input,
+         Button, } from "reactstrap";
+
+// import global i18next config
+import { useTranslation } from 'react-i18next';
 
 // tesseract importer
 import { useState, useRef } from 'react';
@@ -27,6 +38,9 @@ import preprocessImage from '../preprocess';
 import Tesseract from 'tesseract.js';
 
 function Scanner() {
+  // gjør i18n tilgjengelig
+  const { t, i18n } = useTranslation();
+  console.log(t)
   const [image, setImage] = useState("");
   const [text, setText] = useState("");
   // const [pin, setPin] = useState("");
@@ -35,8 +49,6 @@ function Scanner() {
  
   const handleChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]))
-    // setImage(`${window.location.origin}/${event.target.files[0].name}`);
-    // const image = preprocessImage(canvasObj, event.target.files[0]);
   }
 
   const handleClick = () => {
@@ -47,7 +59,7 @@ function Scanner() {
     const ctx = canvas.getContext('2d');
 
     ctx.drawImage(imageRef.current, 0, 0);
-    ctx.putImageData(preprocessImage(canvas),0,0);
+    // ctx.putImageData(preprocessImage(canvas),0,0);
     const dataUrl = canvas.toDataURL("image/jpeg");
   
     Tesseract.recognize(
@@ -66,29 +78,40 @@ function Scanner() {
       // Get full output
       let text = result.data.text
   
-      setText(text);
-      // setPin(patterns);
+      setText("Extracted text: " + text);
+      //setPin(patterns);
     })
+  
   }
 
   return (
+    <>
+    <div className="content">
+    <Card>
+    <CardHeader>
+      <CardTitle tag="h5">{t('title')}</CardTitle>
+    </CardHeader>
     <div className="App">
       <main className="App-main">
-        <h3>Actual image uploaded</h3>
-        <img 
-           src={image} className="App-logo" alt="logo"
-           ref={imageRef} 
-           />
-        <h3>Canvas</h3>
-        <canvas ref={canvasRef} width={700} height={300}></canvas>
-          <h3>Extracted text</h3>
-        <div className="pin-box">
-          <p> {text} </p>
-        </div>
-        <input type="file" onChange={handleChange} />
-        <button onClick={handleClick} style={{height:50}}>Convert to text</button>
+        <CardBody>
+          <img 
+            src={image} className="App-logo"
+            ref={imageRef} 
+            />
+          <h3></h3>
+          <canvas ref={canvasRef} width={0} height={0}></canvas>
+            <p></p>
+          <div className="pin-box">
+            <p> {text} </p>
+          </div>
+          <input type="file" onChange={handleChange} />
+          <Button onClick={handleClick} style={{height:50}}>Convert to text</Button>
+        </CardBody>
       </main>
     </div>
+  </Card>
+  </div>
+  </>
   );
 }
 
