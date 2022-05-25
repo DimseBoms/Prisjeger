@@ -27,12 +27,43 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 import AdminLayout from "layouts/Admin.js";
 
+import i18next from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import HttpApi from 'i18next-http-backend'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import { Suspense } from 'react';
+
+i18next
+  .use(HttpApi)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    supportedLngs: ['en', 'no'],
+    lng: "en",
+    fallbackLng: 'en',
+    debug: false,
+    // Options for language detector
+    detection: {
+      order: ['path', 'cookie', 'htmlTag'],
+      caches: ['cookie'],
+    },
+     react: { useSuspense: false },
+    backend: {
+      loadPath: '/assets/locales/{{lng}}/translation.json',
+    },
+  })
+
 ReactDOM.render(
+  <React.Suspense fallback="loading...">
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Redirect to="/admin/dashboard" />
     </Switch>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </React.Suspense>
+  ,
   document.getElementById("root")
 );
+
+

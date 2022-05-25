@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "axios": "^0.26.1",
-    "concurrently": "^7.1.0"
+    "concurrently": "^7.1.0",
+    "i18next": "^21.8.4",
+    "react-i18next": "^11.16.9"
   },
   "scripts": {
     "start": "concurrently \"npm i --prefix ./backend && npm start --prefix ./backend\" \"npm i --prefix ./frontend && npm start --prefix ./frontend\""
