@@ -1,6 +1,7 @@
 import http from "./axiosInit";
 
 class BackendApi {
+  
     // returnerer all prishistorikk
     getAll() {
       return http.get('/historikk');
