@@ -32,11 +32,14 @@ import AdminLayout from "layouts/Admin.js";
 import './i18n';
 
 ReactDOM.render(
+  <React.Suspense fallback = "... loading">
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Redirect to="/admin/dashboard" />
     </Switch>
   </BrowserRouter>,
+  </React.Suspense>,
+  
   document.getElementById("root")
 );

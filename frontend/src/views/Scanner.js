@@ -26,7 +26,7 @@ import { Card,
          CardTitle,
          Row,
          Col,
-         Input,
+         CustomInput,
          Button, } from "reactstrap";
 
 // import global i18next config
@@ -89,7 +89,7 @@ function Scanner() {
     <div className="content">
     <Card>
     <CardHeader>
-      <CardTitle tag="h5">{t('title')}</CardTitle>
+      <CardTitle tag="h5">{t('scan_receipt')}</CardTitle>
     </CardHeader>
     <div className="App">
       <main className="App-main">
@@ -104,8 +104,8 @@ function Scanner() {
           <div className="pin-box">
             <p> {text} </p>
           </div>
-          <input type="file" onChange={handleChange} />
-          <Button onClick={handleClick} style={{height:50}}>Convert to text</Button>
+          <CustomInput type="file" label= {t('browse')} onChange={handleChange} />
+          <Button onClick={handleClick} style={{height:50}}>{t('upload')}</Button>
         </CardBody>
       </main>
     </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import backendApi from "../axios/backendApi";
 import axios from '../axios/axiosInit';
+import { useTranslation } from 'react-i18next';
 
 import {
     Button,
@@ -20,7 +21,8 @@ import {
   
   
   export default function Login()  {
-  	
+
+    const { t, i18n } = useTranslation();
     const [epost, setEpost] = useState("");
 
     const [passord, setPassord] = useState("");
@@ -85,11 +87,11 @@ import {
       <div className="content">
 
      <Card>
-       <CardHeader>Innlogging</CardHeader>
+       <CardHeader>{t('SIGN_IN')}</CardHeader>
         <CardBody>
       <form onSubmit={handleSubmit}> 
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <label for="exampleInputEmail1" class="form-label">{t('email')}</label>
     <input type="email"
         value={epost}
         onChange={(e) => setEpost(e.target.value)}
@@ -99,7 +101,7 @@ import {
   </div>
 
   <div class="mb-3">
-    <label for="pw" class="form-label">Passord</label>
+    <label for="pw" class="form-label">{t('password')}</label>
     <input type="password" 
     value={passord}
     onChange={(e) => setPassord(e.target.value)}
@@ -109,7 +111,7 @@ import {
 
 
 
-  <button  type="submit" class="btn btn-primary">Logg in</button>
+  <button  type="submit" class="btn btn-primary">{t('SIGN_IN')}</button>
   
 </form>
 </CardBody>

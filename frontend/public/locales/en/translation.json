@@ -1,6 +1,34 @@
 {
-    "title": "Scan receipt",
-    "language": "Language",
-    "welcome_message": "Welcome",
-    "days_since_release": " "
-  }
+  "DASHBOARD" : "Dashboard",
+
+  "PRICE_CHART" : "Price chart",
+  "filter" : "Filter",
+  "average" : "Average",
+
+  "CART" : "Shopping list",
+  "edit_cart" : "Edit cart",
+  "shop" : "Shop",
+  "look_up_item" : "Look up item",
+  "price" : "Price: ",
+  "item" : "item: ",
+  "total" : "total: ",
+
+  "SCANNER" : "Scanner",
+  "scan_receipt": "Scan receipt",
+  "browse": "Browse",
+  "upload": "Upload",
+  "no_file_selected": "No file selected",
+
+  "LOG" : "Logging",
+  "choose_tier" : "Choose tier",
+  "turn_off_logger" : "Turn off logger",
+  "save_settings" : "Save settings",
+
+  "REGISTRER" : "Register",
+  "email" : "email adress",
+  "username" : "username",
+  "password" : "password",
+
+  "SIGN_IN" : "Sign in",
+  "signed_in" : "Signed in"
+}

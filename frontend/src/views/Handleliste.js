@@ -40,6 +40,7 @@ import {
 
 } from "reactstrap";
 import jsonwebtoken from "jsonwebtoken";
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -97,6 +98,7 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
   redigering, prisliste, setPrisliste, 
   props}) {
 
+  const { t, i18n } = useTranslation();
 
   // VISER VARER I VARELISTE BASERT PÅ FILTER (SØKETREFF)
   const filtrertVareliste = vareListe.filter(v => {
@@ -128,16 +130,16 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
           <td> 
             <Button 
               style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
-              >{'Pris : '+(parseFloat(prisliste[vare])).toFixed(2)},-
+              >{t('price') + (parseFloat(prisliste[vare])).toFixed(2)},-
             </Button>        
             <Button
               style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
               >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                  'Vare : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 'Vare : ' +(0).toFixed(2)},-
+                t('item') + (parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : t('item') +(0).toFixed(2)},-
             </Button>
             <Button
               style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
-              >{'Total : '+grandTotal.toFixed(2)},-
+              >{t('total') + grandTotal.toFixed(2)},-
             </Button>
           </td>         
           {LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste)}
@@ -152,16 +154,16 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
         <td>         
           <Button 
             style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
-            >{'Pris : '+(parseFloat(prisliste[vare])).toFixed(2)},-
+            >{t('price')+(parseFloat(prisliste[vare])).toFixed(2)},-
           </Button>        
           <Button
             style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
             >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                'Vare : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 'Vare : ' +(0).toFixed(2)},-
+              t('item') + (parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : t('item') +(0).toFixed(2)},-
           </Button>
           <Button
             style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
-            >{'Total : '+grandTotal.toFixed(2)},-
+            >{t('total') + grandTotal.toFixed(2)},-
           </Button>
         </td>    
         <td>
@@ -282,6 +284,7 @@ function Handleliste(props, vare) {
     const [finnPris, setFinnPris] = useState([])
     const [finnButikk, setFinnButikk] = useState("Meny");
     const [finnDato, setFinnDato] = useState("2022-01-23");
+    const { t, i18n } = useTranslation();
     
 
     useEffect(() => {
@@ -301,13 +304,13 @@ function Handleliste(props, vare) {
             <Card>
               <CardHeader>
               <Card>
-                <CardTitle tag="h4" className="text-center">Rediger handleliste</CardTitle>
+                <CardTitle tag="h4" className="text-center">{t('edit_cart')}</CardTitle>
                   <Row className="justify-content-center">
                     <Button 
                       onClick={() =>setRedigering(false)}         
                       color="success" 
                       size="sm">
-                        Handle
+                        {t('shop')}
                     </Button>
                  </Row>
                  <Row className="justify-content-center">
@@ -340,7 +343,7 @@ function Handleliste(props, vare) {
                   </Row>
                 </Card>
                   <InputGroup className="no-border">
-                    <Input placeholder="Søk opp vare" id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
+                    <Input placeholder={t("look_up_item")} id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
                     <InputGroupAddon addonType="append">
                       <InputGroupText>
                         <i className="nc-icon nc-zoom-split" />

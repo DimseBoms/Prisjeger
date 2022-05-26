@@ -1,6 +1,35 @@
 {
-    "title": "Scan kvittering",
-    "language": "Language",
-    "welcome_message": "Welcome",
-    "days_since_release": " "
-  }
+  "DASHBOARD" : "Hjem",
+
+  "PRICE_CHART" : "Pristabell",
+  "filter" : "Filter",
+  "average" : "Gjennomsnitt",
+
+  "CART" : "Handleliste",
+  "edit_cart" : "Rediger handleliste",
+  "shop" : "handle",
+  "look_up_item" : "Søk etter vare",
+  "price" : "pris: ",
+  "item" : "vare: ",
+  "total" : "total: ",
+
+  "SCANNER" : "Scanner",
+  "scan_receipt": "Scan kvittering",
+  "browse": "Bla gjennom",
+  "upload": "Last opp",
+  "no_file_selected": "Ingen fil valgt",
+
+  "LOG" : "Loggføring",
+  "choose_tier" : "Velg nivå",
+  "turn_off_logger" : "Skru av logger",
+  "save_settings" : "lagre innstillinger",
+
+  "REGISTRER" : "Register",
+  "email" : "Epostadresse",
+  "username" : "Brukernavn",
+  "password" : "Passord",
+
+  "SIGN_IN" : "Logg inn",
+  "signed_in" : "Innlogget"
+
+}
