@@ -30,11 +30,10 @@ import Loggføring from "views/Loggføring";
 import Register from "views/Register";
 import Login from "views/Login";
 
-
 var routes = [
   {
     path: "/dashboard",
-    name: "Name_in_routes.js?",
+    name: "Dashboard",
     icon: "nc-icon nc-bank",
     component: Dashboard,
     layout: "/admin",
