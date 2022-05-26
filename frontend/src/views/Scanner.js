@@ -104,7 +104,7 @@ function Scanner() {
           <div className="pin-box">
             <p> {text} </p>
           </div>
-          <CustomInput type="file" label= {t('browse')} onChange={handleChange} />
+          <CustomInput id="browseButton" type="file" label= {t('browse')} onChange={handleChange} />
           <Button onClick={handleClick} style={{height:50}}>{t('upload')}</Button>
         </CardBody>
       </main>

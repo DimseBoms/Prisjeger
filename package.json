@@ -1,8 +1,6 @@
 {
   "dependencies": {
-    "concurrently": "^7.1.0",
-    "i18next-browser-languagedetector": "^6.1.4",
-    "i18next-http-backend": "^1.4.0"
+    "concurrently": "^7.1.0"
   },
   "scripts": {
     "start": "npm i && concurrently \"npm i --prefix ./backend && npm start --prefix ./backend\" \"npm i --prefix ./frontend && npm start --prefix ./frontend\""

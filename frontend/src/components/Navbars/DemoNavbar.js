@@ -35,8 +35,23 @@ import {
   InputGroupAddon,
   Input,
 } from "reactstrap";
+import i18next from "i18next";
+import { changeLanguage } from "i18next";
 
 import routes from "routes.js";
+
+const languages = [
+  {
+    code: 'nb-NO',
+    name: 'Norsk',
+    country_code: 'no'
+  },
+  {
+    code: 'en',
+    name: 'English',
+    country_code: 'en'
+  }
+]
 
 function Header(props) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -136,9 +151,9 @@ function Header(props) {
               <DropdownToggle caret nav>
                 <i className="nc-icon nc-world-2" />
               </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem tag="a">Norsk</DropdownItem>
-                <DropdownItem tag="a">English</DropdownItem>
+              <DropdownMenu right>{languages.map(({code, name, country_code}) => (
+                <DropdownItem tag="a" onClick={() => i18next.changeLanguage(code)}>{name}</DropdownItem>
+              ))}
               </DropdownMenu>
             </Dropdown>
           </Nav>
