@@ -36,24 +36,21 @@ import {
   Input,
 } from "reactstrap";
 import i18next from "i18next";
-import { changeLanguage } from "i18next";
-
 import routes from "routes.js";
+import { useState } from "react/cjs/react.production.min";
 
-const languages = [
-  {
-    code: 'nb-NO',
-    name: 'Norsk',
-    country_code: 'no'
-  },
-  {
-    code: 'en',
-    name: 'English',
-    country_code: 'en'
-  }
-]
+import languages from "../../assets/available_languages";
+
+function LagSpråkJSX(props) {
+  return (
+    languages.map(({code, name, country_code}) => (
+      <DropdownItem key={code} tag="a" onClick={() => i18next.changeLanguage(code)}>{name}</DropdownItem>
+    ))
+  )
+}
 
 function Header(props) {
+  const [språk, setSpråk] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
@@ -151,9 +148,8 @@ function Header(props) {
               <DropdownToggle caret nav>
                 <i className="nc-icon nc-world-2" />
               </DropdownToggle>
-              <DropdownMenu right>{languages.map(({code, name, country_code}) => (
-                <DropdownItem tag="a" onClick={() => i18next.changeLanguage(code)}>{name}</DropdownItem>
-              ))}
+              <DropdownMenu right>
+                <LagSpråkJSX språk={språk} setSpråk={setSpråk}></LagSpråkJSX>
               </DropdownMenu>
             </Dropdown>
           </Nav>

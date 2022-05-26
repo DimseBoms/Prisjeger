@@ -22,9 +22,12 @@ i18n
   .init({
     fallbackLng: 'en',
     debug: true,
-
-    
+    react: {
+      wait: true,
+      useSuspense: false
+   }
   });
+  
 
 
 export default i18n;

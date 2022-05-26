@@ -1,0 +1,1 @@
+./frontend/src/assets/available_languages.js
