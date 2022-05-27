@@ -46,8 +46,6 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-import { Select } from 'react-select';
-
 // core components
 import BackendApi from "../axios/backendApi";
 
@@ -88,7 +86,11 @@ function Liste(props) {
   if (props.grafLaget !== true) {
     return <></>
   } else if (props.loading == true) {
-    return <>Loading...</>
+    return (
+      <Card className="card-tabell">
+        <CardBody><h2>Loading...</h2></CardBody>
+      </Card>
+    )
   } else if (props.loading == false) {
     return (
       <Card className="card-tabell">
@@ -301,10 +303,9 @@ function Dashboard() {
       <>
         {filtrertVareliste.map((vare, index) => (
             <DropdownItem key={index} onClick={(e) => {
-              console.log(e.target.value);
               setLoading(true);
               setGrafLaget(true); 
-              setVareNavn(e.target.value)}}>
+              setVareNavn(e.target.innerText)}}>
                 {vare}
             </DropdownItem>
         ))}
@@ -318,43 +319,20 @@ function Dashboard() {
       <div className="content">
         <Row>
           <Col md = {11}>
-          <Card>
+          <Card className="card-tabell">
               <CardHeader>
-                <CardTitle tag="h4">Pristabell</CardTitle>
+                <CardTitle tag="h4">Prissammenligning</CardTitle>
+                <>{vareNavn}</>
               </CardHeader>
               <CardBody>
                 <UncontrolledDropdown style={{padding: "0px"}}>
                   <DropdownToggle style={{padding: "0px"}}>
                     <Input placeholder="Søk vare..." id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
                   </DropdownToggle>
-                  <DropdownMenu style={{ maxHeight: "200px", overflow:"scroll"}}>
+                  <DropdownMenu style={{ maxHeight: "300px", overflow:"scroll"}}>
                       <FiltrertVareliste vareListe={vareListe} vareFilter={varefilter} />
                   </DropdownMenu>
                 </UncontrolledDropdown>
-              </CardBody>
-            </Card>
-            <Card className="card-tabell">
-              <CardHeader>
-                <LoadingScreen/>
-                <CardTitle tag="h5">Pris Sammenligning</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <div className="card-stats">
-                  <form className="hor-card-form">
-                  <>Fish and Crips, Findus, 480 gram |||| Kims Mexican Fiesta, 200 gram</>
-                    <InputGroup className="sok-vare">
-                      <Input placeholder="Søk vare..." type="text" id="inputSøkVare"/>
-                        <InputGroupAddon addonType="append">
-                          <InputGroupText>
-                            <i className="nc-icon nc-zoom-split" id="inputclick" onClick={() => {
-                              setLoading(true);
-                              setGrafLaget(true); 
-                              setVareNavn(document.getElementById("inputSøkVare").value)}}/> 
-                        </InputGroupText>
-                      </InputGroupAddon> 
-                    </InputGroup>          
-                  </form>
-                </div>  
               </CardBody>
             </Card>
             <Liste grafLaget = {grafLaget} 
