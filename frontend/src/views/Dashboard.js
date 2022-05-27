@@ -50,6 +50,29 @@ import {
   options
 } from "../variables/sampledata"
 
+function FiltrertVareliste({vareListe, vareFilter, setLoading, setGrafLaget, setVareNavn}) {
+  const filtrertVareliste = vareListe.filter(v => {
+    return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
+  })
+  return (
+    <>
+      {filtrertVareliste.map((vare, index) => (
+        <tr key={index}>
+          <td>
+            <Button onClick={(e) => {
+                              console.log(e.target.value);
+                              setLoading(true);
+                              setGrafLaget(true); 
+                              setVareNavn(e.target.value)}}>
+              {vare}
+            </Button>
+          </td>
+        </tr> 
+      ))}
+    </>
+  )
+}
+
 //Lager graf
 function Graf(props) {
   return props.grafLaget !== true ? (
@@ -105,11 +128,10 @@ function Liste(props) {
 
 function ListeTR(butikkNR, props) {
   //For å fargelegge listeradene om de er lavest pris
-  let [lavestePris, setLavestePris] = useState(10);
+  let [lavestePris, setLavestePris] = useState(999);
 
-  for (let i = 0; props.antallButikker > i; i++) {
-    let iPris = 0;
-    console.log("ListeTR() aktiveres!");
+  for (let i = 0; 6 > i; i++) {
+    let iPris;
     switch (i) {
       case 0: iPris = props.vare[0].priser['Kiwi']; break;
       case 1: iPris = props.vare[0].priser['Meny']; break;
@@ -121,6 +143,7 @@ function ListeTR(butikkNR, props) {
     if (iPris < lavestePris) {
       setLavestePris(iPris);
     }
+    console.log(lavestePris);
   }
 
   switch (butikkNR) {
@@ -228,7 +251,6 @@ function ListeTR(butikkNR, props) {
           <tr>
             <td>{props.butikkListe[5]}</td>
             <td>{props.vare[0].priser['Coop Extra']} kr</td>
-            <td>{lavestePris}</td>
           </tr>
         ) 
       }
@@ -248,12 +270,13 @@ function Dashboard() {
   //Lager HMTL med chart
   let [grafLaget, setGrafLaget] = useState(false);
   let [loading, setLoading] = useState(false);
-  const antallButikker = 6;
   const [vareNavn, setVareNavn] = useState("");
   const [chart, setChart] = useState([]);
-  const [fradato, setFradato] = useState("2021-12-12");
   const [vare, setVare] = useState([]);
   const [butikkListe, setButikkListe] = useState([]);
+  const [vareListe, setVareListe] = useState([]);
+  const [varefilter, setVarefilter] = useState("");
+  const [butikkliste, setButikkliste] = useState([]);
 
   useEffect(() => {
     //Hvis at vare har ikke blitt søkt opp, så lag blank
@@ -279,6 +302,9 @@ function Dashboard() {
         options: options,
       });
     } 
+    BackendApi.getVareliste().then((response) => {
+      setVareListe(response.data)
+    })
   }, [grafLaget, loading]);
 
   //Dashboard return
@@ -287,6 +313,32 @@ function Dashboard() {
       <div className="content">
         <Row>
           <Col md = {11}>
+          <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Pristabell</CardTitle>
+                  <InputGroup className="no-border">
+                    <Input placeholder="Filtrering" id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText>
+                        <i className="nc-icon nc-zoom-split" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+              </CardHeader>
+              <CardBody>
+                <Table responsive>
+                  <thead className="text-primary">
+                    <tr>
+                      <th>Vare</th>
+                      <th className="text-right">Gjennomsnitt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <FiltrertVareliste vareListe={vareListe} vareFilter={varefilter} />
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
             <Card className="card-tabell">
               <CardHeader>
                 <LoadingScreen/>
