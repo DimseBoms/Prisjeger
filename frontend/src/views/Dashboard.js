@@ -39,7 +39,14 @@ import {
   InputGroupAddon,
   InputGroupText,
   Table,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
 } from "reactstrap";
+
+import { Select } from 'react-select';
 
 // core components
 import BackendApi from "../axios/backendApi";
@@ -50,28 +57,6 @@ import {
   options
 } from "../variables/sampledata"
 
-function FiltrertVareliste({vareListe, vareFilter, setLoading, setGrafLaget, setVareNavn}) {
-  const filtrertVareliste = vareListe.filter(v => {
-    return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
-  })
-  return (
-    <>
-      {filtrertVareliste.map((vare, index) => (
-        <tr key={index}>
-          <td>
-            <Button onClick={(e) => {
-                              console.log(e.target.value);
-                              setLoading(true);
-                              setGrafLaget(true); 
-                              setVareNavn(e.target.value)}}>
-              {vare}
-            </Button>
-          </td>
-        </tr> 
-      ))}
-    </>
-  )
-}
 
 //Lager graf
 function Graf(props) {
@@ -307,6 +292,26 @@ function Dashboard() {
     })
   }, [grafLaget, loading]);
 
+  //Lager dropdown items når søker varer
+  function FiltrertVareliste({vareListe, vareFilter}) {
+    const filtrertVareliste = vareListe.filter(v => {
+      return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
+    })
+    return (
+      <>
+        {filtrertVareliste.map((vare, index) => (
+            <DropdownItem key={index} onClick={(e) => {
+              console.log(e.target.value);
+              setLoading(true);
+              setGrafLaget(true); 
+              setVareNavn(e.target.value)}}>
+                {vare}
+            </DropdownItem>
+        ))}
+      </>
+    )
+  }
+
   //Dashboard return
   return (
     <>
@@ -316,27 +321,16 @@ function Dashboard() {
           <Card>
               <CardHeader>
                 <CardTitle tag="h4">Pristabell</CardTitle>
-                  <InputGroup className="no-border">
-                    <Input placeholder="Filtrering" id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
-                    <InputGroupAddon addonType="append">
-                      <InputGroupText>
-                        <i className="nc-icon nc-zoom-split" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                  </InputGroup>
               </CardHeader>
               <CardBody>
-                <Table responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      <th>Vare</th>
-                      <th className="text-right">Gjennomsnitt</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <UncontrolledDropdown style={{padding: "0px"}}>
+                  <DropdownToggle style={{padding: "0px"}}>
+                    <Input placeholder="Søk vare..." id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
+                  </DropdownToggle>
+                  <DropdownMenu style={{ maxHeight: "200px", overflow:"scroll"}}>
                       <FiltrertVareliste vareListe={vareListe} vareFilter={varefilter} />
-                  </tbody>
-                </Table>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </CardBody>
             </Card>
             <Card className="card-tabell">
