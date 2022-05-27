@@ -21,6 +21,11 @@ git clean -fd
 git config pull.rebase true
 git pull
 
+# Gjenoppretter systemlenker
+echo -e "\nGjenoppretter systemlenker...\n"
+rm /home/pi/applikasjon/prisjeger/frontend/public/locales/available_languages.js
+ln -s /home/pi/applikasjon/prisjeger/frontend/src/assets/available_languages.js /home/pi/applikasjon/prisjeger/frontend/public/locales/available_languages.js
+
 # Fikser rettigheter
 echo -e "\nReparerer rettigheter...\n"
 sudo chown -R pi /home/pi/applikasjon/prisjeger
@@ -42,3 +47,4 @@ echo -e "\nStarter tjenester på nytt...\n"
 sudo systemctl daemon-reload
 sudo systemctl start prisjeger-backend.service
 sudo systemctl start prisjeger-frontend.service
+

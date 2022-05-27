@@ -1,1 +1,1 @@
-./frontend/src/assets/available_languages.js
+/home/pi/applikasjon/prisjeger/frontend/src/assets/available_languages.js

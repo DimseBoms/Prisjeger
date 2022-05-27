@@ -24,9 +24,8 @@
     "react-notification-alert": "0.0.13",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^4.0.3",
     "reactstrap": "8.9.0",
-    "serve": "^13.0.2",
     "tesseract.js": "^2.1.5"
   },
   "scripts": {

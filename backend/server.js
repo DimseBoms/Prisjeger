@@ -22,16 +22,19 @@ app.use(express.urlencoded({
     extended: true
   }));
 app.use(cors())
+app.use(cors({credentials: true}));
 /*
-Tilsynelatende så fungerer forespørsler uten Cors error dersom du ikke
-spesifiserer denne konfigurasjonen og bare etterlater den kommentert.
-Rart.
+process.env.CORS_URL = "http://prisjeger-app.duckdns.org:3000" dersom programmet kjøres
+på tjener og "http://localhost:3000" dersom programmet kjøres lokalt på egen maskin
 */
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// })
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", process.env.CORS_URL);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+})
 app.use('/api', prisdataruter)
 
 app.listen(port, () => console.log(`Backend server startet på port: ${port}`))
