@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import backendApi from "../axios/backendApi";
-import axios from '../axios/axiosInit';
+import axios from '../axios/axiosPostInit';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -33,22 +33,40 @@ import {
   
     }
   
-    async function loginSjekk(postObjekt) {
-      console.log("loginsjekker")
-      axios.post(`/login`, postObjekt).then(response => {
-        console.log(response.data.bruker)
-        if(response.data.melding === 'innlogget'){
-          localStorage.setItem('token', response.data.bruker)  
-        //  response.data.bruker
-          console.log(data)
-          alert('logget inn')
-          //window.location.href = '/dashboard'
-        }
-        else(alert('feil'))
-        return response;
-      });
-    } 
+//kilde for logikk for å sette og hente localstorage
+async function loginSjekk(postObjekt) {
+  backendApi.testcoookie()
 
+  console.log("loginsjekker")
+  axios.post(`/login`, postObjekt ).then(response => {
+
+    console.log(response)
+    if(response.data.melding === 'innlogget'){
+      console.log(response)
+      localStorage.setItem('token', response.data.bruker)  
+      backendApi.lagCookie(epost)
+   // document.cookie = 'bruker='+epost
+           //  response.data.bruker
+      alert('logget inn')
+      //window.location.href = '/dashboard'
+    }
+    else(alert('feil info'))
+  //  return response;
+  });
+} 
+
+async function logUt(event){
+  event.preventDefault();
+  console.log('lgoger ut')
+  if(localStorage.getItem('token')){
+ alert('logget ut')
+    localStorage.removeItem('token')  
+    backendApi.logut()
+}
+else{
+  alert('du er ikke logget inn')
+}
+}
 
     async function handleSubmit(event) {
       event.preventDefault();
@@ -111,7 +129,16 @@ import {
 
 
 
-  <button  type="submit" class="btn btn-primary">{t('SIGN_IN')}</button>
+
+  <button  onClick={handleSubmit} 
+  type="submit" class="btn btn-primary">{t('SIGN_IN')}
+  </button>
+  
+  <button             
+                      onClick={logUt} 
+                      className="btn btn-primary">
+                    {t('SIGN_OUT')}                 
+  </button>
   
 </form>
 </CardBody>

@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import prisdataruter from './ruter/ruter.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 // initialiserer express og henter nødvendige variabler fra .env
 dotenv.config()
@@ -17,6 +18,7 @@ db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Koblet til database'))
 
 // setter opp middleware og lovlige datatyper
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({
     extended: true

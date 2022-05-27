@@ -22,6 +22,7 @@
   "LOG" : "Loggføring",
   "choose_tier" : "Velg nivå",
   "turn_off_logger" : "Skru av logger",
+  "turn_on_logger": "Skru på logger",
   "save_settings" : "lagre innstillinger",
 
   "REGISTRER" : "Register",
@@ -30,6 +31,7 @@
   "password" : "Passord",
 
   "SIGN_IN" : "Logg inn",
+  "SIGN_OUT": "Logg ut",
   "signed_in" : "Innlogget"
 
 }

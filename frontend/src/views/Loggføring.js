@@ -30,7 +30,7 @@ function Loggføring() {
 
 const { t, i18n } = useTranslation();
 const [nivå, setnivå] = useState("velg Log-nivå")
-const  [logStatus, setStatus] = useState(true)
+const  [logStatus, setStatus] = useState(false)
 const [statusTxt, setStatusTxt] = useState(['skru av ', 'skru på']);
 const nivåer = ['info','error', 'warn', 'verbose', 'silly' ];
 
@@ -47,8 +47,16 @@ catch(err){
 }
 }
 
-function handleClick(){
-
+async function handleClick(){
+  console.log('håndterer klikk')
+if (logStatus === false ){
+  setStatus(true)
+console.log(logStatus)
+}
+else {
+  setStatus(false) 
+  console.log(logStatus)
+}
 }
 
 
@@ -75,12 +83,19 @@ return (
 </Row>
 <Row className="justify-content-center">
 
+            <Button
+                onClick={() =>setStatus(true)} 
+                color="danger" 
+                size="sm">
+                  {t('turn_off_logger')}
+           </Button>
+
                    <Button 
                       value={statusTxt}
                       onClick={() =>setStatus(false)} 
                       color="success" 
                       size="sm">
-                        {t('turn_off_logger')}
+                        {t('turn_on_logger')}
                     </Button>
                  </Row>
 </Card>

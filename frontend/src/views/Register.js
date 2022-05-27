@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import BackendApi from "../axios/backendApi";
+import axios from '../axios/axiosPostInit'
 import jwt from 'jsonwebtoken'
 import { useTranslation } from 'react-i18next';
 import {
@@ -24,11 +25,18 @@ import {
     const { t, i18n } = useTranslation();
     const history = useHistory()
 
+    BackendApi.testcoookie()
 
      const [epost, setEpost] = useState("");
      const [brukerNavn, setBruker] = useState("");
      const [passord, setPassord] = useState("");
     
+     async function  postReg(postObjekt) {
+      console.log("Startet postTest()")
+      axios.post(`/testpost`, postObjekt).then(response => {
+          console.log(response)
+      });
+    } 
   
   async function handleSubmit(event) {
         event.preventDefault();
@@ -40,11 +48,11 @@ import {
       epost: epost,
       passord: passord
     }
-          BackendApi.postTest(bruker);
+    postReg(bruker);
  
         }
         else{
-          console.log('feil i input')
+          alert('feil i input')
         }
 
 

@@ -22,6 +22,7 @@
   "LOG" : "Logging",
   "choose_tier" : "Choose tier",
   "turn_off_logger" : "Turn off logger",
+  "turn_on_logger": "Turn on logger",
   "save_settings" : "Save settings",
 
   "REGISTRER" : "Register",
@@ -30,5 +31,6 @@
   "password" : "password",
 
   "SIGN_IN" : "Sign in",
+  "SIGN_OUT": "Sign out",
   "signed_in" : "Signed in"
 }

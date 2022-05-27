@@ -1,7 +1,9 @@
 import http from "./axiosInit";
+import httpPost from "./axiosPostInit";
+
 
 class BackendApi {
-  
+    /* PRISDATA METODER */
     // returnerer all prishistorikk
     getAll() {
       return http.get('/historikk');
@@ -43,6 +45,11 @@ class BackendApi {
     getButikkFraTil(butikk, fradato, tildato) {
       return http.get(`/butikk/${butikk}/${fradato}/${tildato}`)
     }
+
+    /* ANDRE METODER */
+    logut() {
+      return http.get(`/logUt`)
+    }
     getLogStatus(lvl, status){
       return http.get(`/logger/${lvl}/${status}`)
     }
@@ -54,10 +61,24 @@ class BackendApi {
     }
     postTest(postObjekt) {
       console.log("Startet postTest()")
-      http.post(`/testpost`, postObjekt).then(response => {
+      httpPost.post(`/testpost`, postObjekt).then(response => {
           console.log(response)
       });
-    } 
+    }
+    oppdaterHandleListe(postObjekt){
+      httpPost.post(`/handleListe`, postObjekt).then(response => {
+        console.log(response)
+      })
+    }
+    testcoookie() {
+      return http.get(`/cTest`);
+    }
+    lagCookie(epost) {
+      return http.get(`/lagCTest/${epost}`);
+    }
+    hentLogg(){
+      return http.get(`/hentLogg`); 
+    }
 
   async loginSjekk(postObjekt) {
       console.log("loginsjekker")
