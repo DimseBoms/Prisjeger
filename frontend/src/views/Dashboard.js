@@ -19,7 +19,7 @@
 import React, { useEffect, useState, useMemo, useLayoutEffect } from "react";
 // react plugin used to create charts
 import {
-  Line,
+  Bar,
   } from "react-chartjs-2";
 
 import { useContext } from "react/cjs/react.production.min";
@@ -61,17 +61,17 @@ function Graf(props) {
   return props.grafLaget !== true ? (
     <></>
   ) : (
-    <Card className="card-chart">
+    <Card className="card-tabell">
       <CardHeader>
         <CardTitle tag="h5">Prishistorikk</CardTitle>
       </CardHeader>
       <CardBody>
         <div className="chart-line-standard">
-          <Line
+          <Bar
             data={props.chart.data}
-            options={props.chart.option}
-            width={800}
-            height={300} 
+            options={props.chart.options}
+            width={700}
+            height={400} 
           />
         </div>
         <div className="chart-line-potrait">
@@ -97,7 +97,7 @@ function Liste(props) {
         <CardHeader><h6>{props.vareNavn}</h6></CardHeader>
         <CardBody>
           <>Den siste oppdateringen: {props.vare[0].dato} (År-Måned-Dag)</>
-          <Table striped bordered hover size="sm">
+          <Table bordered hover size="sm" style={{backgroundColor: "unset"}}>
             <tbody>
               {ListeTR(0, props)}
               {ListeTR(1, props)}
@@ -130,7 +130,6 @@ function ListeTR(butikkNR, props) {
     if (iPris < lavestePris) {
       setLavestePris(iPris);
     }
-    console.log(lavestePris);
   }
 
   switch (butikkNR) {
@@ -172,7 +171,7 @@ function ListeTR(butikkNR, props) {
     }
     //Coop Ops
     case 2: {
-      if (props.vare[0].priser['Coop Ops'] <= lavestePris) {
+      if (props.vare[0].priser['Coop Obs'] <= lavestePris) {
         return (
           <tr>
             <td bgcolor="lightgreen">{props.butikkListe[2]}</td>
@@ -257,24 +256,33 @@ function Dashboard() {
   //Lager HMTL med chart
   let [grafLaget, setGrafLaget] = useState(false);
   let [loading, setLoading] = useState(false);
+  const [nyDatasets, setNyDatasets] = useState([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
   const [vareNavn, setVareNavn] = useState("");
   const [chart, setChart] = useState([]);
   const [vare, setVare] = useState([]);
   const [butikkListe, setButikkListe] = useState([]);
   const [vareListe, setVareListe] = useState([]);
   const [varefilter, setVarefilter] = useState("");
-  const [butikkliste, setButikkliste] = useState([]);
 
   useEffect(() => {
     //Hvis at vare har ikke blitt søkt opp, så lag blank
     if (grafLaget) {
       BackendApi.getVare(vareNavn).then(response => {
         setVare(response.data);
+        for (let i = 0; i < 6; i++) {
+          switch (i) {
+            case 0: datasets[0].data[i] = response.data[0].priser['Kiwi']; break;
+            case 1: datasets[0].data[i] = response.data[0].priser['Meny']; break;
+            case 2: datasets[0].data[i] = response.data[0].priser['Coop Obs']; break;
+            case 3: datasets[0].data[i] = response.data[0].priser['Rema 1000']; break;
+            case 4: datasets[0].data[i] = response.data[0].priser['Spar']; break;
+            case 5: datasets[0].data[i] = response.data[0].priser['Coop Extra']; break;
+          }
+        }
         setLoading(false); 
       });  
       BackendApi.getButikkliste().then((response) => {
         for (let i = 0; i < 6; i++) {
-          datasets[i].label = response.data[i];
           setButikkListe(response.data);
         }
       });
