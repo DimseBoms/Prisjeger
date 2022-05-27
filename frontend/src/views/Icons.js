@@ -17,11 +17,19 @@
 
 */
 import React from "react";
+import backendApi from '../axios/backendApi';
 
 // reactstrap components
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
+import { JsonWebTokenError } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 
 function Icons() {
+  backendApi.hentLogg()
+ // backendApi.oppdaterHandleListe(objekt)
+ //const bruker = jsonwebtoken.decode(localStorage.getItem('token'));
+ //backendApi.lagCookie(bruker.epost);
+ // backendApi.testcoookie();
   return (
     <>
       <div className="content">

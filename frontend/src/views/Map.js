@@ -176,7 +176,7 @@ const MapWrapper = () => {
     });
 
     const contentString =
-      '<div class="info-window-content"><h2>Paper Dashboard React</h2>' +
+      '<div className="info-window-content"><h2>Paper Dashboard React</h2>' +
       "<p>A free Admin for React, Reactstrap, and React Hooks.</p></div>";
 
     const infowindow = new google.maps.InfoWindow({
@@ -197,19 +197,25 @@ const MapWrapper = () => {
 function Map() {
   return (
     <>
-      <div className="content">
+      <div className="content" >
         <Row>
-          <Col md="12">
-            <Card>
+          <Col>
+              <Card style={{width:500, height: 1000}}>
               <CardHeader>Google Maps</CardHeader>
-              <CardBody>
-                <div
-                  id="map"
-                  className="map"
-                  style={{ position: "relative", overflow: "hidden" }}
-                >
-                  <MapWrapper />
-                </div>
+              <CardBody >
+              <label htmlFor="exampleInputEmail1" class="form-label" >Email address</label>
+               <input type="textarea" 
+style = {{
+  maxHeight:"100px",
+  minHeight:'500px',
+    resize:'none',
+    padding:'9px',
+    boxSizing:'border-box',
+    fontSize:'15px'}}
+                   className="form-control" 
+              size="lg"
+              id="input">
+              </input>
               </CardBody>
             </Card>
           </Col>

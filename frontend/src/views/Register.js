@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
-import BackendApi from "../axios/backendApi";
+import backendApi from "../axios/backendApi";
 import jwt from 'jsonwebtoken'
+import axios from '../axios/axiosInit'
 import {
     Button,
     Card,
@@ -22,13 +23,21 @@ import {
    
    
     const history = useHistory()
+    
 
+    backendApi.testcoookie()
 
      const [epost, setEpost] = useState("");
      const [brukerNavn, setBruker] = useState("");
      const [passord, setPassord] = useState("");
     
-  
+  async function  postReg(postObjekt) {
+      console.log("Startet postTest()")
+      axios.post(`/testpost`, postObjekt).then(response => {
+          console.log(response)
+      });
+    } 
+
   async function handleSubmit(event) {
         event.preventDefault();
 
@@ -39,11 +48,11 @@ import {
       epost: epost,
       passord: passord
     }
-          BackendApi.postTest(bruker);
+          postReg(bruker);
  
         }
         else{
-          console.log('feil i input')
+          alert('feil i input')
         }
 
 
@@ -69,27 +78,27 @@ catch(err){
         <CardBody>
       <form onSubmit={handleSubmit}> 
  
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
+  <div className="mb-3">
+    <label htmlFor="exampleInputEmail1" class="form-label">Email address</label>
     <input type="text"
         value={epost}
         onChange={(e) => setEpost(e.target.value)}
-    class="form-control" 
+    className="form-control" 
     id="inputEmail"    
   aria-describedby="emailHelp"></input>
   </div>
  
-  <div class="mb-3">
-    <label for="eksempel" class="form-label">Brukernavn</label>
+  <div className="mb-3">
+    <label htmlFor="eksempel" class="form-label">Brukernavn</label>
     <input type="epost" 
     value={brukerNavn}
     onChange={(e) => setBruker(e.target.value)}
-    class="form-control" 
+    className="form-control" 
     id="inputBruker"></input>
   </div>
 
-  <div class="mb-3">
-    <label for="exampleInputPassword" class="form-label">Password</label>
+  <div className="mb-3">
+    <label htmlFor="exampleInputPassword" class="form-label">Password</label>
     <input type="password" 
     value={passord}
  onChange={(e) => setPassord(e.target.value)}

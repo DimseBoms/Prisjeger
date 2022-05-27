@@ -21,15 +21,16 @@ import {
   DropdownToggle, 
   DropdownMenu, 
   DropdownItem,
-  Label
+  Label,
+  Fade
 } from "reactstrap";
 import backendApi from "../axios/backendApi";
+import { convertToObject, factory } from "typescript";
 
 function Loggføring() {
 
 const [nivå, setnivå] = useState("velg Log-nivå")
-const  [logStatus, setStatus] = useState(true)
-const [statusTxt, setStatusTxt] = useState(['skru av ', 'skru på']);
+const  [logStatus, setStatus] = useState(false)
 const nivåer = ['info','error', 'warn', 'verbose', 'silly' ];
 
 
@@ -45,16 +46,24 @@ catch(err){
 }
 }
 
-function handleClick(){
 
+async function handleClick(){
+  console.log('håndterer klikk')
+if (logStatus === false ){
+  setStatus(true)
+console.log(logStatus)
+}
+else {
+  setStatus(false) 
+  console.log(logStatus)
+}
 }
 
 
 return (
     <div className="content">
-<Card>
 
-</Card>
+
 
     <Card>
 
@@ -73,13 +82,22 @@ return (
 </Row>
 <Row className="justify-content-center">
 
-                   <Button 
-                      value={statusTxt}
+                   <Button
+                      onClick={() =>setStatus(true)} 
+                      color="danger" 
+                      size="sm">
+                        Skru av logger
+                  
+           </Button>
+           
+           <Button
                       onClick={() =>setStatus(false)} 
                       color="success" 
                       size="sm">
-                        Skru av logger
-                    </Button>
+                        Skru på logger
+                  
+           </Button>
+   
                  </Row>
 </Card>
 <Card> 
@@ -88,7 +106,7 @@ return (
 </Row>
 </Card>
 </div>
-)
+) 
 
 
 }

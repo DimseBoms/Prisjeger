@@ -1,5 +1,5 @@
 import http from "./axiosInit";
-
+import httpPost from "./axiosPostInit";
 class BackendApi {
     // returnerer all prishistorikk
     getAll() {
@@ -16,6 +16,9 @@ class BackendApi {
     // henter handlelister for en epost/bruker
     getHandlelister(epost) {
       return http.get(`/handlelister/${epost}`)
+    }
+    logut() {
+      return http.get(`/logUt`)
     }
     // Metode for å vise all prisdata for en vare
     getVare(vare) {
@@ -47,31 +50,35 @@ class BackendApi {
     }
     postRegistrer(postObjekt) {
       console.log("Startet registrering")
-      http.post(`/test`, postObjekt).then(response => {
+      httpPost.post(`/test`, postObjekt).then(response => {
           console.log(response)
       });
     }
     postTest(postObjekt) {
       console.log("Startet postTest()")
-      http.post(`/testpost`, postObjekt).then(response => {
+      http.post(`/postReg`, postObjekt).then(response => {
           console.log(response)
       });
     } 
 
-  async loginSjekk(postObjekt) {
-      console.log("loginsjekker")
-      http.post(`/login`, postObjekt).then(response => {
-        console.log(response.data.bruker)
-        if(response.data.melding === 'innlogget'){
-          localStorage.setItem('token', response.data.bruker)  
-          //window.location.href = '/dashboard'
-        }
-        return response;
-      });
-    } 
+     oppdaterHandleListe(postObjekt){
+    httpPost.post(`/handleListe`, postObjekt).then(response => {
+      console.log(response)
+    })
+   }   
 
-
+ testcoookie() {
+    return http.get(`/cTest`);
   }
+  lagCookie(epost) {
+    return http.get(`/lagCTest/${epost}`);
+  }
+  hentLogg(){
+    return http.get(`/hentLogg`); 
+  }
+
   
+}
+ 
 
   export default new BackendApi

@@ -209,9 +209,7 @@ function User() {
                 <CardTitle tag="h5">Edit Profile</CardTitle>
               </CardHeader>
               <CardBody>
-                <Form onSubmit={
-                  backendApi.postTest({testpost: "Dette er et forsøk på å sende med parameter"})
-                }>
+                <Form>
                   <Row>
                     <Col className="pr-1" md="5">
                       <FormGroup>

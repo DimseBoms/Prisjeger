@@ -16,8 +16,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import backendApi from '../axios/backendApi';
 import jwt from 'jsonwebtoken'
 import React from "react";
+import axios from '../axios/axiosInit'
 // react plugin used to create charts
 import { Line, Pie } from "react-chartjs-2";
 import { useEffect } from 'react/cjs/react.production.min';
@@ -39,18 +41,28 @@ import {
 } from "variables/charts.js";
 
 
-
-
 function Dashboard() {
   
   
+   /* 
   const brukerInfo = localStorage.getItem('token')
       if(brukerInfo){
         const brukerMail = jwt.decode(brukerInfo)
         console.log(brukerMail)
-      }
-    
-    
+           oppdater(brukerMail.epost)
+   }
+  
+
+    async function oppdater(Object){
+      const vareinfo =  'Kokt skinke Gilde, 110'
+      const updateinfo = {epost: Object, vare : vareinfo}
+      console.log(updateinfo)
+    //  backendApi.oppdaterHandleListe(updateinfo)
+      axios.post(`/handleListe`, updateinfo).then(response => {
+        console.log(response)
+      })
+    }
+    */
   return (
     <>
       <div className="content">
