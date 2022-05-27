@@ -548,3 +548,36 @@
       }
     }
 }
+
+//For å passe at chart er bare synlig når det er landskap
+@media screen and (orientation:portrait) {
+  .chart-line-standard {
+    display: none;
+  }
+  .chart-line-potrait {
+    display: flex;
+  }
+  .sok-vare {
+    padding-right: 0%;
+  }
+  .card-tabell {
+    padding-right: 0%;
+  }
+ }
+
+@media screen and (orientation:landscape) {
+  .chart-line-standard {
+    display: flex;
+  }
+  .chart-line-potrait {
+    display: none;
+  }
+  .sok-vare {
+    padding-right: 70%;
+  }
+  .card-tabell {
+    padding-right: 0%;
+    margin-right: 50%;
+  }
+ }
+
