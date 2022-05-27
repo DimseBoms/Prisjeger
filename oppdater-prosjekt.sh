@@ -31,7 +31,7 @@ echo -e "\nReparerer rettigheter...\n"
 sudo chown -R pi /home/pi/applikasjon/prisjeger
 
 # Bygger React prosjekt om igjen
-echo -e "\nForsøker å bygge prosjekt...\n"
+echo -e "\nSjekker avhengigheter...\n"
 nvm use 16.15.0
 cd /home/pi/applikasjon/prisjeger
 npm i
@@ -40,11 +40,10 @@ npm i
 nvm use system
 cd /home/pi/applikasjon/prisjeger/frontend
 npm i
-npm run build
+#npm run build
 
 # Starter tjenester på nytt
 echo -e "\nStarter tjenester på nytt...\n"
 sudo systemctl daemon-reload
 sudo systemctl start prisjeger-backend.service
 sudo systemctl start prisjeger-frontend.service
-
