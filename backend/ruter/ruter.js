@@ -349,6 +349,7 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
         }
         else{
             let dbSvar = response.handlelister
+            dbSvar = dbSvar.filter(value => JSON.stringify(value) !== '{}');
             let harSendt = false
             dbSvar.forEach(handleliste => {
                 if (Object.keys(handleliste) == req.params.tittel) {
