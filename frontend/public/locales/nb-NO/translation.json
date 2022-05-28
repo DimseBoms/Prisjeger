@@ -1,5 +1,9 @@
 {
   "DASHBOARD" : "Hjem",
+  "price_comparison" : "Prissammenligning",
+  "last_update_lbl" : "Den siste oppdateringen er fra : ",
+  "date_format" : "(År-måned-dag)",
+  "landscape_lbl" : "Vennligst bytt til landskap for å se graf",
 
   "PRICE_CHART" : "Pristabell",
   "filter" : "Filter",

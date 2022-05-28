@@ -19,10 +19,11 @@
 import React, { useEffect, useState, useMemo, useLayoutEffect } from "react";
 // react plugin used to create charts
 import {
-  Line,
+  Bar,
   } from "react-chartjs-2";
 
 import { useContext } from "react/cjs/react.production.min";
+import { useTranslation } from 'react-i18next';
 
 // reactstrap components
 import {
@@ -39,6 +40,11 @@ import {
   InputGroupAddon,
   InputGroupText,
   Table,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
 } from "reactstrap";
 
 // core components
@@ -50,45 +56,20 @@ import {
   options
 } from "../variables/sampledata"
 
-function FiltrertVareliste({vareListe, vareFilter, setLoading, setGrafLaget, setVareNavn}) {
-  const filtrertVareliste = vareListe.filter(v => {
-    return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
-  })
-  return (
-    <>
-      {filtrertVareliste.map((vare, index) => (
-        <tr key={index}>
-          <td>
-            <Button onClick={(e) => {
-                              console.log(e.target.value);
-                              setLoading(true);
-                              setGrafLaget(true); 
-                              setVareNavn(e.target.value)}}>
-              {vare}
-            </Button>
-          </td>
-        </tr> 
-      ))}
-    </>
-  )
-}
 
 //Lager graf
 function Graf(props) {
   return props.grafLaget !== true ? (
     <></>
   ) : (
-    <Card className="card-chart">
-      <CardHeader>
-        <CardTitle tag="h5">Prishistorikk</CardTitle>
-      </CardHeader>
+    <Card className="card-graf">
       <CardBody>
         <div className="chart-line-standard">
-          <Line
+          <Bar
             data={props.chart.data}
-            options={props.chart.option}
-            width={800}
-            height={300} 
+            options={props.chart.options}
+            width={700}
+            height={400} 
           />
         </div>
         <div className="chart-line-potrait">
@@ -100,24 +81,29 @@ function Graf(props) {
 }
 
 function Liste(props) {
+  const {t} = useTranslation();
   if (props.grafLaget !== true) {
     return <></>
   } else if (props.loading == true) {
-    return <>Loading...</>
+    return (
+      <Card className="card-tabell">
+        <CardBody><h2>Loading...</h2></CardBody>
+      </Card>
+    )
   } else if (props.loading == false) {
     return (
       <Card className="card-tabell">
         <CardHeader><h6>{props.vareNavn}</h6></CardHeader>
         <CardBody>
-          <>Den siste oppdateringen: {props.vare[0].dato} (År-Måned-Dag)</>
-          <Table striped bordered hover size="sm">
+          <>{t('last_update_lbl')} {props.vare[0].dato} {t('date_format')}</>
+          <Table bordered hover size="sm" style={{backgroundColor: "unset"}}>
             <tbody>
-              {ListeTR(0, props)}
-              {ListeTR(1, props)}
-              {ListeTR(2, props)}
-              {ListeTR(3, props)}
-              {ListeTR(4, props)}
-              {ListeTR(5, props)}
+              <ListeTR butikkNR={0} props={props}/>
+              <ListeTR butikkNR={1} props={props}/>
+              <ListeTR butikkNR={2} props={props}/>
+              <ListeTR butikkNR={3} props={props}/>
+              <ListeTR butikkNR={4} props={props}/>
+              <ListeTR butikkNR={5} props={props}/>
             </tbody>
           </Table>
         </CardBody>
@@ -126,7 +112,7 @@ function Liste(props) {
   } else return <>FUNGER PLS!</>;
 }
 
-function ListeTR(butikkNR, props) {
+function ListeTR({butikkNR, props}) {
   //For å fargelegge listeradene om de er lavest pris
   let [lavestePris, setLavestePris] = useState(999);
 
@@ -143,7 +129,6 @@ function ListeTR(butikkNR, props) {
     if (iPris < lavestePris) {
       setLavestePris(iPris);
     }
-    console.log(lavestePris);
   }
 
   switch (butikkNR) {
@@ -185,7 +170,7 @@ function ListeTR(butikkNR, props) {
     }
     //Coop Ops
     case 2: {
-      if (props.vare[0].priser['Coop Ops'] <= lavestePris) {
+      if (props.vare[0].priser['Coop Obs'] <= lavestePris) {
         return (
           <tr>
             <td bgcolor="lightgreen">{props.butikkListe[2]}</td>
@@ -268,6 +253,8 @@ function LoadingScreen(loading) {
 
 function Dashboard() {
   //Lager HMTL med chart
+  const {t} = useTranslation();
+  const arr = [t('last_update_lbl'), t('date_format')]
   let [grafLaget, setGrafLaget] = useState(false);
   let [loading, setLoading] = useState(false);
   const [vareNavn, setVareNavn] = useState("");
@@ -276,18 +263,26 @@ function Dashboard() {
   const [butikkListe, setButikkListe] = useState([]);
   const [vareListe, setVareListe] = useState([]);
   const [varefilter, setVarefilter] = useState("");
-  const [butikkliste, setButikkliste] = useState([]);
 
   useEffect(() => {
     //Hvis at vare har ikke blitt søkt opp, så lag blank
     if (grafLaget) {
       BackendApi.getVare(vareNavn).then(response => {
         setVare(response.data);
+        for (let i = 0; i < 6; i++) {
+          switch (i) {
+            case 0: datasets[0].data[i] = response.data[0].priser['Kiwi']; break;
+            case 1: datasets[0].data[i] = response.data[0].priser['Meny']; break;
+            case 2: datasets[0].data[i] = response.data[0].priser['Coop Obs']; break;
+            case 3: datasets[0].data[i] = response.data[0].priser['Rema 1000']; break;
+            case 4: datasets[0].data[i] = response.data[0].priser['Spar']; break;
+            case 5: datasets[0].data[i] = response.data[0].priser['Coop Extra']; break;
+          }
+        }
         setLoading(false); 
       });  
       BackendApi.getButikkliste().then((response) => {
         for (let i = 0; i < 6; i++) {
-          datasets[i].label = response.data[i];
           setButikkListe(response.data);
         }
       });
@@ -307,60 +302,44 @@ function Dashboard() {
     })
   }, [grafLaget, loading]);
 
+  //Lager dropdown items når søker varer
+  function FiltrertVareliste({vareListe, vareFilter}) {
+    const filtrertVareliste = vareListe.filter(v => {
+      return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
+    })
+    return (
+      <>
+        {filtrertVareliste.map((vare, index) => (
+            <DropdownItem key={index} onClick={(e) => {
+              setLoading(true);
+              setGrafLaget(true); 
+              setVareNavn(e.target.innerText)}}>
+                {vare}
+            </DropdownItem>
+        ))}
+      </>
+    )
+  }
+
   //Dashboard return
   return (
     <>
       <div className="content">
-        <Row>
           <Col md = {11}>
-          <Card>
+          <Card className="card-tabell">
               <CardHeader>
-                <CardTitle tag="h4">Pristabell</CardTitle>
-                  <InputGroup className="no-border">
-                    <Input placeholder="Filtrering" id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
-                    <InputGroupAddon addonType="append">
-                      <InputGroupText>
-                        <i className="nc-icon nc-zoom-split" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                  </InputGroup>
+                <CardTitle tag="h4">{t('price_comparison')}</CardTitle>
+                <>{vareNavn}</>
               </CardHeader>
               <CardBody>
-                <Table responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      <th>Vare</th>
-                      <th className="text-right">Gjennomsnitt</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <UncontrolledDropdown style={{padding: "0px"}}>
+                  <DropdownToggle style={{padding: "0px"}}>
+                    <Input placeholder={t('look_up_item')} id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
+                  </DropdownToggle>
+                  <DropdownMenu style={{ maxHeight: "300px", overflow:"scroll"}}>
                       <FiltrertVareliste vareListe={vareListe} vareFilter={varefilter} />
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-            <Card className="card-tabell">
-              <CardHeader>
-                <LoadingScreen/>
-                <CardTitle tag="h5">Pris Sammenligning</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <div className="card-stats">
-                  <form className="hor-card-form">
-                  <>Fish and Crips, Findus, 480 gram |||| Kims Mexican Fiesta, 200 gram</>
-                    <InputGroup className="sok-vare">
-                      <Input placeholder="Søk vare..." type="text" id="inputSøkVare"/>
-                        <InputGroupAddon addonType="append">
-                          <InputGroupText>
-                            <i className="nc-icon nc-zoom-split" id="inputclick" onClick={() => {
-                              setLoading(true);
-                              setGrafLaget(true); 
-                              setVareNavn(document.getElementById("inputSøkVare").value)}}/> 
-                        </InputGroupText>
-                      </InputGroupAddon> 
-                    </InputGroup>          
-                  </form>
-                </div>  
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </CardBody>
             </Card>
             <Liste grafLaget = {grafLaget} 
@@ -370,7 +349,6 @@ function Dashboard() {
                    butikkListe = {butikkListe}
                    />
           </Col>
-        </Row>
         <Graf chart = {chart} 
               grafLaget = {grafLaget}/>
       </div>
