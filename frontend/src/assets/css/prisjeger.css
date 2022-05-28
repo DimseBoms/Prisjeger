@@ -1,0 +1,34 @@
+
+
+.ButtonsRegistrering {
+    width: 5em;
+    background-color: rgba(45, 140, 131, 0.997);
+    padding-left: 0em;
+    padding-right: 0em;
+}
+
+.ButtonsHandling {
+    width: 5em;
+    background-color: rgba(54, 53, 48, 0.997);
+    padding-left: 0em;
+    padding-right: 0em;
+}
+
+.HeaderBakgrunn {
+    background-color: rgba(45, 140, 131, 0.997);    
+}
+
+.CheckVare {
+    width: 5em;
+    height: 4.5em;
+    padding-left: 0em;
+    padding-right: 0em;
+}
+
+.ButtonsHeader {
+    width: 15em; 
+    background-color: rgba(83, 36, 8, 0.997);
+    padding-left: 0em;
+    padding-right: 0em;    
+}
+
