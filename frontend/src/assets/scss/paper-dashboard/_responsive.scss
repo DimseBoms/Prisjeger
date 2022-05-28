@@ -552,10 +552,10 @@
 //For å passe at chart er bare synlig når det er landskap
 @media screen and (orientation:portrait) {
   .chart-line-standard {
-    display: none;
+    display: flex;
   }
   .chart-line-potrait {
-    display: flex;
+    display: none;
   }
   .sok-vare {
     padding-right: 0%;
@@ -565,20 +565,43 @@
   }
  }
 
-@media screen and (orientation:landscape) {
-  .chart-line-standard {
-    display: flex;
-  }
-  .chart-line-potrait {
-    display: none;
-  }
+@media screen and (orientation:landscape) and (min-width: 768px) {
   .sok-vare {
     padding-right: 30%;
   }
   .card-tabell {
     padding-right: 0%;
+    margin-right: 0%;
+  }
+  .card-graf {
+    padding-right: 0%;
+    margin-right: 0%;
+  }
+  .chart-line-potrait {
+    display: none;
+  }
+}
+
+@media screen and (orientation:landscape) and (min-width: 1300px) {
+  .card-tabell {
+    padding-right: 0%;
     margin-right: 50%;
   }
+  .card-graf {
+    padding-right: 0%;
+    margin-right: 50%;
+  }
+  .chart-line-potrait {
+    display: none;
+  }
  }
- 
+
+@media screen and (orientation:portrait) and (max-width: 428px) {
+  .chart-line-standard {
+    display: none;
+  }
+  .chart-line-potrait {
+    display: flex;
+  }
+ }
 

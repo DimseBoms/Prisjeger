@@ -61,10 +61,7 @@ function Graf(props) {
   return props.grafLaget !== true ? (
     <></>
   ) : (
-    <Card className="card-tabell">
-      <CardHeader>
-        <CardTitle tag="h5">Prishistorikk</CardTitle>
-      </CardHeader>
+    <Card className="card-graf">
       <CardBody>
         <div className="chart-line-standard">
           <Bar
@@ -256,7 +253,6 @@ function Dashboard() {
   //Lager HMTL med chart
   let [grafLaget, setGrafLaget] = useState(false);
   let [loading, setLoading] = useState(false);
-  const [nyDatasets, setNyDatasets] = useState([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
   const [vareNavn, setVareNavn] = useState("");
   const [chart, setChart] = useState([]);
   const [vare, setVare] = useState([]);
@@ -325,7 +321,6 @@ function Dashboard() {
   return (
     <>
       <div className="content">
-        <Row>
           <Col md = {11}>
           <Card className="card-tabell">
               <CardHeader>
@@ -350,7 +345,6 @@ function Dashboard() {
                    butikkListe = {butikkListe}
                    />
           </Col>
-        </Row>
         <Graf chart = {chart} 
               grafLaget = {grafLaget}/>
       </div>
