@@ -375,14 +375,16 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
             res.status(500).json({ message: error.message })
         }
         else {
-            dbSvar = response.handlelister
-            console.log(dbSvar)
-            // hjelpemetode for å inserte liste
-            res.json(leggTilVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
-            
+            if (!response.handlelister === undefined) {
+                dbSvar = response.handlelister
+                console.log(dbSvar)
+                // hjelpemetode for å inserte liste
+                res.json(leggTilVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
+            } else { // feil i input parametere
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
+            }
         }
     });
-
 })
 
 // hjelpemetode for å legge til antall på vare i handleliste
