@@ -19,6 +19,7 @@
 import React from "react";
 import BackendApi from "../axios/backendApi";
 import { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 // reactstrap components
 import {
   Card,
@@ -36,74 +37,41 @@ import {
   UncontrolledDropdown,
   DropdownToggle, 
   DropdownMenu, 
-  DropdownItem,
-
+  DropdownItem
 } from "reactstrap";
-import jsonwebtoken from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken"; // for å identifisere bruker
+import '../assets/css/prisjeger.css';
 
-
-
-
-/**
- * Funksjon for å lage checkbox for handlevisning
- * @returns 
- */
-function KryssAv(redigering, setRedigering) {
-  const [checked, setChecked] = useState(false);
-
-  const handleChange = () => {
-    setChecked(!checked);
-  };
-
-  return (
-    <>
-      <Checkbox
-        value={checked}
-        onChange={handleChange}
-      />
-
-      <p>Tester{checked.toString()}</p>
-    </>
-  );
-};
-
-const Checkbox = ({ label, value, onChange }) => {
-  return (
-    <span 
-     >
-    <label>
-      <Input
-      style={{ marginRight: '.2rem', width: '5em',height: '4.5em', 
-      marginTop: '0em', marginBottom: '0em', paddingLeft: '0em',paddingRight: '0em' }} 
-        type="checkbox" checked={value} onChange={onChange} />
-      {label}
-    </label>
-    </span>
-  );
-};
 
 
 
 
 /**
- * Funksjonen filtrerer varenavn i databasen etter input i søkefelt
- * Dette er en endring
+ * Funksjonen bygger opp og returnerer alle radelementer i visning
+ * Elementer: varenavn, enhetspris, sum, totalsum, antall -/+
  * 
  * @param {*} param0 
  * @returns 
  */
-function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandleliste, 
-  radsum, setRadsum, teller, 
-  redigering, prisliste, setPrisliste, 
-  props}) {
+function FiltrertVareliste({    
+  redigering,                    
+  vareListe,
+  vareFilter,
+  prisliste,
+  setPrisliste,
+  handleliste,
+  setHandleliste,
+  radsum,
+  setRadsum
+  }) {
 
 
-  // VISER VARER I VARELISTE BASERT PÅ FILTER (SØKETREFF)
+  // Filtrerer vareliste/ handleliste basert på fritekst fra bruker
   const filtrertVareliste = vareListe.filter(v => {
     return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
   })
 
-  // REGNER UT TOTALBELØP OG VISER PÅ HVER RAD
+  // Regner ut totalsum og viser på rader i filter
   let grandTotal = 0
   let opptelling = 0
   Object.keys(handleliste).forEach(vare1 => {
@@ -114,12 +82,8 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
       }
     })
   })
-
-  let [farge, setFarge] = useState("green");
-
- // const ventPåTall = isNaN(parseFloat(handleliste[vare])) ? parseFloat(handleliste[vare]) : 0
-
-  // returnerer vareliste og iteratorknapp.
+  
+  // Conditional rendering, redigeringsvisning/ handlevisning
   return (redigering) ? (
     <>
       {filtrertVareliste.map((vare, index) => (
@@ -127,18 +91,22 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
           <td>{vare}</td>
           <td> 
             <Button 
-              style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
-              >{'Pris : '+(parseFloat(prisliste[vare])).toFixed(2)},-
-            </Button>        
-            <Button
-              style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
+              className="ButtonsRegistrering"
+              style={{marginTop: '.4rem'}}
+              >{'Vare : '+(parseFloat(prisliste[vare])).toFixed(2)},-
+            </Button>{' '}       
+            <Button 
+              className="ButtonsRegistrering"
+              style={{marginTop: '.4rem'}}
               >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                  'Vare : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 'Vare : ' +(0).toFixed(2)},-
-            </Button>
-            <Button
-              style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
+                  'Pris : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
+                  'Pris : ' +(0).toFixed(2)},-
+            </Button>{' '}  
+            <Button 
+            className="ButtonsRegistrering"
+            style={{marginTop: '.4rem'}}
               >{'Total : '+grandTotal.toFixed(2)},-
-            </Button>
+            </Button>{' '}
           </td>         
           {LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste)}
         </tr> 
@@ -151,18 +119,22 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
         <td>{vare}</td>
         <td>         
           <Button 
-            style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
+            className="ButtonsHandling"
+            style={{marginTop: '.8rem'}} 
             >{'Pris : '+(parseFloat(prisliste[vare])).toFixed(2)},-
-          </Button>        
+          </Button>{' '}        
           <Button
-            style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
+            className="ButtonsHandling"
+            style={{marginTop: '.8rem'}}
             >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                'Vare : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 'Vare : ' +(0).toFixed(2)},-
-          </Button>
+                'Vare : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
+                'Vare : ' +(0).toFixed(2)},-
+          </Button>{' '}  
           <Button
-            style={{ marginRight: '.2rem', width: '5em',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em' }} 
+            className="ButtonsHandling"
+            style={{marginTop: '.8rem'}}
             >{'Total : '+grandTotal.toFixed(2)},-
-          </Button>
+          </Button>{' '}
         </td>    
         <td>
           <KryssAv/>
@@ -180,29 +152,69 @@ function FiltrertVareliste({vare, vareListe, vareFilter, handleliste, setHandlel
 
 
 /**
- * Funksjonen returnerer en knapp for å iterere varer i handleliste
- * Kobler varenavn fra DB med radsum lagt inn av bruker
- * Vil kunne sende data til DB (type og radsum varer pr bruker)
+ * Funksjon for å lage checkbox for handlevisning
  * 
- * @returns 
+ * @returns avkryssingboks for handlede varer
+ */
+function KryssAv(redigering, setRedigering) {
+  const [checked, setChecked] = useState(false)
+
+  const handleChange = () => {
+    setChecked(!checked)
+  }
+
+  return (
+    <>
+      <Checkbox
+        value={checked}
+        onChange={handleChange}
+      />
+
+      <p>Tester{checked.toString()}</p>
+    </>
+    )
+  }
+
+  const Checkbox = ({ label, value, onChange }) => {
+    return (
+      <span 
+      >
+      <label>
+        <Input
+        className="CheckVare"
+        style={{marginTop: '0em', marginBottom: '0em'}} 
+          type="checkbox" checked={value} onChange={onChange} />{label}</label>
+      </span>
+    );
+  };
+
+
+
+
+
+
+
+
+/**
+ * Hjelpefunksjon for å bygge og returnere inkrementeringsknapper pr rad
+ * Oppdaterer radsum : enhetspris * antall
+ * 
+ * @returns knapper -/+
  */
 function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste, props) {
-
-  let varetekst = vare 
-  let pristekst = vare         
+  let varetekst = vare        
   let vareFinnes = false
   let nyHandleliste = handleliste
   let nyprisliste = prisliste
-  let vent = 0
-
+  let ventPåVerdi = 0
 
   return (
     <td className="text-center">
-      {/*KNAPP FOR Å REDUSERE radsum*/}
+      {/*KNAPP FOR Å REDUSERE*/}
       <Button 
-      defaultValue={vent}
+        defaultValue={ventPåVerdi}
         className="btn-round" color="danger"
-        style={{  width: '5em',marginRight: '.2rem',marginTop: '.8rem',paddingLeft: '0em',paddingRight: '0em'}} 
+        style={{width:'5em', marginRight:'.2rem', marginTop:'.8rem', paddingLeft:'0em', paddingRight:'0em'}} 
         onClick={() => {
           // Hvis vare har radsum reduseres radsum og pris
           if (handleliste[varetekst] > 0) {
@@ -213,9 +225,10 @@ function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisli
           }
         }}>{handleliste[varetekst]}
       </Button>
-      {/*KNAPP FOR Å ØKE radsum*/}
-      <Button className="btn-round" color="success" style={{ width: '5em',marginRight: '.2rem',marginTop: '.8rem',
-        paddingLeft: '0em',paddingRight: '0em'}} 
+      {/*KNAPP FOR Å ØKE*/}
+      <Button 
+      className="btn-round" color="success" 
+        style={{width:'5em', marginRight:'.2rem', marginTop:'.8rem', paddingLeft: '0em',paddingRight: '0em'}} 
         onClick={() => {
           setRadsum(radsum + parseFloat(prisliste[vare]))
           // Itererer handlelista og finner valgte varer
@@ -246,19 +259,41 @@ function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisli
 
 
 /**
- * Funksjon for å oppdatere priser i tabellen basert på valgt butikk
- * @param {*} finnButikk 
- * @param {*} finnDato 
- * @param {*} setVareListe 
- * @param {*} setPrisliste 
+ * Funksjon for å oppdatere priser i tabellen basert på valgt butikk og dato
+ * 
+ * @param {*} finnButikk butikk for priser
+ * @param {*} finnDato dato for pris
+ * @param {*} setVareListe gjør varenavn tilgjengelige for filteret
+ * @param {*} setPrisliste kobler pris pr vare/dato/butikk til filteret
  */
 function oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste) {
-    // Henter JSON fra valgt vare på valgt dato
-    BackendApi.getButikk(finnButikk, finnDato, finnDato).then((response) => {
-      setVareListe(Object.keys(response.data[0].varer))
-      setPrisliste(response.data[0].varer)
-    })
+  BackendApi.getButikk(finnButikk, finnDato, finnDato).then((response) => {
+    setVareListe(Object.keys(response.data[0].varer))
+    setPrisliste(response.data[0].varer)
+  })
 }
+
+
+
+
+
+
+/**
+ * Funksjon for å hente brukers handleliste fra DB
+ * 
+ * @param {*} epost brukers epost
+ * @param {*} setVareListe legger varenavn i filter
+ * @param {*} setPrisliste 
+ * @param {*} setHandleliste 
+ * @param {*} handleliste brukers handlsliste, varer og antall
+ * @param {*} prisliste pris pr butikk pr dato
+ */
+function hentHandliste(epost, setVareListe, setPrisliste, setHandleliste, handleliste, prisliste) {
+  BackendApi.getHandlelister(epost).then((response) => {
+    setVareListe(Object.keys(response.data[0]))
+    setHandleliste(response.data[0])
+  })    
+} 
 
 
 
@@ -268,6 +303,7 @@ function oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste) {
 /**
  * Funksjonen oppretter og returnerer komponentet Handleliste
  * Initialiserer React komponent med de nødvendige state variablene
+ * Benytter flere hjelpemetoder for å bygge opp og vise dynamiske elementer
  * 
  * @returns Komplett handleliste-komponent
  */
@@ -283,12 +319,30 @@ function Handleliste(props, vare) {
     const [finnButikk, setFinnButikk] = useState("Meny");
     const [finnDato, setFinnDato] = useState("2022-01-23");
     
+    // FOR Å SLETTE BRUKERS TOKEN (for testing)
+    //  localStorage.removeItem('token')
 
+    // Henter ut brukes epost fra token
+    let brukerMail = ""
+    const brukerInfo = localStorage.getItem('token')
+      if(brukerInfo) {
+        brukerMail = jsonwebtoken.decode(brukerInfo)
+        console.log(brukerMail.epost)
+      }
+    const history = useHistory()
+    console.log("DATASTRØM UT " + JSON.stringify(handleliste))           ///    her her her
+
+    // Kontrollerer for innloggin, eller redirect
     useEffect(() => {
+      if (!brukerInfo) {
+        alert("Man må logge seg inn som bruker for å opprette handleliste")
+        history.push('/Login')
+      }
       // Henter JSON over alle registrerte butikker
       BackendApi.getButikkliste().then((response) => {
         setButikker(response.data)
       })
+      // Henter JSON over alle varer og priser pr dato pr butikk
       oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste)
 
     }, [])
@@ -300,18 +354,35 @@ function Handleliste(props, vare) {
           <Col>
             <Card>
               <CardHeader>
-              <Card>
+              <Card 
+                 className="HeaderBakgrunn"
+                >
                 <CardTitle tag="h4" className="text-center">Rediger handleliste</CardTitle>
                   <Row className="justify-content-center">
-                    <Button 
+                    <Button
+                      className="ButtonsHeader" 
+                      style={{marginTop: '.5rem', marginRight: '.8rem'}}   
                       onClick={() =>setRedigering(false)}         
-                      color="success" 
-                      size="sm">
-                        Handle
+                      color="danger" 
+                      >Bytt til handlevisning
+                    </Button>      
+                    <Button 
+                      className="ButtonsHeader" 
+                      style={{marginTop: '.5rem', marginRight: '.8rem'}}  
+                      onClick={() => hentHandliste('tore@mail.com', setVareListe, setPrisliste, setHandleliste, handleliste)}    
+                      color="danger" 
+                      >Hent handleliste
+                    </Button>             
+                    <Button 
+                      className="ButtonsHeader" 
+                      style={{marginTop: '.5rem', marginRight: '.8rem'}}  
+                      onClick={() => oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste)}    
+                      color="danger" 
+                      >Legg til varer
                     </Button>
                  </Row>
                  <Row className="justify-content-center">
-                    <UncontrolledDropdown size="sm">
+                    <UncontrolledDropdown size="lg">
                       <DropdownToggle caret>{finnButikk}</DropdownToggle>
                       <DropdownMenu 
                         onClick={() => { }}>
@@ -388,7 +459,7 @@ function Handleliste(props, vare) {
               <Card>
                 <CardTitle tag="h4" className="text-center">Kryss av varer i handlekurv</CardTitle>
                   <Row className="justify-content-center">  
-                    <Button onClick={() =>setRedigering(true)} color="danger" size="sm">Rediger</Button>
+                    <Button onClick={() =>setRedigering(true)} color="danger">Bytt til redigeringsvisning</Button>
                   </Row>
                 </Card>
               </CardHeader>

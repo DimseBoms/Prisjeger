@@ -58,7 +58,7 @@ class BackendApi {
       });
     } 
 
-  async loginSjekk(postObjekt) {
+/*  async loginSjekk(postObjekt) {
       console.log("loginsjekker")
       http.post(`/login`, postObjekt).then(response => {
         console.log(response.data.bruker)
@@ -69,9 +69,8 @@ class BackendApi {
         return response;
       });
     } 
-
-
-  }
+    */
+  } 
   
 
   export default new BackendApi
