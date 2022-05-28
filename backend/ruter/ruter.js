@@ -364,6 +364,39 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
     );
 })
 
+// Legger til ny tom handleliste
+ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
+    console.log(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
+    logger.info(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
+    // første databasespørring for å finne ut om handlelisten eksisterer fra før
+    let dbSvar
+    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+        if (error) {
+            console.log(error);
+            res.status(500).json({ message: error.message })
+        }
+        else {
+            try {
+                dbSvar = response.handlelister
+                // legger til liste
+                let nyHandleliste = { [tittel]: {} }
+                dbSvar.push(nyHandleliste)
+                brukerModell.updateOne({
+                    epost: epost
+                }, {$set: {
+                    handlelister: dbSvar
+                }} ).then(svar => {
+                    console.log(svar)
+                })
+                res.json()
+            } catch (err ){ // feil i input parametere
+                console.log(err)
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
+            }
+        }
+    });
+})
+
 // Legger til vare i handleliste
 ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
     console.log(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)

@@ -24,6 +24,10 @@ class BackendApi {
     getHandleliste(epost, tittel) {
       return http.get(`/handlelister/${epost}/${tittel}`)
     }
+    // legg til ny tom handleliste
+    nyHandlelisteAdd(epost, tittel) {
+      httpPost.post(`/handlelister/${epost}/${tittel}/add`)
+    }
     // legg til en vare i handleliste
     HandlelisteAdd(epost, tittel, vare) {
       httpPost.post(`/handlelister/${epost}/${tittel}/add/${vare}`)
