@@ -375,24 +375,24 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
             res.status(500).json({ message: error.message })
         }
         else {
-            dbSvar = response.handlelister
-            console.log(dbSvar)
-            // hjelpemetode for å inserte liste
-            res.json(leggTilVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
-            
+            try {
+                dbSvar = response.handlelister
+                // hjelpemetode for å inserte liste
+                res.json(leggTilVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
+            } catch (err ){ // feil i input parametere
+                console.log(err)
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
+            }
         }
     });
-
 })
 
 // hjelpemetode for å legge til antall på vare i handleliste
 function leggTilVare(dbSvar, epost, tittel, vare) {
     // insert spørring for å oppdatere vare dersom listen finnes fra før
-    console.log(dbSvar)
         let harSendt = false
         // brukerens handlelister itereres
         dbSvar.forEach(handleliste => {
-            console.log(handleliste)
             // hvis den korrekte handlelisten blir funnet
             if (Object.keys(handleliste) == tittel) {
                 harSendt = true
@@ -434,6 +434,99 @@ function leggTilVare(dbSvar, epost, tittel, vare) {
     }
 }
 
+// Fjerner vare fra handleliste
+ruter.post('/handlelister/:epost/:tittel/pop/:vare', async function (req, res) {
+    console.log(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
+    logger.info(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
+    // første databasespørring for å finne ut om handlelisten eksisterer fra før
+    let dbSvar
+    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+        if (error) {
+            console.log(error);
+            res.status(500).json({ message: error.message })
+        }
+        else {
+            try {
+                dbSvar = response.handlelister
+                console.log(dbSvar)
+                // hjelpemetode for å inserte liste
+                res.json(fjernVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
+            } catch (err) { // feil i input parametere
+                console.log(err)
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
+            }
+        }
+    });
+})
+
+// hjelpemetode for å dekrementere/fjerne vare fra handleliste eller slette handleliste hvis tom
+function fjernVare(dbSvar, epost, tittel, vare) {
+    // insert spørring for å oppdatere vare dersom listen finnes fra før
+    console.log(dbSvar)
+        let skalSlettes = false
+        // brukerens handlelister itereres
+        dbSvar.forEach(handleliste => {
+            console.log(handleliste)
+            // hvis den korrekte handlelisten blir funnet
+            if (Object.keys(handleliste) == tittel) {
+                // Begynner å bli litt kryptisk her men det må testes om den gamle verdien eksisterer.
+                // Dersom den gjør det skal den dekrementeres.
+                // Grunnen til at det står pakket i en try/catch er fordi det kan bli nullpointer/undef err.
+                let gammelAnt
+                try {
+                    gammelAnt = handleliste[tittel][vare]
+                } catch (error) {
+                    // verdi finnes ikke fra før
+                }
+                if (gammelAnt === undefined) gammelAnt = 0
+                console.log(`gammelant+1: ${gammelAnt - 1}`)
+                handleliste[tittel][vare] = gammelAnt - 1
+                // Fjerner vare fra handleliste hvis den blir tom
+                if (handleliste[tittel][vare] <= 0) delete handleliste[tittel][vare]
+                console.log(dbSvar)
+                // kjører en sjekk på om listen er tom eller ikke. Isåfall skal den slettes
+                skalSlettes = sjekkSlett(handleliste, tittel)
+                // sender spørring
+                brukerModell.updateOne({
+                    epost: epost
+                }, {$set: {
+                    handlelister: dbSvar
+                }} ).then(svar => {
+                    console.log(svar)
+                })
+            }
+        })
+        // Sletter liste
+    if (!skalSlettes) {
+        console.log("!harsendt")
+        dbSvar.forEach(function(item){ delete item.tittel });
+        brukerModell.updateOne({
+            epost: epost
+        }, {$set: {
+            handlelister: dbSvar
+        }} ).then(svar => {
+            console.log(svar)
+        })
+    }
+}
+
+// Hjelpefunksjon for å slette verdi fra Array basert på id
+// Hentet fra: https://simplernerd.com/js-delete-element-in-array-based-on-object-key/
+const deleteBasedOnId = (arr, id) => {
+    return arr.filter(obj => obj.id !== id);
+  }
+
+// Hjelpefunksjon som sjekker om en handleliste er tom, dersom den er det så returnerer den true
+function sjekkSlett(handleliste, tittel) {
+    console.log("ASDFASDF")
+    console.log(handleliste)
+    let teller = 0
+    for (let vare in handleliste[tittel]) {
+        let verdi = handleliste[tittel][vare]
+        if (verdi > 0) teller += verdi
+    }
+    return teller <= 0
+}
 
 ruter.post('/testpost', async function (req, res) {
     console.log(req.body)
