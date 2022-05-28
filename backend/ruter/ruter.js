@@ -326,7 +326,6 @@ ruter.get('/handlelister/:epost', async function (req, res) {
         }
         else{
             let dbSvar = response.handlelister
-            console.log(dbSvar)
             let utSvar = []
             dbSvar.forEach(handleliste => {
                 utSvar.push(Object.keys(handleliste)[0])
@@ -339,22 +338,30 @@ ruter.get('/handlelister/:epost', async function (req, res) {
     );
 })
 // henter spesifikk handleliste ut fra nøkkel for en bruker
-// ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
-//     console.log(`Ny forespørsel etter handlelister for epost: ${req.params.epost}`)
-//     let brukernavn = req.cookies.bruker
-//     logger.info('bruker: ' + brukernavn + ' ' + 'henter handlelistene sine ')
-//     brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
-//         if (error){
-//             console.log(error);
-//             res.status(500).json({ message: error.message })
-//         }
-//         else{
-//             res.json(response.handlelister)
-//         }
-//     }).sort(
-//         {dato: -1}
-//     );
-// })
+ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
+    console.log(`Ny forespørsel etter handleliste: ${req.params.tittel} for epost: ${req.params.epost}`)
+    let brukernavn = req.cookies.bruker
+    logger.info('bruker: ' + brukernavn + ' ' + 'henter handlelistene sine ')
+    brukerModell.findOne({ epost: req.params.epost }, function (error, response) {
+        if (error){
+            console.log(error);
+            res.status(500).json({ message: error.message })
+        }
+        else{
+            let dbSvar = response.handlelister
+            let harSendt = false
+            dbSvar.forEach(handleliste => {
+                if (Object.keys(handleliste) == req.params.tittel) {
+                    res.json(handleliste[req.params.tittel])
+                    harSendt = true
+                }
+            })
+            if (!harSendt) res.json({ message: "Ingen handlelister funnet"})
+        }
+    }).sort(
+        {dato: -1}
+    );
+})
 
 // Post metoder
 ruter.post('/testpost', async function (req, res) {

@@ -16,9 +16,13 @@ class BackendApi {
     getButikkliste() {
       return http.get('/butikkliste');
     }
-    // henter handlelister for en epost/bruker
+    // henter liste over handlelister for en epost/bruker
     getHandlelister(epost) {
       return http.get(`/handlelister/${epost}`)
+    }
+    // henter bestemt handleliste ut fra tittel for en epost/bruker
+    getHandleliste(epost, tittel) {
+      return http.get(`/handlelister/${epost}/${tittel}`)
     }
     // Metode for å vise all prisdata for en vare
     getVare(vare) {
