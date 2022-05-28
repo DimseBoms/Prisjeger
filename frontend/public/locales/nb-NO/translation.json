@@ -36,6 +36,20 @@
 
   "SIGN_IN" : "Logg inn",
   "SIGN_OUT": "Logg ut",
-  "signed_in" : "Innlogget"
+  "signed_in" : "Innlogget",
+
+  "ABOUT_US" : "Om oss",
+  "about_project_lbl" : "Om prosjektet",
+  "about_project_text" : "Prisjeger er et praktisk og innbydende digitalt verktøy for prissammenligning, planlegging og innkjøp av dagligvarer, og inneholder flere nyttige funksjoner for prisbevisste forbrukere. Prosjektet er gjennomført i regi av Universitetet i Sørøst-Norge (USN), og er grunnlag for karaktersetting i emnet Applikasjonsutvikling for web.",
+  "title_daniel" : "Frontend-utvikler",
+  "about_daniel" : "Dette er Daniel. Han har jobbet på frontend. Han er snill og kjekk! Daniel har æren for priser i tabellvisning!",
+  "title_gaute" : "Frontend-utvikler",
+  "about_gaute" : "Dette er Gaute. Han har også jobbet på frontend. Han er morsom og søt! Gaute har sørget for at du kan lese denne siden på engelsk!",
+  "title_tore" : "Backend-utvikler",
+  "about_tore" : "Dette er Tore Broberg! Han er flink til å snakke om følelser, og en racer i backend. Det er nettop han som har laget innlogging på denne siden.",
+  "title_leonard" : "Frontend & backend-utvikler",
+  "about_leonard" : "Her er Leonard! Han er både klok og flittig på tastaturet. Han har blant andre ting laget handlelisten i dette prosjektet.",
+  "title_dmitriy" : "Full stack-utvikler",
+  "about_dmitriy" : "Her er selveste Dmitriy Safiullin. MERN-stacks keiser, og Mongoose' temmer. Han er arbeidsom, intelligent og snill!"
 
 }

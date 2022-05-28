@@ -62,7 +62,7 @@ var routes = [
   },
   {
     path: "/user-page",
-    name: "User Profile",
+    name: "Om oss",
     icon: "nc-icon nc-single-02",
     component: UserPage,
     layout: "/admin",

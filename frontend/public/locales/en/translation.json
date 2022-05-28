@@ -36,5 +36,20 @@
 
   "SIGN_IN" : "Sign in",
   "SIGN_OUT": "Sign out",
-  "signed_in" : "Signed in"
+  "signed_in" : "Signed in",
+
+  "ABOUT_US" : "About us",
+  "about_project_lbl" : "About the project",
+  "about_project_text" : "Prisjeger is a practical and welcoming digital tool for price comparisons, planning and purchases of groceries, and contains multiple useful features for customers who care about prices. This project is carried out under the auspices of the University of South-East Norway, and is the foundation for grading in the subject App development for web",
+  "title_daniel" : "Frontend developer",
+  "about_daniel" : "This is Daniel, also known as Danny D. He is very handsome",
+  "title_gaute" : "Frontend developer",
+  "about_gaute" : "This is Gaute. Funny and cute. Also, this guy got cake ;)",
+  "title_tore" : "Backend developer",
+  "about_tore" : "This is Tore. He's sexy and hot",
+  "title_leonard" : "Backend & frontend developer",
+  "about_leonard" : "Leonard is an absolute menace on the computer. Nothing will stop this guy from getting things done",
+  "title_dmitriy" : "Full stack developer",
+  "about_dmitriy" : "Dmitriy is the absolute GOAT of MERN-stack development, and the Mongoose tamer. He is very very nice"
+
 }
