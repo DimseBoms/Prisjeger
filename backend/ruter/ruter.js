@@ -363,7 +363,78 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
     );
 })
 
-// Post metoder
+// Legger til vare i handleliste
+ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
+    console.log(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
+    logger.info(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
+    // første databasespørring for å finne ut om handlelisten eksisterer fra før
+    let dbSvar
+    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+        if (error) {
+            console.log(error);
+            res.status(500).json({ message: error.message })
+        }
+        else {
+            dbSvar = response.handlelister
+            console.log(dbSvar)
+            // hjelpemetode for å inserte liste
+            res.json(leggTilVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
+            
+        }
+    });
+
+})
+
+// hjelpemetode for å legge til antall på vare i handleliste
+function leggTilVare(dbSvar, epost, tittel, vare) {
+    // insert spørring for å oppdatere vare dersom listen finnes fra før
+    console.log(dbSvar)
+        let harSendt = false
+        // brukerens handlelister itereres
+        dbSvar.forEach(handleliste => {
+            console.log(handleliste)
+            // hvis den korrekte handlelisten blir funnet
+            if (Object.keys(handleliste) == tittel) {
+                harSendt = true
+                // Begynner å bli litt kryptisk her men det må testes om den gamle verdien eksisterer.
+                // Dersom den gjør det skal den inkrementeres, hvis ikke skal den settes til 1.
+                // Grunnen til at det står pakket i en try/catch er fordi det kan bli nullpointer/undef err.
+                let gammelAnt
+                try {
+                    gammelAnt = handleliste[tittel][vare]
+                } catch (error) {
+                    // verdi finnes ikke fra før
+                }
+                if (gammelAnt === undefined) gammelAnt = 0
+                console.log(`gammelant+1: ${gammelAnt + 1}`)
+                handleliste[tittel][vare] = gammelAnt + 1
+                console.log(dbSvar)
+                // sender spørring
+                brukerModell.updateOne({
+                    epost: epost
+                }, {$set: {
+                    handlelister: dbSvar
+                }} ).then(svar => {
+                    console.log(svar)
+                })
+            }
+        })
+        // Legger til ny liste dersom den ikke finnes fra før
+    if (!harSendt) {
+        console.log("!harsendt")
+        let nyHandleliste = { [tittel]: {[vare]: 1} }
+        dbSvar.push(nyHandleliste)
+        brukerModell.updateOne({
+            epost: epost
+        }, {$set: {
+            handlelister: dbSvar
+        }} ).then(svar => {
+            console.log(svar)
+        })
+    }
+}
+
+
 ruter.post('/testpost', async function (req, res) {
     console.log(req.body)
     res.json("Testpost motatt")
