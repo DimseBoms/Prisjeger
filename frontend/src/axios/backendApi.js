@@ -24,6 +24,14 @@ class BackendApi {
     getHandleliste(epost, tittel) {
       return http.get(`/handlelister/${epost}/${tittel}`)
     }
+    // legg til en vare i handleliste
+    HandlelisteAdd(epost, tittel, vare) {
+      httpPost.post(`/handlelister/${epost}/${tittel}/add/${vare}`)
+    }
+    // fjern en vare fra handleliste
+    HandlelistePop(epost, tittel, vare) {
+      httpPost.post(`/handlelister/${epost}/${tittel}/pop/${vare}`)
+    }
     // Metode for å vise all prisdata for en vare
     getVare(vare) {
       return http.get(`/vare/${vare}`)
