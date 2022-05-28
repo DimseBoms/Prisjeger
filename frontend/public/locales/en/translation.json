@@ -1,5 +1,9 @@
 {
   "DASHBOARD" : "Dashboard",
+  "price_comparison" : "Price comparison",
+  "last_update_lbl" : "The last update is from : ",
+  "date_format" : "(Year-month-day)",
+  "landscape_lbl" : "Please til your screen to see the graph",
 
   "PRICE_CHART" : "Price chart",
   "filter" : "Filter",
