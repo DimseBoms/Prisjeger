@@ -375,12 +375,12 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
             res.status(500).json({ message: error.message })
         }
         else {
-            if (!response.handlelister === undefined) {
+            try {
                 dbSvar = response.handlelister
                 console.log(dbSvar)
                 // hjelpemetode for å inserte liste
                 res.json(leggTilVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
-            } else { // feil i input parametere
+            } catch { // feil i input parametere
                 res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
             }
         }
