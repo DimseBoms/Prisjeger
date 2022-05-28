@@ -314,7 +314,7 @@ ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
         res.status(500).json({ message: error.message })
     }
 })
-// henter handlelister for en epost/bruker
+// henter liste over handlelister
 ruter.get('/handlelister/:epost', async function (req, res) {
     console.log(`Ny forespørsel etter handlelister for epost: ${req.params.epost}`)
     let brukernavn = req.cookies.bruker
@@ -325,12 +325,36 @@ ruter.get('/handlelister/:epost', async function (req, res) {
             res.status(500).json({ message: error.message })
         }
         else{
-            res.json(response.handlelister)
+            let dbSvar = response.handlelister
+            console.log(dbSvar)
+            let utSvar = []
+            dbSvar.forEach(handleliste => {
+                utSvar.push(Object.keys(handleliste)[0])
+                console.log(utSvar)
+            })
+            res.json(utSvar)
         }
     }).sort(
         {dato: -1}
     );
 })
+// henter spesifikk handleliste ut fra nøkkel for en bruker
+// ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
+//     console.log(`Ny forespørsel etter handlelister for epost: ${req.params.epost}`)
+//     let brukernavn = req.cookies.bruker
+//     logger.info('bruker: ' + brukernavn + ' ' + 'henter handlelistene sine ')
+//     brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+//         if (error){
+//             console.log(error);
+//             res.status(500).json({ message: error.message })
+//         }
+//         else{
+//             res.json(response.handlelister)
+//         }
+//     }).sort(
+//         {dato: -1}
+//     );
+// })
 
 // Post metoder
 ruter.post('/testpost', async function (req, res) {
