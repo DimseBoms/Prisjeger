@@ -482,7 +482,7 @@ function fjernVare(dbSvar, epost, tittel, vare) {
                 console.log(`gammelant+1: ${gammelAnt - 1}`)
                 handleliste[tittel][vare] = gammelAnt - 1
                 // Fjerner vare fra handleliste hvis den blir tom
-                dbSvar = dbSvar.filter((elem) => elem[tittel]);
+                deleteBasedOnId(handleliste[tittel], 0)
                 console.log(dbSvar)
                 // kjører en sjekk på om listen er tom eller ikke. Isåfall skal den slettes
                 skalSlettes = sjekkSlett(handleliste, tittel)
@@ -509,6 +509,12 @@ function fjernVare(dbSvar, epost, tittel, vare) {
         })
     }
 }
+
+// Hjelpefunksjon for å slette verdi fra Array basert på id
+// Hentet fra: https://simplernerd.com/js-delete-element-in-array-based-on-object-key/
+const deleteBasedOnId = (arr, id) => {
+    return arr.filter(obj => obj.id !== id);
+  }
 
 // Hjelpefunksjon som sjekker om en handleliste er tom, dersom den er det så returnerer den true
 function sjekkSlett(handleliste, tittel) {
