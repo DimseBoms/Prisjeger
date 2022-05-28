@@ -482,7 +482,7 @@ function fjernVare(dbSvar, epost, tittel, vare) {
                 console.log(`gammelant+1: ${gammelAnt - 1}`)
                 handleliste[tittel][vare] = gammelAnt - 1
                 // Fjerner vare fra handleliste hvis den blir tom
-                deleteBasedOnId(handleliste[tittel], 0)
+                if (handleliste[tittel][vare] <= 0) delete handleliste[tittel][vare]
                 console.log(dbSvar)
                 // kjører en sjekk på om listen er tom eller ikke. Isåfall skal den slettes
                 skalSlettes = sjekkSlett(handleliste, tittel)
