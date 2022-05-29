@@ -34,10 +34,12 @@ import {
   InputGroupText,
   InputGroupAddon,
   Input,
+  CardHeader,
 } from "reactstrap";
 import i18next from "i18next";
 import routes from "routes.js";
 import { useState } from "react/cjs/react.production.min";
+import jsonwebtoken from "jsonwebtoken"; // for å identifisere bruker
 
 import languages from "../../assets/available_languages";
 
@@ -49,6 +51,13 @@ function LagSpråkJSX(props) {
   )
 }
 
+/**
+ * Denne funksjonen følger med malen Paper Dashboard React. Gruppe 12 har kun endret logo/ navn, og lagt
+ * til et valg om å bytte språk
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 function Header(props) {
   const [språk, setSpråk] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -139,20 +148,23 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <Nav navbar>
-            <Dropdown
-              nav
-              isOpen={dropdownOpen}
-              toggle={(e) => dropdownToggle(e)}
-            >
-              <DropdownToggle caret nav>
-                <i className="nc-icon nc-world-2" />
-              </DropdownToggle>
-              <DropdownMenu right>
-                <LagSpråkJSX språk={språk} setSpråk={setSpråk}></LagSpråkJSX>
-              </DropdownMenu>
-            </Dropdown>
-          </Nav>
+          <CardHeader className="text-right" style={{color: 'white'}}>
+            Du er logget inn som : {jsonwebtoken.decode(localStorage.getItem('token')).epost}
+          </CardHeader>
+            <Nav navbar>
+              <Dropdown
+                nav
+                isOpen={dropdownOpen}
+                toggle={(e) => dropdownToggle(e)}               
+              >
+                <DropdownToggle caret nav>Velg språk{' '}
+                  <i className="nc-icon nc-world-2" />
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <LagSpråkJSX språk={språk} setSpråk={setSpråk}></LagSpråkJSX>
+                </DropdownMenu>
+              </Dropdown>
+            </Nav>
         </Collapse>
       </Container>
     </Navbar>
