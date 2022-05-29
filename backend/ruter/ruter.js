@@ -331,7 +331,7 @@ ruter.get('/handlelister/:epost', async function (req, res) {
                 utSvar.push(Object.keys(handleliste)[0])
                 console.log(utSvar)
             })
-            res.json(utSvar)
+            res.json(utSvar.reverse())
         }
     }).sort(
         {dato: -1}
