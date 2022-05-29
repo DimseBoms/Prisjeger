@@ -108,22 +108,22 @@ else{
        <CardHeader>{t('SIGN_IN')}</CardHeader>
         <CardBody>
       <form onSubmit={handleSubmit}> 
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">{t('email')}</label>
+  <div className="mb-3">
+    <label htmlFor="exampleInputEmail1" className="form-label">{t('email')}</label>
     <input type="email"
         value={epost}
         onChange={(e) => setEpost(e.target.value)}
-    class="form-control" 
+        className="form-control" 
     id="inputEmail"    
   aria-describedby="emailHelp"></input>
   </div>
 
-  <div class="mb-3">
-    <label for="pw" class="form-label">{t('password')}</label>
+  <div className="mb-3">
+    <label htmlFor="pw" className="form-label">{t('password')}</label>
     <input type="password" 
     value={passord}
     onChange={(e) => setPassord(e.target.value)}
-    class="form-control" 
+    className="form-control" 
     id="inputPassword"></input>
   </div>
 
@@ -131,7 +131,7 @@ else{
 
 
   <button  onClick={handleSubmit} 
-  type="submit" class="btn btn-primary">{t('SIGN_IN')}
+  type="submit" className="btn btn-primary">{t('SIGN_IN')}
   </button>
   
   <button             
