@@ -20,6 +20,7 @@ import React from "react";
 import BackendApi from "../axios/backendApi";
 import { useState, useEffect} from "react";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 // reactstrap components
 import {
   Card,
@@ -66,7 +67,8 @@ function FiltrertVareliste({
   epost, 
   listetittel,
   }) {
-
+  
+  const {t} = useTranslation();
   // Filtrerer vareliste/ handleliste basert på fritekst fra bruker
   const filtrertVareliste = vareListe.filter(v => {
     return v.toLowerCase().indexOf((vareFilter.toLowerCase())) !== -1
@@ -94,19 +96,19 @@ function FiltrertVareliste({
             <Button 
               className="ButtonsRegistrering"
               style={{marginTop: '.4rem'}}
-              >{'Vare : '+(parseFloat(prisliste[vare])).toFixed(2)},-
+              >{t('item')+(parseFloat(prisliste[vare])).toFixed(2)},-
             </Button>{' '}       
             <Button 
               className="ButtonsRegistrering"
               style={{marginTop: '.4rem'}}
               >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                'Pris : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
-                'Pris : ' +(0).toFixed(2)},-
+                t('price')+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
+                t('price') +(0).toFixed(2)},-
             </Button>{' '}  
             <Button 
               className="ButtonsRegistrering"
               style={{marginTop: '.4rem'}}
-              >{'Total : '+grandTotal.toFixed(2)},-
+              >{t('total')+grandTotal.toFixed(2)},-
             </Button>{' '}
           </td>         
           {LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste, epost, listetittel)}
@@ -121,17 +123,17 @@ function FiltrertVareliste({
         <td>         
           <Button 
             className="ButtonsHandling"    
-            >{'Pris : '+(parseFloat(prisliste[vare])).toFixed(2)},-
+            >{t('price')+(parseFloat(prisliste[vare])).toFixed(2)},-
           </Button>{' '}        
           <Button
             className="ButtonsHandling"
             >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                'Vare : ' +(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
-                'Vare : ' +(0).toFixed(2)},-
+              t('item') +(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
+              t('item') +(0).toFixed(2)},-
           </Button>{' '}  
           <Button
             className="ButtonsHandling"
-            >{'Total : '+grandTotal.toFixed(2)},-
+            >{t('total')+grandTotal.toFixed(2)},-
           </Button>{' '}
         </td>    
         <td><KryssAv/></td>
@@ -371,6 +373,7 @@ function hentHandliste(epost, listetittel, setVareListe, setPrisliste, setHandle
  * @returns Komplett handleliste-komponent
  */
 function Handleliste(props, vare) {
+    const {t} = useTranslation()
     const [vareListe, setVareListe] = useState([])
     const [varefilter, setVarefilter] = useState("")
     const [handleliste, setHandleliste] = useState({})
@@ -394,7 +397,7 @@ function Handleliste(props, vare) {
     // Kontrollerer for innloggin, ellers redirect
     useEffect(() => {
       if (!localStorage.getItem('token')) {
-        alert("Man må logge seg inn som bruker for å opprette handleliste")
+        alert(t('must_log_in_alert'))
         history.push('/Admin/Login')
       } else {
         // Henter JSON fra DB over alle registrerte butikker
@@ -421,7 +424,7 @@ function Handleliste(props, vare) {
               <CardHeader>
                 <Card 
                   className="HeaderBakgrunn">
-                  <CardTitle tag="h4" className="text-center">Rediger handleliste</CardTitle>             
+                  <CardTitle tag="h4" className="text-center">{t('edit_cart')}</CardTitle>             
                     <Row className="justify-content-center">
                       <UncontrolledDropdown                       
                         className="Valgmeny">
@@ -474,21 +477,21 @@ function Handleliste(props, vare) {
                         style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}}  
                         onClick={() => {
                           console.log("Her skal antall settes til 0") 
-                          window.confirm("Vennligst bekreft tømming av handleliste") ?
+                          window.confirm(t('confirm_erase_cart')) ?
                             BackendApi.slettHandleliste(jsonwebtoken.decode(localStorage.getItem('token')).epost, 
                               listetittel) :
                             console.log("Bruker har avbrutt")
                             window.location.reload(false); 
                         }} 
                         color="danger" 
-                        >Slett handleliste
+                        >{t('delete_cart')}
                       </Button>      
                       <Button
                         className="ButtonsHeader" 
                         style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}} 
                         onClick={() => setOpprettNy(true) }         
                         color="danger" 
-                        >Ny handleliste
+                        >{t('new_list')}
                       </Button> 
                     </Row>
                     <Row className="justify-content-center">       
@@ -497,7 +500,7 @@ function Handleliste(props, vare) {
                         style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}}  
                         onClick={() =>setRedigering(false)}         
                         color="danger" 
-                        >Bytt til handlevisning
+                        >{t('change_shopping_view')}
                       </Button>        
                       <Button 
                         className="ButtonsHeader" 
@@ -507,12 +510,12 @@ function Handleliste(props, vare) {
                           setToggle(!toggle)
                         }} 
                         color="danger" 
-                        >Legg til varer
+                        >{t('add_items')}
                       </Button>
                     </Row>
                 </Card>
                   <InputGroup className="no-border">
-                    <Input placeholder="Søk opp vare" id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
+                    <Input placeholder={t('look_up_item')} id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
                     <InputGroupAddon addonType="append">
                       <InputGroupText>
                         <i className="nc-icon nc-zoom-split" />
@@ -562,17 +565,17 @@ function Handleliste(props, vare) {
             <Card>
               <CardHeader>
                 <Card>
-                  <CardTitle tag="h4" className="text-center">Opprett ny handleliste</CardTitle>
+                  <CardTitle tag="h4" className="text-center">{t('create_new_list')}</CardTitle>
                 </Card>
               </CardHeader>
                 <CardBody>
-                  <Input placeholder="Skriv inn navn på ny handleliste" onChange={e => setListetittel(e.target.value)}/>                                
+                  <Input placeholder={t('list_name')} onChange={e => setListetittel(e.target.value)}/>                                
                 <Button
                   className="ButtonsHeader" 
                   style={{marginTop: '.5rem', marginRight: '.8rem'}}   
                   onClick={() =>setOpprettNy(false)}         
                   color="danger" 
-                  >Tilbake
+                  >{t('go_back')}
                 </Button> 
                 <Button
                   className="ButtonsHeader" 
@@ -583,7 +586,7 @@ function Handleliste(props, vare) {
                     window.location.reload(false)
                   }}         
                   color="danger" 
-                  >Opprett ny liste
+                  >{t('create_new_list')}
                 </Button> 
               </CardBody>
             </Card>
@@ -599,9 +602,9 @@ function Handleliste(props, vare) {
           <Card>
             <CardHeader>
             <Card>
-              <CardTitle tag="h4" className="text-center">Kryss av varer i handlekurv</CardTitle>
+              <CardTitle tag="h4" className="text-center">{t('create_new_list')}</CardTitle>
                 <Row className="justify-content-center">  
-                  <Button onClick={() =>setRedigering(true)} color="danger">Bytt til redigeringsvisning</Button>
+                  <Button onClick={() =>setRedigering(true)} color="danger">{t('change_editable_view')}</Button>
                 </Row>
               </Card>
             </CardHeader>

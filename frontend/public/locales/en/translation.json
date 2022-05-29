@@ -10,12 +10,24 @@
   "average" : "Average",
 
   "CART" : "Shopping list",
-  "edit_cart" : "Edit cart",
+  "edit_cart" : "Edit shopping list",
   "shop" : "Shop",
   "look_up_item" : "Look up item",
   "price" : "Price: ",
-  "item" : "item: ",
-  "total" : "total: ",
+  "item" : "Item: ",
+  "total" : "Total: ",
+  "confirm_erase_cart" : "Are you sure you want to erase this list?",
+  "delete_cart" : "Delete list",
+  "new_list" : "New list",
+  "create_new_list" : "Create new list",
+  "list_name" : "Give your shopping list a name",
+  "go_back" : "Go back",
+  "change_shopping_view" : "Go to shopping view",
+  "add_items" : "Add items",
+  "select_items" : "Select items",
+  "change_editable_view" : "Change to editable view",
+
+
 
   "SCANNER" : "Scanner",
   "scan_receipt": "Scan receipt",
@@ -33,6 +45,7 @@
   "email" : "email adress",
   "username" : "username",
   "password" : "password",
+  "must_log_in_alert" : "You have to sign in to create a shopping list",
 
   "SIGN_IN" : "Sign in",
   "SIGN_OUT": "Sign out",

@@ -17,7 +17,7 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import Notifications from "views/Notifications.js";
+import AddLanguage from "views/AddLanguage";
 import Icons from "views/Icons.js";
 import Typography from "views/Typography.js";
 import Scanner from "views/Scanner.js";
@@ -54,10 +54,10 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/notifications",
-    name: "Notifications",
+    path: "/AddLanguage",
+    name: "Legg til språk",
     icon: "nc-icon nc-bell-55",
-    component: Notifications,
+    component: AddLanguage,
     layout: "/admin",
   },
   {
