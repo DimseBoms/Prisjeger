@@ -28,6 +28,10 @@ class BackendApi {
     nyHandlelisteAdd(epost, tittel) {
       httpPost.post(`/handlelister/${epost}/${tittel}/add`)
     }
+    // slett handleliste
+    HandlelistePop(epost, tittel) {
+      httpPost.post(`/handlelister/${epost}/${tittel}/remove`)
+    }
     // legg til en vare i handleliste
     HandlelisteAdd(epost, tittel, vare) {
       httpPost.post(`/handlelister/${epost}/${tittel}/add/${vare}`)

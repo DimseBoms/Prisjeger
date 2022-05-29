@@ -379,7 +379,7 @@ ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
             try {
                 dbSvar = response.handlelister
                 // legger til liste
-                let nyHandleliste = { [tittel]: {} }
+                let nyHandleliste = { [req.params.tittel]: {} }
                 dbSvar.push(nyHandleliste)
                 brukerModell.updateOne({
                     epost: epost
