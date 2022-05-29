@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-
+/* Dmitriy Safiullin */
 const Vareliste = new mongoose.Schema({
     varer: {
         type: Array

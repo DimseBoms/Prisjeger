@@ -66,6 +66,12 @@ class BackendApi {
       return http.get(`/butikk/${butikk}/${fradato}/${tildato}`)
     }
 
+    /* SPRÅK */
+    // Metode for å hente liste over språk for bruk i dropdown
+    getSpråkListe() {
+      return http.get('/sprak/dropdown')
+    }
+
     /* ANDRE METODER */
     logut() {
       return http.get(`/logUt`)

@@ -2,17 +2,20 @@ import express from 'express'
 import prisdataModell from '../datamodeller/prisdataModell.js'
 import varelisteModell from '../datamodeller/varelisteModell.js'
 import brukerModell from '../datamodeller/brukerModell.js'
+import språkListeModell from '../datamodeller/språkListeModell.js'
 import logger from '../Logger.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 const ruter = express.Router()
 
 // home
+/* Dmitriy Safiullin */
 ruter.get('/', (req, res) => {
     console.log("Ny forespørsel etter index")
-    res.send('Home Page')
+    res.send('Prisjeger Backend API')
 })
 // returnerer all prishistorikk
+/* Dmitriy Safiullin */
 ruter.get('/historikk', async function(req, res) {
     console.log("Ny forespørsel etter all prishistorikk")
     let brukernavn = req.cookies.bruker
@@ -29,6 +32,7 @@ ruter.get('/historikk', async function(req, res) {
     }
  })
  // henter oppdaterte priser
+ /* Dmitriy Safiullin */
  ruter.get('/siste', async function(req, res) {
     console.log("Ny forespørsel etter siste oppdaterte priser")
     let brukernavn = req.cookies.bruker
@@ -58,6 +62,7 @@ ruter.get('/historikk', async function(req, res) {
     }
 })
  // returnerer vareliste
+ /* Dmitriy Safiullin */
 ruter.get('/vareliste', async function(req, res) {
     let brukernavn = req.cookies.bruker
     logger.info('bruker: ' + brukernavn + ' ' + 'henter vareliste')
@@ -73,6 +78,7 @@ ruter.get('/vareliste', async function(req, res) {
     }
 })
 // returnerer butikkliste
+/* Dmitriy Safiullin */
 ruter.get('/butikkliste', async function (req, res) {
     console.log("Ny forespørsel etter butikkliste")
     let brukernavn = req.cookies.bruker
@@ -88,6 +94,7 @@ ruter.get('/butikkliste', async function (req, res) {
     }
 })
 // Metode for å vise all prisdata for en vare
+/* Dmitriy Safiullin */
 ruter.get('/vare/:navn', async function (req, res) {
     console.log(`Ny forespørsel etter vare: ${req.params.navn}`)
     let brukernavn = req.cookies.bruker
@@ -122,6 +129,7 @@ ruter.get('/vare/:navn', async function (req, res) {
     }
 })
 // Metode for å vise all prisdata for en vare fra tidspunkt
+/* Dmitriy Safiullin */
 ruter.get('/vare/:navn/:fradato', async function (req, res) {
     console.log(`Ny forespørsel etter vare: ${req.params.navn} fra ${req.params.fradato}`)
     let brukernavn = req.cookies.bruker
@@ -158,6 +166,7 @@ ruter.get('/vare/:navn/:fradato', async function (req, res) {
     }
 })
 // Metode for å vise all prisdata for en vare fra tidspunkt til et tidspunkt
+/* Dmitriy Safiullin */
 ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
     console.log(`Ny forespørsel etter vare: ${req.params.navn} fra ${req.params.fradato} til ${req.params.tildato}`)
     let brukernavn = req.cookies.bruker
@@ -194,6 +203,7 @@ ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
     }
 })
 // Metode for å vise all prisdata for en butikk
+/* Dmitriy Safiullin */
 ruter.get('/butikk/:butikk', async function (req, res) {
     console.log(`Ny forespørsel etter butikk: ${req.params.butikk}`)
     let brukernavn = req.cookies.bruker
@@ -233,6 +243,7 @@ ruter.get('/butikk/:butikk', async function (req, res) {
     }
 })
 // Metode for å vise all prisdata for en butikk fra en dato
+/* Dmitriy Safiullin */
 ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
     console.log(`Ny forespørsel etter butikk: ${req.params.butikk} fra ${req.params.fradato}`)
     let brukernavn = req.cookies.bruker
@@ -274,6 +285,7 @@ ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
     }
 })
 // Metode for å vise all prisdata for en butikk fra en dato til en dato
+/* Dmitriy Safiullin */
 ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
     console.log(`Ny forespørsel etter butikk: ${req.params.butikk} fra ${req.params.fradato} til ${req.params.tildato}`)
     let brukernavn = req.cookies.bruker
@@ -315,6 +327,7 @@ ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
     }
 })
 // henter liste over handlelister
+/* Dmitriy Safiullin */
 ruter.get('/handlelister/:epost', async function (req, res) {
     console.log(`Ny forespørsel etter handlelister for epost: ${req.params.epost}`)
     let brukernavn = req.cookies.bruker
@@ -338,6 +351,7 @@ ruter.get('/handlelister/:epost', async function (req, res) {
     );
 })
 // henter spesifikk handleliste ut fra nøkkel for en bruker
+/* Dmitriy Safiullin */
 ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
     console.log(`Ny forespørsel etter handleliste: ${req.params.tittel} for epost: ${req.params.epost}`)
     let brukernavn = req.cookies.bruker
@@ -365,6 +379,7 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
 })
 
 // Legger til ny tom handleliste
+/* Dmitriy Safiullin */
 ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
     console.log(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
@@ -398,6 +413,7 @@ ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
 })
 
 // Legger til vare i handleliste
+/* Dmitriy Safiullin */
 ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
     console.log(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
@@ -422,6 +438,7 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
 })
 
 // hjelpemetode for å legge til antall på vare i handleliste
+/* Dmitriy Safiullin */
 function leggTilVare(dbSvar, epost, tittel, vare) {
     // insert spørring for å oppdatere vare dersom listen finnes fra før
         let harSendt = false
@@ -469,6 +486,7 @@ function leggTilVare(dbSvar, epost, tittel, vare) {
 }
 
 // Fjerner vare fra handleliste
+/* Dmitriy Safiullin */
 ruter.post('/handlelister/:epost/:tittel/pop/:vare', async function (req, res) {
     console.log(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
@@ -494,6 +512,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare', async function (req, res) {
 })
 
 // hjelpemetode for å dekrementere/fjerne vare fra handleliste eller slette handleliste hvis tom
+/* Dmitriy Safiullin */
 function fjernVare(dbSvar, epost, tittel, vare) {
     // insert spørring for å oppdatere vare dersom listen finnes fra før
     console.log(dbSvar)
@@ -531,6 +550,7 @@ function fjernVare(dbSvar, epost, tittel, vare) {
 }
 
 // Rute for å slette handleliste
+/* Dmitriy Safiullin */
 ruter.post('/handlelister/:epost/:tittel/remove/', async function (req, res) {
     console.log(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
@@ -557,6 +577,7 @@ ruter.post('/handlelister/:epost/:tittel/remove/', async function (req, res) {
 })
 
 // Hjelpefunksjon for å slette handleliste
+/* Dmitriy Safiullin */
 function slettHandleliste(dbSvar, epost, tittel) {
     let gammelDbSvar = dbSvar
     gammelDbSvar = gammelDbSvar.filter((elem) => elem[tittel] != tittel);
@@ -582,6 +603,7 @@ function slettHandleliste(dbSvar, epost, tittel) {
 }
 
 // Hjelpefunksjon som sjekker om en handleliste er tom, dersom den er det så returnerer den true
+/* Dmitriy Safiullin */
 function sjekkSlett(handleliste, tittel) {
     let teller = 0
     for (let vare in handleliste[tittel]) {
@@ -597,6 +619,7 @@ ruter.post('/testpost', async function (req, res) {
 })
 
 // Hjelpemetode for å hente alle nåværende butikker fra prisdata
+/* Dmitriy Safiullin */
 function utvinnButikker(prisdata) {
     let butikkArray = []
     prisdata.forEach((element) => {
@@ -606,7 +629,8 @@ function utvinnButikker(prisdata) {
     })
     return butikkArray
 }
-// Hjelpemetode for å hente alle nåværende varer ut fra prisdata
+// Hjelpemetode for å hente alle nåværende varer ut fra prisda
+/* Dmitriy Safiullin */
 function utvinnVarer(prisdata) {
     let vareArray = []
     prisdata.forEach((element) => {
@@ -617,6 +641,7 @@ function utvinnVarer(prisdata) {
     return vareArray.sort()
 }
 // Hjelpemetode for å finne en butikks tilsvarende indeks i hvert element i databasen
+/* Dmitriy Safiullin */
 function finnButikkIndeks(element, butikkNavn) {
     let i = 0
     let svar = -1
@@ -626,6 +651,27 @@ function finnButikkIndeks(element, butikkNavn) {
     })
     return svar
 }
+
+ // Rute for å hente liste over språk. Skal benyttes av dropdown meny
+ // for språk.
+ /* Dmitriy Safiullin */
+ruter.get('/sprak/dropdown', async function(req, res) {
+    console.log("Ny forespørsel etter språk dropdown")
+    try {
+        let språkliste = await språkListeModell.findOne().sort(
+            {name: -1}
+        )
+        res.json(språkliste["språkdata"])
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+})
+
+// Rute for å legge til nytt språk i dropdown
+// TODO: Lage den
+/* Dmitriy Safiullin */
+ruter.post('/sprak/dropdown', async function(req, res) {})
 
 // Tore Broberg, metode for å sette lognivå, og å skrue logføring av/på
 ruter.get('/logger/:lvl/:status', async(req, res)=>{
@@ -812,11 +858,6 @@ ruter.get('/lagCTest/:epost', async function (req, res){
     res.cookie('bruker', req.params.epost )
     res.end()
 })
-// TODO:
-// spørringer basert på pris
-// hent alle data innenfor spesifisert tid
-// hent alle data for en vare
-// hent alle data for en butikk
 
 
 

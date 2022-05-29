@@ -38,19 +38,33 @@ import {
 import i18next from "i18next";
 import routes from "routes.js";
 import { useState } from "react/cjs/react.production.min";
+import BackendApi from "../../axios/backendApi";
 
-import languages from "../../assets/available_languages";
 
 function LagSpråkJSX(props) {
   return (
-    languages.map(({code, name, country_code}) => (
+    props.languages.map(({code, name, country_code}) => (
       <DropdownItem key={code} tag="a" onClick={() => i18next.changeLanguage(code)}>{name}</DropdownItem>
     ))
   )
 }
 
 function Header(props) {
-  const [språk, setSpråk] = React.useState([]);
+  const [språk, setSpråk] = React.useState(
+    [
+      {
+        "code": "en",
+        "name": "English",
+        "country_code": "en"
+      },
+      {
+        "code": "nb-NO",
+        "name": "Norsk",
+        "country_code": "no"
+      }
+    ]
+  );
+  const [languages, setLanguages] = React.useState([])
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
@@ -89,6 +103,13 @@ function Header(props) {
       setColor("transparent");
     }
   };
+  // Henter språkliste
+  /* Dmitriy Safiullin */
+  React.useEffect(() => {
+    BackendApi.getSpråkListe().then((response) => {
+      setLanguages(response.data)
+    })
+  }, []);
   React.useEffect(() => {
     window.addEventListener("resize", updateColor.bind(this));
   });
@@ -149,7 +170,7 @@ function Header(props) {
                 <i className="nc-icon nc-world-2" />
               </DropdownToggle>
               <DropdownMenu right>
-                <LagSpråkJSX språk={språk} setSpråk={setSpråk}></LagSpråkJSX>
+                <LagSpråkJSX languages={languages} språk={språk} setSpråk={setSpråk}></LagSpråkJSX>
               </DropdownMenu>
             </Dropdown>
           </Nav>

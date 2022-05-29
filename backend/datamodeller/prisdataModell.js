@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-
+/* Dmitriy Safiullin */
 const Prisdata = new mongoose.Schema({
     dato: {
         type: String
