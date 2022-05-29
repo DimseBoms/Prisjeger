@@ -42,6 +42,7 @@ import { useState } from "react/cjs/react.production.min";
 import jsonwebtoken from "jsonwebtoken"; // for å identifisere bruker
 
 import languages from "../../assets/available_languages";
+import { useTranslation } from "react-i18next";
 
 function LagSpråkJSX(props) {
   return (
@@ -59,6 +60,7 @@ function LagSpråkJSX(props) {
  * @returns 
  */
 function Header(props) {
+  const {t} = useTranslation();
   const [språk, setSpråk] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -148,8 +150,8 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <CardHeader className="text-right" style={{color: 'white'}}>
-            Du er logget inn som : {jsonwebtoken.decode(localStorage.getItem('token')).epost}
+          <CardHeader className="text-right user-logged-in-text">
+            {t('user_logged_in_as')}{jsonwebtoken.decode(localStorage.getItem('token')).epost}
           </CardHeader>
             <Nav navbar>
               <Dropdown
@@ -157,7 +159,7 @@ function Header(props) {
                 isOpen={dropdownOpen}
                 toggle={(e) => dropdownToggle(e)}               
               >
-                <DropdownToggle caret nav>Velg språk{' '}
+                <DropdownToggle caret nav>{t('choose_lng')}{' '}
                   <i className="nc-icon nc-world-2" />
                 </DropdownToggle>
                 <DropdownMenu right>

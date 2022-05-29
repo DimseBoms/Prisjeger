@@ -26,6 +26,10 @@
   "select_items" : "Kryss av varer i handlekurv",
   "change_editable_view" : "Bytt til redigeringsvisning",
 
+  "NAVBAR" : "NAVBAR",
+  "user_logged_in_as" : "Du er logget inn som : ",
+  "choose_lng" : "Språk",
+
   "SCANNER" : "Scanner",
   "scan_receipt": "Scan kvittering",
   "browse": "Bla gjennom",

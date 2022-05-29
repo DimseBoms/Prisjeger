@@ -29,12 +29,14 @@ import Handleliste from "views/Handleliste.js"
 import Loggføring from "views/Loggføring";
 import Register from "views/Register";
 import Login from "views/Login";
-
+import { t } from "i18next";
+import react from "react";
+import { useTranslation } from "react-i18next";
 
 var routes = [
   {
     path: "/dashboard",
-    name: "Name_in_routes.js?",
+    name: "Dashboard",
     icon: "nc-icon nc-bank",
     component: Dashboard,
     layout: "/admin",
@@ -125,4 +127,6 @@ var routes = [
     layout: "/admin",
   },
 ];
+
+
 export default routes;
