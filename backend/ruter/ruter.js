@@ -382,7 +382,7 @@ ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
                 let nyHandleliste = { [req.params.tittel]: {} }
                 dbSvar.push(nyHandleliste)
                 brukerModell.updateOne({
-                    epost: epost
+                    epost: req.params.epost
                 }, {$set: {
                     handlelister: dbSvar
                 }} ).then(svar => {
