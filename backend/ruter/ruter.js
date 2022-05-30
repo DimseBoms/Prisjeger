@@ -663,7 +663,7 @@ ruter.get('/logger/:lvl/:status', async(req, res)=>{
         logger.level = nivå;
         logger.silent=logState;
         console.log(sts, nivå);
-        logger.info('bruker:' + req.cookies.bruker + 'oppdaterte lognivå til' + nivå + 'skrudde logger på');
+        logger.info('bruker:' + req.cookies.bruker + ' ' + 'oppdaterte lognivå til :' + '' + nivå );
         res.send('skiftet loggprotokol');
 
     
@@ -683,12 +683,12 @@ ruter.get('/slettbruker/:bruker', async function(req, res){
 ruter.post('/reg', async function (req, res) {
         let ePost = sanitize(req.body.epost);
         let passord = sanitize(req.body.passord);
-        const nyBruker = {epost, passord};
+        const nyBruker = {ePost, passord};
         console.log('dette er en ny bruker'+ JSON.stringify(nyBruker));
      try{
   brukerModell.findOne({epost: ePost}).then(bruker=> {
             if (bruker){
-                res.json('bruker eksisterer allerede');
+                res.json('brukerEKS');
                 console.log('bruker eksisterer')    
             }
             else{
@@ -817,9 +817,10 @@ ruter.get('/cTest', async function (req, res) {
 ruter.get('/hentLogg', async function (req, res){
     let brukernavn = req.cookies.bruker
    try{
+    //var array = require("fs").readFileSync("loggInfo.log").toString().split("\\n");
     console.log('tester hentlogg')
     fs.readFile('loggInfo.log', 'utf-8', function(err, data){
-        res.json(data)
+        res.send(data)
         console.log(data)
           })}
           catch(err){res.send(err)}

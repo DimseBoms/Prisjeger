@@ -34,6 +34,9 @@ import {
      async function  postReg(postObjekt) {
       console.log("Startet postTest()")
       axios.post(`/reg`, postObjekt).then(response => {
+        if(response.data === 'brukerEKS'){
+          alert('bruker eksisterer allerede')
+        }
           console.log(response)
       });
     } 
@@ -41,7 +44,6 @@ import {
   async function handleSubmit(event) {
         event.preventDefault();
 
- //   console.log(brukerVar);
         try{
         if(epost.length > 0 && passord.length > 0){
     const bruker = {
@@ -52,22 +54,15 @@ import {
  
         }
         else{
-          alert('feil i input')
+          alert('feil i input, epost og passord må ha verdi')
         }
-
-
-    }     
-
-        
+    }             
         
 catch(err){
   console.log(err)
 }  
 }
   
-
-  
-   
   
     return (
   
