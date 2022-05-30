@@ -107,6 +107,10 @@ class BackendApi {
         return response;
       });
     } 
+    sjekkAdmin(){
+      return http.get(`/adminSjekk`);
+    }
+  
 
 
   }

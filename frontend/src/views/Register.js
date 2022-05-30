@@ -33,7 +33,7 @@ import {
     
      async function  postReg(postObjekt) {
       console.log("Startet postTest()")
-      axios.post(`/testpost`, postObjekt).then(response => {
+      axios.post(`/reg`, postObjekt).then(response => {
           console.log(response)
       });
     } 

@@ -18,7 +18,7 @@
 */
 import React from "react";
 import BackendApi from "../axios/backendApi";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import { useHistory } from "react-router-dom";
 // reactstrap components
 import {
@@ -38,9 +38,10 @@ import {
   DropdownToggle, 
   DropdownMenu, 
   DropdownItem
-} from "reactstrap";
+} from "reactstrap"; // ferdige stylede elementer fra reactstrap er fundamentet for design
 import jsonwebtoken from "jsonwebtoken"; // for å identifisere bruker
-import '../assets/css/prisjeger.css';
+import '../assets/css/prisjeger.css'; // litt enkel CSS
+import { useTranslation } from "react-i18next";
 
 
 
@@ -62,9 +63,10 @@ function FiltrertVareliste({
   handleliste,
   setHandleliste,
   radsum,
-  setRadsum
+  setRadsum, 
+  epost, 
+  listetittel,
   }) {
-
 
   // Filtrerer vareliste/ handleliste basert på fritekst fra bruker
   const filtrertVareliste = vareListe.filter(v => {
@@ -83,6 +85,7 @@ function FiltrertVareliste({
     })
   })
   
+  const t = useTranslation()
   // Conditional rendering, redigeringsvisning/ handlevisning
   return (redigering) ? (
     <>
@@ -99,16 +102,16 @@ function FiltrertVareliste({
               className="ButtonsRegistrering"
               style={{marginTop: '.4rem'}}
               >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                  'Pris : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
-                  'Pris : ' +(0).toFixed(2)},-
+                'Pris : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
+                'Pris : ' +(0).toFixed(2)},-
             </Button>{' '}  
             <Button 
-            className="ButtonsRegistrering"
-            style={{marginTop: '.4rem'}}
+              className="ButtonsRegistrering"
+              style={{marginTop: '.4rem'}}
               >{'Total : '+grandTotal.toFixed(2)},-
             </Button>{' '}
           </td>         
-          {LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste)}
+          {LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste, epost, listetittel)}
         </tr> 
       ))}
     </>
@@ -119,26 +122,21 @@ function FiltrertVareliste({
         <td>{vare}</td>
         <td>         
           <Button 
-            className="ButtonsHandling"
-            style={{marginTop: '.8rem'}} 
+            className="ButtonsHandling"    
             >{'Pris : '+(parseFloat(prisliste[vare])).toFixed(2)},-
           </Button>{' '}        
           <Button
             className="ButtonsHandling"
-            style={{marginTop: '.8rem'}}
             >{!isNaN(parseFloat(prisliste[vare] * handleliste[vare])) ?  
-                'Vare : '+(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
+                'Vare : ' +(parseFloat(prisliste[vare] * handleliste[vare])).toFixed(2) : 
                 'Vare : ' +(0).toFixed(2)},-
           </Button>{' '}  
           <Button
             className="ButtonsHandling"
-            style={{marginTop: '.8rem'}}
             >{'Total : '+grandTotal.toFixed(2)},-
           </Button>{' '}
         </td>    
-        <td>
-          <KryssAv/>
-        </td>
+        <td><KryssAv/></td>
       </tr> 
     ) : (null))}
   </>
@@ -156,9 +154,8 @@ function FiltrertVareliste({
  * 
  * @returns avkryssingboks for handlede varer
  */
-function KryssAv(redigering, setRedigering) {
+function KryssAv() {
   const [checked, setChecked] = useState(false)
-
   const handleChange = () => {
     setChecked(!checked)
   }
@@ -169,24 +166,19 @@ function KryssAv(redigering, setRedigering) {
         value={checked}
         onChange={handleChange}
       />
-
-      <p>Tester{checked.toString()}</p>
     </>
     )
   }
-
   const Checkbox = ({ label, value, onChange }) => {
     return (
-      <span 
-      >
-      <label>
-        <Input
+      <input
         className="CheckVare"
         style={{marginTop: '0em', marginBottom: '0em'}} 
-          type="checkbox" checked={value} onChange={onChange} />{label}</label>
-      </span>
-    );
-  };
+        type="checkbox" checked={value} onChange={onChange} 
+        >{label}
+      </input>  
+    )
+  }
 
 
 
@@ -201,7 +193,7 @@ function KryssAv(redigering, setRedigering) {
  * 
  * @returns knapper -/+
  */
-function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste, props) {
+function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisliste, setPrisliste, epost, listetittel) {
   let varetekst = vare        
   let vareFinnes = false
   let nyHandleliste = handleliste
@@ -214,7 +206,13 @@ function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisli
       <Button 
         defaultValue={ventPåVerdi}
         className="btn-round" color="danger"
-        style={{width:'5em', marginRight:'.2rem', marginTop:'.8rem', paddingLeft:'0em', paddingRight:'0em'}} 
+        style={{
+          width:'5em', 
+          marginRight:'.2rem', 
+          marginTop:'.8rem', 
+          paddingLeft:'0em', 
+          paddingRight:'0em'
+        }} 
         onClick={() => {
           // Hvis vare har radsum reduseres radsum og pris
           if (handleliste[varetekst] > 0) {
@@ -222,14 +220,21 @@ function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisli
             nyHandleliste[varetekst] = handleliste[varetekst] - 1
             setHandleliste(nyHandleliste)
             setRadsum(radsum - parseFloat(prisliste[varetekst]))
+            BackendApi.HandlelistePop(jsonwebtoken.decode(localStorage.getItem('token')).epost, listetittel, vare)
           }
         }}>{handleliste[varetekst]}
       </Button>
       {/*KNAPP FOR Å ØKE*/}
       <Button 
       className="btn-round" color="success" 
-        style={{width:'5em', marginRight:'.2rem', marginTop:'.8rem', paddingLeft: '0em',paddingRight: '0em'}} 
-        onClick={() => {
+        style={{
+          width:'5em', 
+          marginRight:'.2rem', 
+          marginTop:'.8rem', 
+          paddingLeft: '0em',
+          paddingRight: '0em'
+        }} 
+        onClick={() => {         
           setRadsum(radsum + parseFloat(prisliste[vare]))
           // Itererer handlelista og finner valgte varer
           Object.keys(handleliste).forEach((element) => {
@@ -244,6 +249,7 @@ function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisli
           else {
             nyHandleliste[varetekst] = 1
           }
+          BackendApi.HandlelisteAdd(jsonwebtoken.decode(localStorage.getItem('token')).epost, listetittel, vare)
           setHandleliste(nyHandleliste)
           setPrisliste(nyprisliste)
         }}>{handleliste[varetekst]}
@@ -251,6 +257,64 @@ function LagKnapper(vare, handleliste, setHandleliste, radsum, setRadsum, prisli
     </td>
   )
 }
+
+
+
+
+
+
+/**
+ * Funksjonen lager søkefelt/ dropdown for butikker. Utvider seg etter behov.
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
+function VisButikker({ setListetittel, listetittel, setVareListe, setPrisliste, setHandleliste, handleliste, 
+  prisliste, lister, listeFilter, butikker, setButikker, finnButikk, setFinnButikk, finnDato}) {
+
+  return (
+    <>
+      {butikker.map((butikker, index) => (
+          <DropdownItem placeholder={butikker} key={index} onClick={(e) => {
+            setFinnButikk(butikker)
+            oppdaterVisning(butikker, finnDato, setVareListe, setPrisliste)
+            }}>{butikker}
+          </DropdownItem>
+      ))}
+    </>
+  )
+}
+
+
+
+
+
+
+/**
+ * Funksjonen lager søkefelt/ dropdown for handlelister. Utvider seg etter behov.
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
+function Vishandlelister({ setListetittel, listetittel, setVareListe, setPrisliste, setHandleliste, 
+  handleliste, prisliste, lister, listeFilter}) {
+
+  return (
+    <>
+      {lister.map((tittel, index) => (
+          <DropdownItem placeholder={tittel} key={index} onClick={(e) => {
+            setListetittel(tittel)
+            hentHandliste(jsonwebtoken.decode(localStorage.getItem('token')).epost, 
+              tittel, setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
+            }}>{tittel}
+          </DropdownItem>
+      ))}
+    </>
+  )
+}
+
+
+
 
 
 
@@ -288,12 +352,13 @@ function oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste) {
  * @param {*} handleliste brukers handlsliste, varer og antall
  * @param {*} prisliste pris pr butikk pr dato
  */
-function hentHandliste(epost, setVareListe, setPrisliste, setHandleliste, handleliste, prisliste) {
-  BackendApi.getHandlelister(epost).then((response) => {
-    setVareListe(Object.keys(response.data[0]))
-    setHandleliste(response.data[0])
+function hentHandliste(epost, listetittel, setVareListe, setPrisliste, setHandleliste, handleliste, prisliste) {
+  BackendApi.getHandleliste(epost, listetittel).then((response) => {
+    setVareListe(Object.keys(response.data))
+    setHandleliste(response.data)
   })    
 } 
+
 
 
 
@@ -316,99 +381,137 @@ function Handleliste(props, vare) {
     const [prisliste, setPrisliste] = useState([])
     const [butikker, setButikker] = useState([])
     const [finnPris, setFinnPris] = useState([])
-    const [finnButikk, setFinnButikk] = useState("Meny");
-    const [finnDato, setFinnDato] = useState("2022-01-23");
+    const [finnButikk, setFinnButikk] = useState("Meny")
+    const [finnDato, setFinnDato] = useState("2022-01-23")
+    const [listetittel, setListetittel] = useState("")
+    const [lister, setLister] = useState([])
+    const [toggle, setToggle] = useState(true)
+    const [opprettNy, setOpprettNy] = useState(false)
+    const [listeFilter, setlisteFilter] = useState("")
+
     
     // FOR Å SLETTE BRUKERS TOKEN (for testing)
     //  localStorage.removeItem('token')
-
-    // Henter ut brukes epost fra token
-    let brukerMail = ""
-    const brukerInfo = localStorage.getItem('token')
-      if(brukerInfo) {
-        brukerMail = jsonwebtoken.decode(brukerInfo)
-        console.log(brukerMail.epost)
-      }
     const history = useHistory()
-    console.log("DATASTRØM UT " + JSON.stringify(handleliste))           ///    her her her
-
-    // Kontrollerer for innloggin, eller redirect
+    // Kontrollerer for innloggin, ellers redirect
     useEffect(() => {
-      if (!brukerInfo) {
+      if (!localStorage.getItem('token')) {
         alert("Man må logge seg inn som bruker for å opprette handleliste")
-        history.push('/Login')
+        history.push('/Admin/Login')
+      } else {
+        // Henter JSON fra DB over alle registrerte butikker
+        BackendApi.getButikkliste().then((response) => {
+          setButikker(response.data)
+        })
+        // Henter JSON fra DB over alle registrerte handlelister pr bruker epost
+        BackendApi.getHandlelister(jsonwebtoken.decode(localStorage.getItem('token')).epost).then((response) => {
+          setLister(response.data)
+          setListetittel(response.data[0])
+        })
+        // Henter JSON over alle varer og priser pr dato pr butikk        
+        oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste)
       }
-      // Henter JSON over alle registrerte butikker
-      BackendApi.getButikkliste().then((response) => {
-        setButikker(response.data)
-      })
-      // Henter JSON over alle varer og priser pr dato pr butikk
-      oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste)
 
     }, [])
 
-  return redigering ? (
+  return (redigering && !opprettNy) ? (
     <>
       <div className="content">
         <Row>
           <Col>
             <Card>
               <CardHeader>
-              <Card 
-                 className="HeaderBakgrunn"
-                >
-                <CardTitle tag="h4" className="text-center">Rediger handleliste</CardTitle>
-                  <Row className="justify-content-center">
-                    <Button
-                      className="ButtonsHeader" 
-                      style={{marginTop: '.5rem', marginRight: '.8rem'}}   
-                      onClick={() =>setRedigering(false)}         
-                      color="danger" 
-                      >Bytt til handlevisning
-                    </Button>      
-                    <Button 
-                      className="ButtonsHeader" 
-                      style={{marginTop: '.5rem', marginRight: '.8rem'}}  
-                      onClick={() => hentHandliste('tore@mail.com', setVareListe, setPrisliste, setHandleliste, handleliste)}    
-                      color="danger" 
-                      >Hent handleliste
-                    </Button>             
-                    <Button 
-                      className="ButtonsHeader" 
-                      style={{marginTop: '.5rem', marginRight: '.8rem'}}  
-                      onClick={() => oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste)}    
-                      color="danger" 
-                      >Legg til varer
-                    </Button>
-                 </Row>
-                 <Row className="justify-content-center">
-                    <UncontrolledDropdown size="lg">
-                      <DropdownToggle caret>{finnButikk}</DropdownToggle>
-                      <DropdownMenu 
-                        onClick={() => { }}>
-                          <DropdownItem onClick={() =>{
-                            setFinnButikk(butikker[0]) 
-                            oppdaterVisning(butikker[0], finnDato, setVareListe, setPrisliste)
-                          }}>{butikker[0]}</DropdownItem>
-                          <DropdownItem onClick={() => {
-                            setFinnButikk(butikker[1])
-                            oppdaterVisning(butikker[1], finnDato, setVareListe, setPrisliste)
-                          }}>{butikker[1]}</DropdownItem>
-                          <DropdownItem onClick={() =>{
-                            setFinnButikk(butikker[2]) 
-                            oppdaterVisning(butikker[2], finnDato, setVareListe, setPrisliste)
-                          }}>{butikker[2]}</DropdownItem>
-                          <DropdownItem onClick={() =>{
-                            setFinnButikk(butikker[3]) 
-                            oppdaterVisning(butikker[3], finnDato, setVareListe, setPrisliste)
-                          }}>{butikker[3]}</DropdownItem>
-                          <DropdownItem onClick={() =>{
-                            setFinnButikk(butikker[4]) 
-                            oppdaterVisning(butikker[4], finnDato, setVareListe, setPrisliste)
-                          }}>{butikker[4]}</DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </Row>
+                <Card 
+                  className="HeaderBakgrunn">
+                  <CardTitle tag="h4" className="text-center">Rediger handleliste</CardTitle>             
+                    <Row className="justify-content-center">
+                      <UncontrolledDropdown                       
+                        className="Valgmeny">
+                        <DropdownToggle style={{padding: "0px"}}>
+                          <Input placeholder={finnButikk} onChange={e => setButikker(e.target.value)}/>
+                        </DropdownToggle>
+                          <DropdownMenu style={{ maxHeight: "300px", overflow:"scroll"}}>
+                            <VisButikker
+                              lister={lister} 
+                              listeFilter={listeFilter}
+                              setListetittel={setListetittel}
+                              listetittel={listetittel} 
+                              setVareListe={setVareListe} 
+                              setPrisliste={setPrisliste} 
+                              setHandleliste={setHandleliste} 
+                              handleliste={handleliste}
+                              prisliste={prisliste}
+                              butikker={butikker}
+                              setButikker={setButikker}
+                              finnButikk={finnButikk}
+                              setFinnButikk={setFinnButikk}
+                            />
+                         </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </Row>
+                    <Row className="justify-content-center">
+                      <UncontrolledDropdown                       
+                        className="Valgmeny">
+                        <DropdownToggle style={{padding: "0px"}}>
+                          <Input placeholder={listetittel} onChange={e => setlisteFilter(e.target.value)}/>
+                        </DropdownToggle>
+                        <DropdownMenu style={{ maxHeight: "300px", overflow:"scroll"}}>
+                            <Vishandlelister 
+                            lister={lister} 
+                            listeFilter={listeFilter}
+                            setListetittel={setListetittel}
+                            listetittel={listetittel} 
+                            setVareListe={setVareListe} 
+                            setPrisliste={setPrisliste} 
+                            setHandleliste={setHandleliste} 
+                            handleliste={handleliste}
+                            prisliste={prisliste}
+                             />
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </Row>   
+                    <Row className="justify-content-center">
+                      <Button 
+                        className="ButtonsHeader" 
+                        style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}}  
+                        onClick={() => {
+                          console.log("Her skal antall settes til 0") 
+                          window.confirm("Vennligst bekreft tømming av handleliste") ?
+                            BackendApi.slettHandleliste(jsonwebtoken.decode(localStorage.getItem('token')).epost, 
+                              listetittel) :
+                            console.log("Bruker har avbrutt")
+                            window.location.reload(false); 
+                        }} 
+                        color="danger" 
+                        >Slett handleliste
+                      </Button>      
+                      <Button
+                        className="ButtonsHeader" 
+                        style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}} 
+                        onClick={() => setOpprettNy(true) }         
+                        color="danger" 
+                        >Ny handleliste
+                      </Button> 
+                    </Row>
+                    <Row className="justify-content-center">       
+                      <Button
+                        className="ButtonsHeader" 
+                        style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}}  
+                        onClick={() =>setRedigering(false)}         
+                        color="danger" 
+                        >Bytt til handlevisning
+                      </Button>        
+                      <Button 
+                        className="ButtonsHeader" 
+                        style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}}   
+                        onClick={() => {toggle ? 
+                          oppdaterVisning(finnButikk, finnDato, setVareListe, setPrisliste) :
+                          setToggle(!toggle)
+                        }} 
+                        color="danger" 
+                        >Legg til varer
+                      </Button>
+                    </Row>
                 </Card>
                   <InputGroup className="no-border">
                     <Input placeholder="Søk opp vare" id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
@@ -440,9 +543,50 @@ function Handleliste(props, vare) {
                         setRadsum={setRadsum}
                         finnPris={finnPris}
                         setFinnPris={setFinnPris}
+                        listetittel={listetittel}
+                        setListetittel={setListetittel}
+                        listeFilter={listeFilter}
+                        setlisteFilter={setlisteFilter}
                       />
                   </tbody>
                 </Table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </>
+  ) : (opprettNy) ? (
+    <>
+      <div className="content">
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <Card>
+                  <CardTitle tag="h4" className="text-center">Opprett ny handleliste</CardTitle>
+                </Card>
+              </CardHeader>
+                <CardBody>
+                  <Input placeholder="Skriv inn navn på ny handleliste" onChange={e => setListetittel(e.target.value)}/>                                
+                <Button
+                  className="ButtonsHeader" 
+                  style={{marginTop: '.5rem', marginRight: '.8rem'}}   
+                  onClick={() =>setOpprettNy(false)}         
+                  color="danger" 
+                  >Tilbake
+                </Button> 
+                <Button
+                  className="ButtonsHeader" 
+                  style={{marginTop: '.5rem', marginRight: '.8rem'}}   
+                  onClick={(e) => {
+                    BackendApi.nyHandlelisteAdd(jsonwebtoken.decode(localStorage.getItem('token')).epost, listetittel) 
+                    setOpprettNy(false)
+                    window.location.reload(false)
+                  }}         
+                  color="danger" 
+                  >Opprett ny liste
+                </Button> 
               </CardBody>
             </Card>
           </Col>
@@ -451,49 +595,124 @@ function Handleliste(props, vare) {
     </>
   ) : (
     <>
-      <div className="content">
-        <Row>
-          <Col>
+    <div className="content">
+      <Row>
+        <Col>
+          <Card>
+            <CardHeader>
             <Card>
-              <CardHeader>
-              <Card>
-                <CardTitle tag="h4" className="text-center">Kryss av varer i handlekurv</CardTitle>
-                  <Row className="justify-content-center">  
-                    <Button onClick={() =>setRedigering(true)} color="danger">Bytt til redigeringsvisning</Button>
-                  </Row>
-                </Card>
-              </CardHeader>
-              <CardBody>
-                <Table responsive>
-                  <thead className="text-primary">
+              <CardTitle tag="h4" className="text-center">Kryss av varer i handlekurv</CardTitle>
+                <Row className="justify-content-center">  
+                  <Button onClick={() =>setRedigering(true)} color="danger">Bytt til redigeringsvisning</Button>
+                </Row>
+              </Card>
+            </CardHeader>
+            <CardBody>
+              <Table responsive>
+                <thead className="text-primary">
 
-                  </thead> 
-                  <tbody>
-                      <FiltrertVareliste
-                        vareListe={vareListe}
-                        vareFilter={varefilter}
-                        handleliste={handleliste}
-                        setHandleliste={setHandleliste}
-                        radsum={radsum}
-                        setRadsum={setRadsum}
-                        redigering={redigering}
-                        setRedigering={setRedigering}
-                        prisliste={prisliste}
-                        setPrisliste={setPrisliste}
-                        butikker={butikker}
-                        setButikker={setButikker}
-                        finnPris={finnPris}
-                        setFinnPris={setFinnPris}
-                      />
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    </>
+                </thead> 
+                <tbody>
+                    <FiltrertVareliste
+                      vareListe={vareListe}
+                      vareFilter={varefilter}
+                      handleliste={handleliste}
+                      setHandleliste={setHandleliste}
+                      radsum={radsum}
+                      setRadsum={setRadsum}
+                      redigering={redigering}
+                      setRedigering={setRedigering}
+                      prisliste={prisliste}
+                      setPrisliste={setPrisliste}
+                      butikker={butikker}
+                      setButikker={setButikker}
+                      finnPris={finnPris}
+                      setFinnPris={setFinnPris}
+                      listetittel={listetittel}
+                      setListetittel={setListetittel}
+                      listeFilter={listeFilter}
+                      setlisteFilter={setlisteFilter}
+                    />
+                </tbody>
+              </Table>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  </>
   )
 }
 
 export default Handleliste;
+
+
+               {/*     <Row className="justify-content-center">
+                     <UncontrolledDropdown size="lg">                     
+                        <DropdownToggle 
+                          style={{backgroundColor: 'transparent', width: '10em'}} 
+                          caret>{finnButikk}
+                        </DropdownToggle>
+                        <DropdownMenu 
+                          onClick={() => { }}>
+                            <DropdownItem onClick={() =>{
+                              setFinnButikk(butikker[0]) 
+                              oppdaterVisning(butikker[0], finnDato, setVareListe, setPrisliste)
+                              setToggle(!toggle)
+                            }}>{butikker[0]}</DropdownItem>
+                            <DropdownItem onClick={() => {
+                              setFinnButikk(butikker[1])
+                              oppdaterVisning(butikker[1], finnDato, setVareListe, setPrisliste)
+                              setToggle(!toggle)
+                            }}>{butikker[1]}</DropdownItem>
+                            <DropdownItem onClick={() =>{
+                              setFinnButikk(butikker[2]) 
+                              oppdaterVisning(butikker[2], finnDato, setVareListe, setPrisliste)
+                              setToggle(!toggle)
+                            }}>{butikker[2]}</DropdownItem>
+                            <DropdownItem onClick={() =>{
+                              setFinnButikk(butikker[3]) 
+                              oppdaterVisning(butikker[3], finnDato, setVareListe, setPrisliste)
+                              setToggle(!toggle)
+                            }}>{butikker[3]}</DropdownItem>
+                            <DropdownItem onClick={() =>{
+                              setFinnButikk(butikker[4]) 
+                              oppdaterVisning(butikker[4], finnDato, setVareListe, setPrisliste)
+                              setToggle(!toggle)
+                            }}>{butikker[4]}</DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown> */}
+
+
+                           {/*        </Row>   
+
+         <UncontrolledDropdown size="lg">
+                        <DropdownToggle 
+                            style={{backgroundColor: 'transparent', width: '10em'}} 
+                            caret>{listetittel}
+                          </DropdownToggle>
+                          <DropdownMenu 
+                            onClick={() => {  }}>                              
+                              <DropdownItem onClick={() =>{
+                                setListetittel(lister[0])
+                                hentHandliste(brukerMail.epost, lister[0], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
+                              }}>{lister[0]}</DropdownItem>
+                              <DropdownItem onClick={() => {
+                                setListetittel(lister[1])
+                                hentHandliste(brukerMail.epost, lister[1], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
+                              }}>{lister[1]}</DropdownItem>
+                              <DropdownItem onClick={() =>{
+                                setListetittel(lister[2])
+                                hentHandliste(brukerMail.epost, lister[2], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
+                              }}>{lister[2]}</DropdownItem>
+                              <DropdownItem onClick={() =>{
+                                setListetittel(lister[3])
+                                hentHandliste(brukerMail.epost, lister[3], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
+                              }}>{lister[3]}</DropdownItem>
+                              <DropdownItem onClick={() =>{
+                                setListetittel(lister[4])
+                                hentHandliste(brukerMail.epost, lister[4], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
+                              }}>{lister[4]}</DropdownItem>                         
+                        </DropdownMenu>
+                      </UncontrolledDropdown>   
+                    </Row> */}

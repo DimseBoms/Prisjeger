@@ -77,21 +77,9 @@ else{
     passord: passord
   }
       loginSjekk(bruker)
-    /*
-    .then(response => {
-      console.log(response.data.bruker)
-      if(response.data.melding==='innlogget'){
-        alert('innlogget')
-      }
-      
-  });*/
-
-
-  //  const sjekk  =   backendApi.loginSjekk(bruker);
-
       }
       else{
-        console.log('feil i input')
+        alert('passord eller brukernavn er feil')
       }
 
 

@@ -29,7 +29,7 @@ import Handleliste from "views/Handleliste.js"
 import Loggføring from "views/Loggføring";
 import Register from "views/Register";
 import Login from "views/Login";
-
+import Logvisning from "views/Logvisning";
 
 var routes = [
   {
@@ -122,6 +122,13 @@ var routes = [
     name: "Login",
     icon: "nc-icon nc-bank",
     component: Login,
+    layout: "/admin",
+  },
+  {
+    path: "/Logvisning",
+    name: "logvisning",
+    icon: "nc-icon nc-bank",
+    component: Logvisning,
     layout: "/admin",
   },
 ];

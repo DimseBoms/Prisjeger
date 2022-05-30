@@ -1,5 +1,3 @@
-
-
 .ButtonsRegistrering {
     width: 5em;
     background-color: rgba(45, 140, 131, 0.997);
@@ -15,20 +13,29 @@
 }
 
 .HeaderBakgrunn {
-    background-color: rgba(45, 140, 131, 0.997);    
+    background-color: rgba(45, 140, 131, 0.997);
 }
 
 .CheckVare {
-    width: 5em;
-    height: 4.5em;
+    width: 3.9em;
+    height: 3.9em;
     padding-left: 0em;
     padding-right: 0em;
+    padding-bottom: 10em;
 }
 
 .ButtonsHeader {
     width: 15em; 
     background-color: rgba(83, 36, 8, 0.997);
+    margin-left: 2em;
+    margin-right: 2em;
     padding-left: 0em;
-    padding-right: 0em;    
+    padding-right: 0em;
 }
 
+.Valgmeny {
+    width: 15em;
+    padding: 0em;
+    margin-left: 2em;
+    margin-right: 2em;
+}
