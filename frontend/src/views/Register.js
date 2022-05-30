@@ -25,12 +25,15 @@ import {
     
      async function  postReg(postObjekt) {
       console.log("Startet postTest()")
-      axios.post(`/reg`, postObjekt).then(response => {
+      axios.post(`/regist`, postObjekt).then(response => {
         if(response.data === 'brukerEKS'){
           alert('bruker eksisterer allerede')
         }
+        else{
           console.log(response)
-      });
+          alert('bruker registrert')
+        }
+        });
     } 
   
   async function handleSubmit(event) {

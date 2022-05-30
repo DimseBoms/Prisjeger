@@ -29,7 +29,8 @@ import {
     const [passord, setPassord] = useState("");
     const [data, setData]= useState("");
   
-//kilde for logikk for å sette og hente localstorage
+//bearbeidet kode for å manipulere data i localstorage, fra:
+//https://github.com/codedamn/full-mern-stack-video/blob/part1/client/src/pages/Login.js  
 async function loginSjekk(postObjekt) {
   backendApi.testcoookie()
 

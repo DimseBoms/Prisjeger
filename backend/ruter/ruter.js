@@ -689,14 +689,16 @@ ruter.get('/slettbruker/:bruker', async function(req, res){
     brukerModell.findOneAndDelete(brukerNavn)
 
 })
-//Tore broberg registrerer bruker -- kilde for bearbeidet kode her 
-ruter.post('/reg', async function (req, res) {
-        let ePost = sanitize(req.body.epost);
+//Tore broberg registrerer bruker - brukt følgende kilde for å bearbeide kode:
+//https://github.com/codedamn/full-mern-stack-video  
+ruter.post('/regist', async function (req, res) {
+        let epost = sanitize(req.body.epost);
         let passord = sanitize(req.body.passord);
-        const nyBruker = {ePost, passord};
+        console.log(epost)
+        const nyBruker = {epost, passord};
         console.log('dette er en ny bruker'+ JSON.stringify(nyBruker));
      try{
-  brukerModell.findOne({epost: ePost}).then(bruker=> {
+  brukerModell.findOne({epost: epost}).then(bruker=> {
             if (bruker){
                 res.json('brukerEKS');
                 console.log('bruker eksisterer')    
@@ -710,6 +712,7 @@ ruter.post('/reg', async function (req, res) {
                             console.log('feil med passordkryptering')
                         }    
                         nyBruker.passord = hash;
+                        console.log(nyBruker)
                         brukerModell.create(nyBruker);
                         console.log('lagt ny bruker'+ JSON.stringify(nyBruker))
 
