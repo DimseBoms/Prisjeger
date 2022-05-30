@@ -1,3 +1,4 @@
+//Tore Broberg, Dmitriy Safiullin
 import axios from "axios";
 
 // Laster "http://prisjeger-app.duckdns.org:6969/api/"" dersom programmet kjøres på tjener

@@ -1,3 +1,4 @@
+//Tore Broberg, Dmitriy Safiullin
 import http from "./axiosInit";
 import httpPost from "./axiosPostInit";
 
@@ -63,18 +64,20 @@ class BackendApi {
     }
 
     /* ANDRE METODER */
+    //metode for å logge ut
     logut() {
       return http.get(`/logUt`)
     }
+    //metode for å sende lognivå, og å skru logger av og på
     getLogStatus(lvl, status){
       return http.get(`/logger/${lvl}/${status}`)
     }
     postRegistrer(postObjekt) {
-      console.log("Startet registrering")
       http.post(`/test`, postObjekt).then(response => {
           console.log(response)
       });
     }
+    //metode for å registrere bruker 
     postTest(postObjekt) {
       console.log("Startet postTest()")
       httpPost.post(`/testpost`, postObjekt).then(response => {
@@ -89,9 +92,11 @@ class BackendApi {
     testcoookie() {
       return http.get(`/cTest`);
     }
+    //metode for å opprette brukercookie ved innlogging 
     lagCookie(epost) {
       return http.get(`/lagCTest/${epost}`);
     }
+    //metode for å vise loggen i frontend 
     hentLogg(){
       return http.get(`/hentLogg`); 
     }
@@ -107,6 +112,8 @@ class BackendApi {
         return response;
       });
     } 
+
+    //metode for å autentisere administrator 
     sjekkAdmin(){
       return http.get(`/adminSjekk`);
     }
