@@ -1,21 +1,11 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
+/**
+ * Denne filen er skrevet av forfatter Leonard Rygh
+ * Mai 2022
+ * Prosjekt Prisjeger, Gruppe 12
+ * 
+ * Filen returnerer et komplett handleliste-komponent
+ * 
+ */
 import React from "react";
 import BackendApi from "../axios/backendApi";
 import { useState, useEffect} from "react";
@@ -431,7 +421,10 @@ function Handleliste(props, vare) {
                         <DropdownToggle style={{padding: "0px"}}>
                           <Input placeholder={finnButikk} onChange={e => setButikker(e.target.value)}/>
                         </DropdownToggle>
-                          <DropdownMenu style={{ maxHeight: "300px", overflow:"scroll"}}>
+                          <DropdownMenu 
+                            style={{ 
+                              maxHeight: "500px", 
+                              overflow:"scroll"}}>
                             <VisButikker
                               lister={lister} 
                               listeFilter={listeFilter}
@@ -456,7 +449,10 @@ function Handleliste(props, vare) {
                         <DropdownToggle style={{padding: "0px"}}>
                           <Input placeholder={listetittel} onChange={e => setlisteFilter(e.target.value)}/>
                         </DropdownToggle>
-                        <DropdownMenu style={{ maxHeight: "300px", overflow:"scroll"}}>
+                        <DropdownMenu 
+                        style={{ 
+                          maxHeight: "500px", 
+                          overflow:"scroll", }}>
                             <Vishandlelister 
                             lister={lister} 
                             listeFilter={listeFilter}
@@ -477,19 +473,23 @@ function Handleliste(props, vare) {
                         style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}}  
                         onClick={() => {
                           console.log("Her skal antall settes til 0") 
-                          window.confirm(t('confirm_erase_cart')) ?
+                          if (window.confirm(t('confirm_erase_cart'))) {
                             BackendApi.slettHandleliste(jsonwebtoken.decode(localStorage.getItem('token')).epost, 
-                              listetittel) :
+                              listetittel)   
+                              window.location.reload(false)
+                          } else {
                             console.log("Bruker har avbrutt")
-                            window.location.reload(false); 
+                            window.location.reload(false);   
+                          }
                         }} 
+                        
                         color="danger" 
                         >{t('delete_cart')}
-                      </Button>      
+                      </Button>    
                       <Button
                         className="ButtonsHeader" 
                         style={{marginTop: '.5rem', marginRight: '.8rem', marginLeft: '.8rem'}} 
-                        onClick={() => setOpprettNy(true) }         
+                        onClick={() => setOpprettNy(true)}   
                         color="danger" 
                         >{t('new_list')}
                       </Button> 
@@ -569,7 +569,10 @@ function Handleliste(props, vare) {
                 </Card>
               </CardHeader>
                 <CardBody>
-                  <Input placeholder={t('list_name')} onChange={e => setListetittel(e.target.value)}/>                                
+                  <Input placeholder={t('list_name')} onChange={e => {
+                    setListetittel(e.target.value)
+                    console.log("LISTETITTEL " + listetittel)
+                  }}/>                                
                 <Button
                   className="ButtonsHeader" 
                   style={{marginTop: '.5rem', marginRight: '.8rem'}}   
@@ -581,9 +584,12 @@ function Handleliste(props, vare) {
                   className="ButtonsHeader" 
                   style={{marginTop: '.5rem', marginRight: '.8rem'}}   
                   onClick={(e) => {
-                    BackendApi.nyHandlelisteAdd(jsonwebtoken.decode(localStorage.getItem('token')).epost, listetittel) 
-                    setOpprettNy(false)
-                    window.location.reload(false)
+                    // kontrollerer at bruker har oppgitt et unikt navn på handleliste
+                    if (listetittel !== "" && !lister.includes(listetittel)) {
+                      BackendApi.nyHandlelisteAdd(jsonwebtoken.decode(localStorage.getItem('token')).epost, listetittel) 
+                      setOpprettNy(false)
+                      window.location.reload(false)                    
+                    } else alert("Handleliste må ha et unikt navn")
                   }}         
                   color="danger" 
                   >{t('create_new_list')}
@@ -646,74 +652,3 @@ function Handleliste(props, vare) {
 }
 
 export default Handleliste;
-
-
-               {/*     <Row className="justify-content-center">
-                     <UncontrolledDropdown size="lg">                     
-                        <DropdownToggle 
-                          style={{backgroundColor: 'transparent', width: '10em'}} 
-                          caret>{finnButikk}
-                        </DropdownToggle>
-                        <DropdownMenu 
-                          onClick={() => { }}>
-                            <DropdownItem onClick={() =>{
-                              setFinnButikk(butikker[0]) 
-                              oppdaterVisning(butikker[0], finnDato, setVareListe, setPrisliste)
-                              setToggle(!toggle)
-                            }}>{butikker[0]}</DropdownItem>
-                            <DropdownItem onClick={() => {
-                              setFinnButikk(butikker[1])
-                              oppdaterVisning(butikker[1], finnDato, setVareListe, setPrisliste)
-                              setToggle(!toggle)
-                            }}>{butikker[1]}</DropdownItem>
-                            <DropdownItem onClick={() =>{
-                              setFinnButikk(butikker[2]) 
-                              oppdaterVisning(butikker[2], finnDato, setVareListe, setPrisliste)
-                              setToggle(!toggle)
-                            }}>{butikker[2]}</DropdownItem>
-                            <DropdownItem onClick={() =>{
-                              setFinnButikk(butikker[3]) 
-                              oppdaterVisning(butikker[3], finnDato, setVareListe, setPrisliste)
-                              setToggle(!toggle)
-                            }}>{butikker[3]}</DropdownItem>
-                            <DropdownItem onClick={() =>{
-                              setFinnButikk(butikker[4]) 
-                              oppdaterVisning(butikker[4], finnDato, setVareListe, setPrisliste)
-                              setToggle(!toggle)
-                            }}>{butikker[4]}</DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledDropdown> */}
-
-
-                           {/*        </Row>   
-
-         <UncontrolledDropdown size="lg">
-                        <DropdownToggle 
-                            style={{backgroundColor: 'transparent', width: '10em'}} 
-                            caret>{listetittel}
-                          </DropdownToggle>
-                          <DropdownMenu 
-                            onClick={() => {  }}>                              
-                              <DropdownItem onClick={() =>{
-                                setListetittel(lister[0])
-                                hentHandliste(brukerMail.epost, lister[0], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
-                              }}>{lister[0]}</DropdownItem>
-                              <DropdownItem onClick={() => {
-                                setListetittel(lister[1])
-                                hentHandliste(brukerMail.epost, lister[1], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
-                              }}>{lister[1]}</DropdownItem>
-                              <DropdownItem onClick={() =>{
-                                setListetittel(lister[2])
-                                hentHandliste(brukerMail.epost, lister[2], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
-                              }}>{lister[2]}</DropdownItem>
-                              <DropdownItem onClick={() =>{
-                                setListetittel(lister[3])
-                                hentHandliste(brukerMail.epost, lister[3], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
-                              }}>{lister[3]}</DropdownItem>
-                              <DropdownItem onClick={() =>{
-                                setListetittel(lister[4])
-                                hentHandliste(brukerMail.epost, lister[4], setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
-                              }}>{lister[4]}</DropdownItem>                         
-                        </DropdownMenu>
-                      </UncontrolledDropdown>   
-                    </Row> */}
