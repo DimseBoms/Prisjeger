@@ -4,6 +4,13 @@ import { useTranslation } from 'react-i18next';
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col, CardTitle, CardText } from "reactstrap";
 
+/**
+ * @returns 
+ * 
+ * Dette er view for å lage OmOss siden
+ * 
+ * Laget av Gaute og Daniel
+ */
 function User() {
   const {t} = useTranslation();
   return (
