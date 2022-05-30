@@ -1,5 +1,6 @@
 /*
 Navigasjonslinje på toppen. Inneholder språkvalg og viser om du er logget inn
+Redigert av: Gaute Hermansen, Dmitriy Safiullin, Leonard Rygh, Daniel Vikan.
 */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -28,6 +29,7 @@ import jsonwebtoken from "jsonwebtoken"; // for å identifisere bruker
 
 import languages from "../../assets/available_languages";
 import { useTranslation } from "react-i18next";
+
 
 function LagSpråkJSX(props) {
   return (
