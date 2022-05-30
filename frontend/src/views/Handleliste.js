@@ -86,6 +86,7 @@ function FiltrertVareliste({
     })
   })
   
+  const t = useTranslation()
   // Conditional rendering, redigeringsvisning/ handlevisning
   return (redigering) ? (
     <>

@@ -32,6 +32,7 @@ import Login from "views/Login";
 import { t } from "i18next";
 import react from "react";
 import { useTranslation } from "react-i18next";
+import Logvisning from "views/Logvisning";
 
 var routes = [
   {
@@ -124,6 +125,13 @@ var routes = [
     name: "Login",
     icon: "nc-icon nc-bank",
     component: Login,
+    layout: "/admin",
+  },
+  {
+    path: "/Logvisning",
+    name: "logvisning",
+    icon: "nc-icon nc-bank",
+    component: Logvisning,
     layout: "/admin",
   },
 ];
