@@ -34,12 +34,12 @@ Prisjeger
 |
 |___backend
 |	  |___datamodeller
-|	  |				 |___brukerModell.js
-|	  |				 |___prisdataModell.js
-|	  |				 |___varelisteModell.js
+|	  |		|___brukerModell.js
+|	  |		|___prisdataModell.js
+|	  |		|___varelisteModell.js
 |	  |
 |	  |_____ruter
-|	  |		    |___ruter.js
+|	  |	    |___ruter.js
 |	  |
 |	  |___logger.js
 |	  |___logger.js
@@ -47,33 +47,33 @@ Prisjeger
 |	  |___start-backend.sh
 |
 |____frontend
-			|___src
-			|	   |___axios
-			|	   |	   	|___axiosInit.js
-			|	   |	   	|___axiosPostInit.js
-			|	   |	   	|___backenApi.js
-			|	   |
-			|	   |___components
-			|	   |			  |___navbars
-			|	   |				  		 |___dedmoNavbar.js (redigert)
-			|	   |						    
-			|	   |___layouts
-			|	   |	   	  |___admin.js (redigert)
-			|	   |
-			|	   |
-			|	   |___variables
-			|	   |           |___sampledata.js
-			|	   |
-			|	   |___views
-			|				|___addLanguage.js
-			|				|___Dashborad.js
-			|				|___HandleListe.js
-			|				|___LoggFøring.js
-			|				|___Login.js
-			|				|___LogVisning.js
-			|				|___Registrer.js
-			|				|___Scanner.js
-			|				|___User.js
-			|
-			|___routes.js (redigert)
+	    |___src
+	    |	   |___axios
+	    |	   |	   |___axiosInit.js
+	    |	   |	   |___axiosPostInit.js
+	    |	   |	   |___backenApi.js
+	    |	   |
+	    |	   |___components
+	    |	   |		|___navbars
+	    |	   |			  |___dedmoNavbar.js (redigert)
+	    |	   |						    
+	    |	   |___layouts
+	    |	   |	     |___admin.js (redigert)
+	    |	   |
+	    |	   |
+ 	    |	   |___variables
+	    |	   |           |___sampledata.js
+	    |	   |
+	    |	   |___views
+	    |		|___addLanguage.js
+	    |		|___Dashborad.js
+	    |		|___HandleListe.js
+	    |		|___LoggFøring.js
+	    |		|___Login.js
+	    |		|___LogVisning.js
+	    |		|___Registrer.js
+	    |		|___Scanner.js
+	    |		|___User.js
+	    |
+	    |___routes.js (redigert)
 ```
