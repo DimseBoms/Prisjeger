@@ -1,4 +1,10 @@
-//Tore Broberg, Dmitriy Safiullin
+/*
+Konfigurasjon av Axios. Axios er modulen som hjelper oss å kommunisere med backend
+ved å transformere API-kall til vanlige kall på metoder med parametere. Denne filen
+definerer API kall og gjør de tilgjengelige gjennom metoder som kan benyttes ved å
+importere denne klassen i sin helhet.
+Forfattere: Tore Broberg, Dmitriy Safiullin 
+*/
 import http from "./axiosInit";
 import httpPost from "./axiosPostInit";
 
