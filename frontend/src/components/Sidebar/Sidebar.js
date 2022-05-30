@@ -1,6 +1,6 @@
 /*
 Navigasjonslinje/Burgermeny på venstresiden. Innehar lenkene
-Gaute Hermansen, Dmitriy Safiullin
+Gaute Hermansen
 */
 import React from "react";
 import { NavLink } from "react-router-dom";
