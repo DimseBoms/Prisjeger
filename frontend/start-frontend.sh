@@ -1,5 +1,5 @@
 #!/bin/bash
-# Skriptet som initialiserer backend. Dette skriptet startes
+# Skriptet som initialiserer frontend. Dette skriptet startes
 # av SystemD ved oppstart av maskinen og startes automatisk på
 # nytt dersom det slutter å kjøre ved f.eks systemkræsj.
 # Dmitriy Safiullin
