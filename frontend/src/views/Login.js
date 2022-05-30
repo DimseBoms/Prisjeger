@@ -42,6 +42,7 @@ async function loginSjekk(postObjekt) {
       localStorage.setItem('token', response.data.bruker)  
       backendApi.lagCookie(epost)
       alert('logget inn')
+      window.location.reload(false);
     }
     else(alert('feil info'))
   //  return response;
@@ -55,6 +56,7 @@ async function logUt(event){
  alert('logget ut')
     localStorage.removeItem('token')  
     backendApi.logut()
+    window.location.reload(false);
 }
 else{
   alert('du er ikke logget inn')

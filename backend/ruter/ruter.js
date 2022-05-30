@@ -341,19 +341,25 @@ ruter.get('/handlelister/:epost', async function (req, res) {
             res.status(500).json({ message: error.message })
         }
         else{
-            let dbSvar = response.handlelister
-            let utSvar = []
-            dbSvar.forEach(handleliste => {
-                utSvar.push(Object.keys(handleliste)[0])
-                console.log(utSvar)
-            })
-            let responsArr = []
-            utSvar.forEach(element => {
-                if (element !== undefined) {
-                  responsArr.push(element);
-                }
-              });
-            res.json(responsArr.reverse())
+            try {
+                console.log(response)
+                let dbSvar = response.handlelister
+                let utSvar = []
+                dbSvar.forEach(handleliste => {
+                    utSvar.push(Object.keys(handleliste)[0])
+                    console.log(utSvar)
+                })
+                let responsArr = []
+                utSvar.forEach(element => {
+                    if (element !== undefined) {
+                      responsArr.push(element);
+                    }
+                  });
+                res.json(responsArr.reverse())
+            } catch (error) {
+                console.log(error)
+                res.json( {melding: "Her skjedde det noe rart gitt"} )
+            }
         }
     }).sort(
         {dato: -1}

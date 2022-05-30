@@ -52,6 +52,17 @@ function LagSpråkJSX(props) {
   )
 }
 
+function LoggetInnSomJSX(props) {
+  const {t} = useTranslation();
+  if (localStorage.getItem('token')) {
+    return (
+      <CardHeader className="text-right user-logged-in-text">
+            {t('user_logged_in_as')}{jsonwebtoken.decode(localStorage.getItem('token')).epost}
+      </CardHeader>
+    )
+  } else return null
+}
+
 /**
  * Denne funksjonen følger med malen Paper Dashboard React. Gruppe 12 har kun endret logo/ navn, og lagt
  * til et valg om å bytte språk
@@ -150,9 +161,7 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <CardHeader className="text-right user-logged-in-text">
-            {t('user_logged_in_as')}{jsonwebtoken.decode(localStorage.getItem('token')).epost}
-          </CardHeader>
+          <LoggetInnSomJSX t={t} ></LoggetInnSomJSX>
             <Nav navbar>
               <Dropdown
                 nav
