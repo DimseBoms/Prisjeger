@@ -1,3 +1,4 @@
+//Tore Broberg 
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import backendApi from "../axios/backendApi";
@@ -27,11 +28,6 @@ import {
 
     const [passord, setPassord] = useState("");
     const [data, setData]= useState("");
-    function validateForm() {
-  
-      return epost.length > 0 && passord.length > 0;
-  
-    }
   
 //kilde for logikk for å sette og hente localstorage
 async function loginSjekk(postObjekt) {
@@ -45,10 +41,7 @@ async function loginSjekk(postObjekt) {
       console.log(response)
       localStorage.setItem('token', response.data.bruker)  
       backendApi.lagCookie(epost)
-   // document.cookie = 'bruker='+epost
-           //  response.data.bruker
       alert('logget inn')
-      //window.location.href = '/dashboard'
     }
     else(alert('feil info'))
   //  return response;
@@ -77,21 +70,9 @@ else{
     passord: passord
   }
       loginSjekk(bruker)
-    /*
-    .then(response => {
-      console.log(response.data.bruker)
-      if(response.data.melding==='innlogget'){
-        alert('innlogget')
-      }
-      
-  });*/
-
-
-  //  const sjekk  =   backendApi.loginSjekk(bruker);
-
       }
       else{
-        console.log('feil i input')
+        alert('passord eller brukernavn er feil')
       }
 
 

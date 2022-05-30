@@ -1,3 +1,4 @@
+//Tore Broberg 
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import BackendApi from "../axios/backendApi";
@@ -9,13 +10,6 @@ import {
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
-    CardTitle,
-    FormGroup,
-    Form,
-    Input,
-    Row,
-    Col,
   } from "reactstrap";
   
   
@@ -25,15 +19,16 @@ import {
     const { t, i18n } = useTranslation();
     const history = useHistory()
 
-    BackendApi.testcoookie()
-
      const [epost, setEpost] = useState("");
      const [brukerNavn, setBruker] = useState("");
      const [passord, setPassord] = useState("");
     
      async function  postReg(postObjekt) {
       console.log("Startet postTest()")
-      axios.post(`/testpost`, postObjekt).then(response => {
+      axios.post(`/reg`, postObjekt).then(response => {
+        if(response.data === 'brukerEKS'){
+          alert('bruker eksisterer allerede')
+        }
           console.log(response)
       });
     } 
@@ -41,7 +36,6 @@ import {
   async function handleSubmit(event) {
         event.preventDefault();
 
- //   console.log(brukerVar);
         try{
         if(epost.length > 0 && passord.length > 0){
     const bruker = {
@@ -52,22 +46,15 @@ import {
  
         }
         else{
-          alert('feil i input')
+          alert('feil i input, epost og passord må ha verdi')
         }
-
-
-    }     
-
-        
+    }             
         
 catch(err){
   console.log(err)
 }  
 }
   
-
-  
-   
   
     return (
   

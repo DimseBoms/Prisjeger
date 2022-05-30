@@ -1,4 +1,5 @@
 
+//Tore Broberg, formatet på logger configen er hentet fra winston dokumentasjonen: https://github.com/winstonjs/winston
 import winston from 'winston'
 // FORMAT: dato;klokkeslett;brukernavn;beskrivelse av hendelse
 const logConfig = {

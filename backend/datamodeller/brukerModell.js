@@ -1,3 +1,4 @@
+//Tore Broberg 
 import mongoose from 'mongoose'
 
 const Brukere = new mongoose.Schema({

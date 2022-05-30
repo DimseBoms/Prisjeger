@@ -5,7 +5,9 @@ import brukerModell from '../datamodeller/brukerModell.js'
 import logger from '../Logger.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import sanitize from 'mongo-sanitize'
 const ruter = express.Router()
+import fs from 'fs'
 
 // home
 ruter.get('/', (req, res) => {
@@ -91,7 +93,9 @@ ruter.get('/butikkliste', async function (req, res) {
 ruter.get('/vare/:navn', async function (req, res) {
     console.log(`Ny forespørsel etter vare: ${req.params.navn}`)
     let brukernavn = req.cookies.bruker
-    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for en vare')
+    let vnavn = req.params.navn
+    let pNavn = sanitize(req.params.navn)
+    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for :' + '' + vnavn)
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
@@ -106,7 +110,7 @@ ruter.get('/vare/:navn', async function (req, res) {
                 delSvar.dato = element.dato
                 let i = 0
                 element.butikker.forEach((butikk) => {
-                    delSvar.priser[butikk] = element.varer[req.params.navn].at(i)
+                    delSvar.priser[butikk] = element.varer[pNavn].at(i)
                     i++
                 })
                 svar.push(delSvar)
@@ -125,10 +129,12 @@ ruter.get('/vare/:navn', async function (req, res) {
 ruter.get('/vare/:navn/:fradato', async function (req, res) {
     console.log(`Ny forespørsel etter vare: ${req.params.navn} fra ${req.params.fradato}`)
     let brukernavn = req.cookies.bruker
-    logger.info('bruker: ' + brukernavn + ' ' + 'all prisdata for en vare fra et tidspunkt')
+    let pNavn = sanitize(req.params.navn)
+    let fdato = sanitize(req.params.fradato)
+    logger.info('bruker: ' + brukernavn + ' ' + 'all prisdata for :' + '' + pNavn +''+ 'fra:' +''+fdato )
     try {
         let prisdata = await prisdataModell.find({
-            dato: {$gte: req.params.fradato}
+            dato: {$gte: fdato}
         }).sort(
             {dato: -1}
         )
@@ -142,7 +148,7 @@ ruter.get('/vare/:navn/:fradato', async function (req, res) {
                 delSvar.dato = element.dato
                 let i = 0
                 element.butikker.forEach((butikk) => {
-                    delSvar.priser[butikk] = element.varer[req.params.navn].at(i)
+                    delSvar.priser[butikk] = element.varer[pNavn].at(i)
                     i++
                 })
                 svar.push(delSvar)
@@ -161,10 +167,13 @@ ruter.get('/vare/:navn/:fradato', async function (req, res) {
 ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
     console.log(`Ny forespørsel etter vare: ${req.params.navn} fra ${req.params.fradato} til ${req.params.tildato}`)
     let brukernavn = req.cookies.bruker
-    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for en vare mellom to tidspunkt ')
-    try {
+    let fdato = sanitize(req.params.fradato)
+    let tdato = sanitize(req.params.tildato)
+    let vnavn = sanitize(req.params.navn)
+    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for' + ' ' + vnavn + '' + 'mellom' + '' + fdato + '' + 'og' + ' ' + tdato)
+        try {
         let prisdata = await prisdataModell.find({
-            dato: {$gte: req.params.fradato, $lte: req.params.tildato}
+            dato: {$gte: fdato, $lte: tdato}
         }).sort(
             {dato: -1}
         )
@@ -178,7 +187,7 @@ ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
                 delSvar.dato = element.dato
                 let i = 0
                 element.butikker.forEach((butikk) => {
-                    delSvar.priser[butikk] = element.varer[req.params.navn].at(i)
+                    delSvar.priser[butikk] = element.varer[vnavn].at(i)
                     i++
                 })
                 svar.push(delSvar)
@@ -197,7 +206,8 @@ ruter.get('/vare/:navn/:fradato/:tildato', async function (req, res) {
 ruter.get('/butikk/:butikk', async function (req, res) {
     console.log(`Ny forespørsel etter butikk: ${req.params.butikk}`)
     let brukernavn = req.cookies.bruker
-    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for en butikk')
+    let pbutikk = sanitize(req.params.butikk)
+    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for :' + '' + pbutikk )
     try {
         let prisdata = await prisdataModell.find().sort(
             {dato: -1}
@@ -210,7 +220,7 @@ ruter.get('/butikk/:butikk', async function (req, res) {
                     varer: {}
                 }
                 delSvar.dato = element.dato
-                let butikkIndeks = finnButikkIndeks(element, req.params.butikk)
+                let butikkIndeks = finnButikkIndeks(element, pbutikk)
 
                 for (let vare in element.varer) {
                     let i = 0
@@ -236,10 +246,12 @@ ruter.get('/butikk/:butikk', async function (req, res) {
 ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
     console.log(`Ny forespørsel etter butikk: ${req.params.butikk} fra ${req.params.fradato}`)
     let brukernavn = req.cookies.bruker
-    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for en butikk fra en dato')
+    let pbutikk = sanitize(req.params.butikk)
+    let fdato = sanitize(req.params.fradato)
+    logger.info('bruker: ' + brukernavn + ' ' + 'henter prisdata for :' + '' + pbutikk + ' ' + 'fra følgende dato :' + '' + fdato)    
     try {
         let prisdata = await prisdataModell.find({
-            dato: {$gte: req.params.fradato}
+            dato: {$gte: fdato}
         }).sort(
             {dato: -1}
         )
@@ -251,7 +263,7 @@ ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
                     varer: {}
                 }
                 delSvar.dato = element.dato
-                let butikkIndeks = finnButikkIndeks(element, req.params.butikk)
+                let butikkIndeks = finnButikkIndeks(element, pbutikk)
 
                 for (let vare in element.varer) {
                     let i = 0
@@ -277,10 +289,14 @@ ruter.get('/butikk/:butikk/:fradato', async function (req, res) {
 ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
     console.log(`Ny forespørsel etter butikk: ${req.params.butikk} fra ${req.params.fradato} til ${req.params.tildato}`)
     let brukernavn = req.cookies.bruker
-    logger.info('bruker: ' + brukernavn + ' ' + 'henter all prisdata for en butikk mellom to datoer')
+    let pbutikk = sanitize(req.params.butikk)
+    let fdato = sanitize(req.params.fradato)
+    let tdato = sanitize(req.params.tildato)
+
+    logger.info('bruker: ' + brukernavn + ' ' + 'henter all prisdata for :' + ' ' + pbutikk + '' + ' fra :' + fdato + '' + 'til :' + '' + tdato)
     try {
         let prisdata = await prisdataModell.find({
-            dato: {$gte: req.params.fradato, $lte: req.params.tildato}
+            dato: {$gte: fdato, $lte: tdato}
         }).sort(
             {dato: -1}
         )
@@ -292,7 +308,7 @@ ruter.get('/butikk/:butikk/:fradato/:tildato', async function (req, res) {
                     varer: {}
                 }
                 delSvar.dato = element.dato
-                let butikkIndeks = finnButikkIndeks(element, req.params.butikk)
+                let butikkIndeks = finnButikkIndeks(element, pbutikk)
 
                 for (let vare in element.varer) {
                     let i = 0
@@ -319,7 +335,7 @@ ruter.get('/handlelister/:epost', async function (req, res) {
     console.log(`Ny forespørsel etter handlelister for epost: ${req.params.epost}`)
     let brukernavn = req.cookies.bruker
     logger.info('bruker: ' + brukernavn + ' ' + 'henter handlelistene sine ')
-    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+    brukerModell.findOne({ epost: brukernavn}, function (error, response) {
         if (error){
             console.log(error);
             res.status(500).json({ message: error.message })
@@ -347,8 +363,10 @@ ruter.get('/handlelister/:epost', async function (req, res) {
 ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
     console.log(`Ny forespørsel etter handleliste: ${req.params.tittel} for epost: ${req.params.epost}`)
     let brukernavn = req.cookies.bruker
-    logger.info('bruker: ' + brukernavn + ' ' + 'henter handlelistene sine ')
-    brukerModell.findOne({ epost: req.params.epost }, function (error, response) {
+    let pLsite = sanitize(req.params.tittel)
+    let pNavn = sanitize(req.params.epost)
+    logger.info('bruker: ' + brukernavn + ' ' + 'henter handleliste :' + pLsite)
+    brukerModell.findOne({ epost: pNavn }, function (error, response) {
         if (error){
             console.log(error);
             res.status(500).json({ message: error.message })
@@ -358,8 +376,8 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
             dbSvar = dbSvar.filter(value => JSON.stringify(value) !== '{}');
             let harSendt = false
             dbSvar.forEach(handleliste => {
-                if (Object.keys(handleliste) == req.params.tittel) {
-                    res.json(handleliste[req.params.tittel])
+                if (Object.keys(handleliste) == pLsite) {
+                    res.json(handleliste[pLsite])
                     harSendt = true
                 }
             })
@@ -376,7 +394,7 @@ ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
     logger.info(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
     let dbSvar
-    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+    brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
         if (error) {
             console.log(error);
             res.status(500).json({ message: error.message })
@@ -408,8 +426,9 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
     console.log(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
+   let pEpost = sanitize(req.params.epost)
     let dbSvar
-    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+    brukerModell.findOne({ epost: pEpost}, function (error, response) {
         if (error) {
             console.log(error);
             res.status(500).json({ message: error.message })
@@ -418,7 +437,7 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
             try {
                 dbSvar = response.handlelister
                 // hjelpemetode for å inserte liste
-                res.json(leggTilVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
+                res.json(leggTilVare(dbSvar, pEpost, sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err ){ // feil i input parametere
                 console.log(err)
                 res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
@@ -480,7 +499,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare', async function (req, res) {
     logger.info(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
     let dbSvar
-    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+    brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
         if (error) {
             console.log(error);
             res.status(500).json({ message: error.message })
@@ -490,7 +509,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare', async function (req, res) {
                 dbSvar = response.handlelister
                 console.log(dbSvar)
                 // hjelpemetode for å inserte liste
-                res.json(fjernVare(dbSvar, req.params.epost, req.params.tittel, req.params.vare))
+                res.json(fjernVare(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err) { // feil i input parametere
                 console.log(err)
                 res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
@@ -542,7 +561,7 @@ ruter.post('/handlelister/:epost/:tittel/remove/', async function (req, res) {
     logger.info(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
     let dbSvar
-    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
+    brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
         if (error) {
             console.log(error);
             res.status(500).json({ message: error.message })
@@ -552,7 +571,7 @@ ruter.post('/handlelister/:epost/:tittel/remove/', async function (req, res) {
                 dbSvar = response.handlelister
                 console.log(dbSvar)
                 // hjelpemetode for å slette liste
-                slettHandleliste(dbSvar, req.params.epost, req.params.tittel)
+                slettHandleliste(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel))
                 res.json({ melding: "Slettet liste" })
             } catch (err) { // feil i input parametere
                 console.log(err)
@@ -633,9 +652,8 @@ ruter.get('/logger/:lvl/:status', async(req, res)=>{
         
     console.log(req.cookies.bruker)
     let brukernavn = req.cookies.bruker
-    res.cookie('loggerCookie','loggerDenne')
-     let sts = req.params.status;
-     let nivå = req.params.lvl;
+     let sts = sanitize(req.params.status);
+     let nivå = sanitize(req.params.lvl);
      let logState ;
      if(sts === 'true'){
          console.log('skiftet til false ')
@@ -649,7 +667,7 @@ ruter.get('/logger/:lvl/:status', async(req, res)=>{
         logger.level = nivå;
         logger.silent=logState;
         console.log(sts, nivå);
-        logger.info('bruker:' + req.cookies.bruker + 'oppdaterte lognivå til' + nivå + 'skrudde logger på');
+        logger.info('bruker:' + req.cookies.bruker + ' ' + 'oppdaterte lognivå til :' + '' + nivå );
         res.send('skiftet loggprotokol');
 
     
@@ -659,22 +677,22 @@ ruter.get('/logger/:lvl/:status', async(req, res)=>{
 })
 //Tore broberg, metode for å slette en bruker 
 ruter.get('/slettbruker/:bruker', async function(req, res){
-    let brukerNavn= req.params.bruker   
+    let brukerNavn= sanitize(req.params.bruker)   
      logger.info('sletter bruker:' + ' '  + brukerNavn)
      res.clearCookie('bruker')
     brukerModell.findOneAndDelete(brukerNavn)
 
 })
 //Tore broberg registrerer bruker -- kilde for bearbeidet kode her 
-ruter.post('/testpost', async function (req, res) {
-        let epost = req.body.epost;
-        let passord = req.body.passord;
-        const nyBruker = {epost, passord};
+ruter.post('/reg', async function (req, res) {
+        let ePost = sanitize(req.body.epost);
+        let passord = sanitize(req.body.passord);
+        const nyBruker = {ePost, passord};
         console.log('dette er en ny bruker'+ JSON.stringify(nyBruker));
      try{
-  brukerModell.findOne({epost: req.body.epost}).then(bruker=> {
+  brukerModell.findOne({epost: ePost}).then(bruker=> {
             if (bruker){
-                res.json('bruker eksisterer allerede');
+                res.json('brukerEKS');
                 console.log('bruker eksisterer')    
             }
             else{
@@ -693,7 +711,7 @@ ruter.post('/testpost', async function (req, res) {
                 });
                 console.log(nyBruker.passord)
                 res.json('bruker regisrert')    
-                console.log('bruker oppretett')    
+                console.log('bruker opprettet')    
             }
     }) }
     catch(error){
@@ -714,8 +732,8 @@ ruter.get('/logUt', async function(req, res){
 
 ruter.post('/login',async function (req, res) {   
         console.log('request')
-        const epost = req.body.epost;
-        const passord = req.body.passord;
+        const epost = sanitize(req.body.epost);
+        const passord = sanitize(req.body.passord);
         const bruker = {epost, passord};
         console.log(bruker)
 
@@ -799,18 +817,22 @@ ruter.get('/cTest', async function (req, res) {
     res.send()
 })
 
-//Tore brober, henter loggen for å sende til klient 
+//Tore broberg, henter loggen for å sende til klient 
 ruter.get('/hentLogg', async function (req, res){
+    let brukernavn = req.cookies.bruker
+   try{
+    //var array = require("fs").readFileSync("loggInfo.log").toString().split("\\n");
     console.log('tester hentlogg')
     fs.readFile('loggInfo.log', 'utf-8', function(err, data){
-        res.json(data)
+        res.send(data)
         console.log(data)
-          })
+          })}
+          catch(err){res.send(err)}
       
 })
 //Tore broberg, hjelpemetode for å opprette cookie som identifiserer bruker på serversiden
 ruter.get('/lagCTest/:epost', async function (req, res){
-    res.cookie('bruker', req.params.epost )
+    res.cookie('bruker', sanitize(req.params.epost) )
     res.end()
 })
 // TODO:
@@ -818,6 +840,16 @@ ruter.get('/lagCTest/:epost', async function (req, res){
 // hent alle data innenfor spesifisert tid
 // hent alle data for en vare
 // hent alle data for en butikk
+ruter.get('/adminSjekk', async function(req, res){
+    let brukernavn = req.cookies.bruker
+
+    if(brukernavn === 'admin@admin.com'){
+        res.json('OK')
+    }
+    else{
+        res.json('!OK')
+    }
+})
 
 
 

@@ -1,3 +1,5 @@
+//Tore broberg 
+
 import React from "react";
 import BackendApi from "../axios/backendApi";
 import { useState } from "react";
@@ -6,22 +8,12 @@ import { useEffect } from "react";
 // reactstrap components
 import {
   Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Table,
   Row,
-  Col,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  Input,
   Button,
   UncontrolledDropdown,
   DropdownToggle, 
   DropdownMenu, 
   DropdownItem,
-  Label
 } from "reactstrap";
 import backendApi from "../axios/backendApi";
 import { useTranslation } from 'react-i18next';
