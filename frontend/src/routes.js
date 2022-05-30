@@ -45,7 +45,7 @@ var routes = [
   {
     path: "/addlanguage",
     name: "add_language",
-    icon: "nc-icon nc-bell-55",
+    icon: "nc-icon nc-world-2",
     component: AddLanguage,
     layout: "/admin",
   },
@@ -87,14 +87,14 @@ var routes = [
   {
     path: "/registrer",
     name: "REGISTRER",
-    icon: "nc-icon nc-bank",
+    icon: "nc-icon nc-single-02",
     component: Register,
     layout: "/admin",
   },
   {
     path: "/login",
     name: "SIGN_IN",
-    icon: "nc-icon nc-bank",
+    icon: "nc-icon nc-single-02",
     component: Login,
     layout: "/admin",
   },
