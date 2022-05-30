@@ -1,3 +1,4 @@
+//Tore Broberg 
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import BackendApi from "../axios/backendApi";
@@ -9,13 +10,6 @@ import {
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
-    CardTitle,
-    FormGroup,
-    Form,
-    Input,
-    Row,
-    Col,
   } from "reactstrap";
   
   
@@ -24,8 +18,6 @@ import {
    
     const { t, i18n } = useTranslation();
     const history = useHistory()
-
-    BackendApi.testcoookie()
 
      const [epost, setEpost] = useState("");
      const [brukerNavn, setBruker] = useState("");

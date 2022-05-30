@@ -1,17 +1,11 @@
+//Tore Broberg
 import backendApi from "../axios/backendApi";
 import { useHistory } from 'react-router-dom'
 import {useState} from 'react'
 import {
-    Button,
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
-    CardTitle,
-    FormGroup,
-    Form,
-    Input,
-    Row,
     Col,
   } from "reactstrap";
   

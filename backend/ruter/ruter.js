@@ -813,7 +813,7 @@ ruter.get('/cTest', async function (req, res) {
     res.send()
 })
 
-//Tore brober, henter loggen for å sende til klient 
+//Tore broberg, henter loggen for å sende til klient 
 ruter.get('/hentLogg', async function (req, res){
     let brukernavn = req.cookies.bruker
    try{
