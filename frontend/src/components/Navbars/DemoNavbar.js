@@ -47,7 +47,10 @@ import { useTranslation } from "react-i18next";
 function LagSpråkJSX(props) {
   return (
     languages.map(({code, name, country_code}) => (
-      <DropdownItem key={code} tag="a" onClick={() => i18next.changeLanguage(code)}>{name}</DropdownItem>
+      <DropdownItem key={code} tag="a" onClick={() => {
+        i18next.changeLanguage(code)
+        window.location.reload(false);
+      }}>{name}</DropdownItem>
     ))
   )
 }

@@ -26,11 +26,15 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
+import { t } from "i18next"
+import { useTranslation } from "react-i18next";
+
 import routes from "routes.js";
 
 var ps;
 
 function Dashboard(props) {
+  const {t} = useTranslation();
   const [backgroundColor, setBackgroundColor] = React.useState("black");
   const [activeColor, setActiveColor] = React.useState("info");
   const mainPanel = React.useRef();
@@ -69,6 +73,7 @@ function Dashboard(props) {
         <DemoNavbar {...props} />
         <Switch>
           {routes.map((prop, key) => {
+            prop.name = t(prop.name)
             return (
               <Route
                 path={prop.layout + prop.path}

@@ -5,9 +5,14 @@
   "date_format" : "(Year-month-day)",
   "landscape_lbl" : "Please til your screen to see the graph",
 
+  "LEGG_TIL_SPRAK": "AddLanguage",
+  "add_language": "Add language",
+
   "PRICE_CHART" : "Price chart",
   "filter" : "Filter",
   "average" : "Average",
+
+  "ITEMS": "Items",
 
   "CART" : "Shopping list",
   "edit_cart" : "Edit shopping list",
@@ -39,6 +44,7 @@
   "no_file_selected": "No file selected",
 
   "LOG" : "Logging",
+  "show_log": "Show log",
   "choose_tier" : "Choose tier",
   "turn_off_logger" : "Turn off logger",
   "turn_on_logger": "Turn on logger",
@@ -55,6 +61,7 @@
   "signed_in" : "Signed in",
 
   "ABOUT_US" : "About us",
+  "about" : "About us",
   "about_project_lbl" : "About the project",
   "about_project_text" : "Prisjeger is a practical and welcoming digital tool for price comparisons, planning and purchases of groceries, and contains multiple useful features for customers who care about prices. This project is carried out under the auspices of the University of South-East Norway, and is the foundation for grading in the subject App development for web",
   "title_daniel" : "Frontend developer",
