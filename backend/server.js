@@ -1,3 +1,7 @@
+/*
+Initialisering og konfigurasjon av backend express server og ruter.
+Forfattere: Tore Broberg, Dmitriy Safiullin
+*/
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
@@ -27,7 +31,8 @@ app.use(cors())
 app.use(cors({credentials: true}));
 /*
 process.env.CORS_URL = "http://prisjeger-app.duckdns.org:3000" dersom programmet kjøres
-på tjener og "http://localhost:3000" dersom programmet kjøres lokalt på egen maskin
+på tjener og "http://localhost:3000" dersom programmet kjøres lokalt på egen maskin.
+Dette gjøres for å unngå CORS error
 */
 app.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", process.env.CORS_URL);

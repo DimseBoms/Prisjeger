@@ -1,4 +1,5 @@
 #!/bin/bash
+# Dmitriy Safiullin
 
 # Henter nvm
 echo -e "\nHenter nvm...\n"

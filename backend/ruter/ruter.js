@@ -1,3 +1,9 @@
+/*
+Konfigurasjon av backend ruter. Disse funksjonene innehar logikken som skal behandle forespørsler
+og konstruere svar samt definere hvilke URL adresser disse skal være tilgjengelige på. Denne filen
+kan anses å være kjernen av backend API'et
+Forfattere: Tore Broberg, Dmitriy Safiullin
+*/
 import express from 'express'
 import prisdataModell from '../datamodeller/prisdataModell.js'
 import varelisteModell from '../datamodeller/varelisteModell.js'
