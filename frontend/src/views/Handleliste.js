@@ -288,19 +288,26 @@ function VisButikker({ setListetittel, listetittel, setVareListe, setPrisliste, 
  */
 function Vishandlelister({ setListetittel, listetittel, setVareListe, setPrisliste, setHandleliste, 
   handleliste, prisliste, lister, listeFilter}) {
-
-  return (
-    <>
-      {lister.map((tittel, index) => (
-          <DropdownItem placeholder={tittel} key={index} onClick={(e) => {
-            setListetittel(tittel)
-            hentHandliste(jsonwebtoken.decode(localStorage.getItem('token')).epost, 
-              tittel, setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
-            }}>{tittel}
-          </DropdownItem>
-      ))}
-    </>
-  )
+  try {
+    return (
+      <>
+        {lister.map((tittel, index) => (
+            <DropdownItem placeholder={tittel} key={index} onClick={(e) => {
+              setListetittel(tittel)
+              hentHandliste(jsonwebtoken.decode(localStorage.getItem('token')).epost, 
+                tittel, setVareListe, setPrisliste, setHandleliste, handleliste, prisliste)
+              }}>{tittel}
+            </DropdownItem>
+        ))}
+      </>
+    )
+  } catch (error) {
+    console.log(error)
+    alert("En feil har oppstått. Du vil bli logget ut")
+    localStorage.removeItem('token')  
+    BackendApi.logut()
+    window.location.reload(false);
+  }
 }
 
 
