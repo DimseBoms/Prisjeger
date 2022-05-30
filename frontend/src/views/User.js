@@ -21,29 +21,31 @@ function User() {
           <Row className="ml-auto mr-auto" md="6">
             <Card className="card-user">
                 <CardHeader className="ml-auto mr-auto">
-                    <CardTitle style={{textAlign: "center"}}>Daniel Vikan</CardTitle>
+                    <CardTitle tag="h6" style={{textAlign: "center"}}>Daniel Vikan</CardTitle>
                     <img style={{height: "300px"}}
                         alt="..."
                         src={window.location.origin + '/locales/profile_picture/Daniel.jpg'} />
                 </CardHeader>
                 <CardBody className="ml-auto mr-auto">
                     <CardText style={{textAlign: "center", paddingTop : "10px"}}>
-                    {t('title_daniel')}
-                    <br/>    
+                    <b>{t('title_daniel')}</b>
+                    <br></br>
+                    <br/>
                     {t('about_daniel')}
                     </CardText>
                 </CardBody>
             </Card>
             <Card className="card-user">
                 <CardHeader className="ml-auto mr-auto">
-                    <CardTitle style={{textAlign: "center"}}>Gaute Hermansen</CardTitle>
+                    <CardTitle tag="h6" style={{textAlign: "center"}}>Gaute Hermansen</CardTitle>
                     <img style={{height: "300px"}}
                         alt="..."
                         src={window.location.origin + '/locales/profile_picture/Gaute.jpg'} />
                 </CardHeader>
                 <CardBody className="ml-auto mr-auto">
                     <CardText style={{textAlign: "center", paddingTop : "10px"}}>
-                    {t('title_gaute')}
+                    <b>{t('title_gaute')}</b>
+                    <br></br>
                     <br/>    
                     {t('about_gaute')}
                     </CardText>
@@ -51,14 +53,15 @@ function User() {
             </Card>
             <Card className="card-user">
                 <CardHeader className="ml-auto mr-auto">
-                    <CardTitle style={{textAlign: "center"}}>Tore Broberg</CardTitle>
+                    <CardTitle tag="h6" style={{textAlign: "center"}}>Tore Broberg</CardTitle>
                     <img style={{height: "300px"}}
                         alt="..."
                         src={window.location.origin + '/locales/profile_picture/ToreBroberg.jpg'} />
                 </CardHeader>
                 <CardBody className="ml-auto mr-auto">
                     <CardText style={{textAlign: "center", paddingTop : "10px"}}>
-                    {t('title_tore')}
+                    <b>{t('title_tore')}</b>
+                    <br></br>
                     <br/>    
                     {t('about_tore')}
                     </CardText>
@@ -66,14 +69,15 @@ function User() {
             </Card>
             <Card className="card-user">
                 <CardHeader className="ml-auto mr-auto">
-                    <CardTitle style={{textAlign: "center"}}>Leonard Rygh</CardTitle>
+                    <CardTitle tag="h6" style={{textAlign: "center"}}>Leonard Rygh</CardTitle>
                     <img style={{height: "300px"}}
                         alt="..."
                         src={'/locales/profile_picture/Leonard.jpg'} />
                 </CardHeader>
                 <CardBody>
                     <CardText style={{textAlign: "center", paddingTop : "10px"}}>
-                    {t('title_leonard')}
+                    <b>{t('title_leonard')}</b>
+                    <br></br>
                     <br/>    
                     {t('about_leonard')}
                     </CardText>
@@ -81,14 +85,15 @@ function User() {
             </Card>
             <Card className="card-user">
                 <CardHeader className="ml-auto mr-auto">
-                    <CardTitle style={{textAlign: "center"}}>Dmitriy Safiullin</CardTitle>
+                    <CardTitle tag="h6" style={{textAlign: "center"}}>Dmitriy Safiullin</CardTitle>
                     <img style={{height: "300px"}}
                         alt="..."
                         src={window.location.origin + '/locales/profile_picture/Dmitriy.jpg'} />
                 </CardHeader>
                 <CardBody>
                     <CardText style={{textAlign: "center", paddingTop : "10px"}}>
-                        {t('title_dmitriy')}
+                        <b>{t('title_dmitriy')}</b>
+                        <br></br>
                     <br/>    
                     {t('about_dmitriy')}
                     </CardText>
