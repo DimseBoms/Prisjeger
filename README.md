@@ -65,15 +65,15 @@ Prisjeger
 	    |	   |           |___sampledata.js
 	    |	   |
 	    |	   |___views
-	    |		|___addLanguage.js
-	    |		|___Dashborad.js
-	    |		|___HandleListe.js
-	    |		|___LoggFøring.js
-	    |		|___Login.js
-	    |		|___LogVisning.js
-	    |		|___Registrer.js
-	    |		|___Scanner.js
-	    |		|___User.js
+	    |		   |___addLanguage.js
+	    |		   |___Dashborad.js
+	    |		   |___HandleListe.js
+	    |		   |___LoggFøring.js
+	    |		   |___Login.js
+	    |		   |___LogVisning.js
+	    |		   |___Registrer.js
+	    |		   |___Scanner.js
+	    |		   |___User.js
 	    |
 	    |___routes.js (redigert)
 ```
