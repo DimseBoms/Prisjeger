@@ -84,7 +84,7 @@ class BackendApi {
     //metode for å registrere bruker 
     postTest(postObjekt) {
       console.log("Startet postTest()")
-      httpPost.post(`/testpost`, postObjekt).then(response => {
+      httpPost.post(`/test`, postObjekt).then(response => {
           console.log(response)
       });
     }
