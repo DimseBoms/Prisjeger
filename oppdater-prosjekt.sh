@@ -3,6 +3,7 @@
 # Et lite skript som henter nyeste versjon av prosjektet fra GitHub.
 # Bygger det på nytt lokalt og sørger for å starte de nødvendige
 # tjenestene på nytt
+# Dmitriy Safiullin
 
 # Henter nvm
 source /home/pi/.nvm/nvm.sh

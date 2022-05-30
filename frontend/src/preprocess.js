@@ -1,3 +1,7 @@
+/*
+Fil som inneholder ekstra prosessering av bilder som skal skannes av Tesseract.
+Denne filen er for øyeblikket ikke i bruk
+*/
 function preprocessImage(canvas) {
     const ctx = canvas.getContext('2d');
     const image = ctx.getImageData(0,0,canvas.width, canvas.height);

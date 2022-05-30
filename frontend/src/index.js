@@ -16,6 +16,12 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+
+/*
+Initialisering og konfigurering av React webapplikasjonen. Den leser inn komponentet Admin.js fra /frontend/src/layout/Admin.js
+og bygger prosjektet nedover fra dette da Admin.js har referanser til de andre filene gjennom routes.js.
+*/
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";

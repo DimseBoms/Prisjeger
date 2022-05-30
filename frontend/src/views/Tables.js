@@ -1,20 +1,6 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
+/*
+Varefilter som ligger til grunn for handlelisten.
+Dette komponentet viser for øyeblikket kun listen over alle tilgjengelige varer.
 */
 import React from "react";
 import BackendApi from "../axios/backendApi";
@@ -71,7 +57,7 @@ function Pristabell() {
           <Col>
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">{t('PRICE_CHART')}</CardTitle>
+                <CardTitle tag="h4">{t('ITEMS')}</CardTitle>
                   <InputGroup className="no-border">
                     <Input placeholder={t('filter')} id="vareFilter" onChange={e => setVarefilter(e.target.value)}/>
                     <InputGroupAddon addonType="append">
@@ -84,11 +70,6 @@ function Pristabell() {
               <CardBody>
                 <Table responsive>
                   <thead className="text-primary">
-                    <tr>
-                      <th>{t('item')}</th>
-                      
-                      <th className="text-right">{t('average')}</th>
-                    </tr>
                   </thead>
                   <tbody>
                       <FiltrertVareliste vareListe={vareListe} vareFilter={varefilter}/>

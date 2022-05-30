@@ -1,3 +1,6 @@
+/*
+Komponent som innehar funksjonalitet for å sette innstillinger for loggeren
+*/
 //Tore broberg 
 
 import React from "react";

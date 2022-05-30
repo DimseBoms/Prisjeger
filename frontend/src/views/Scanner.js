@@ -1,20 +1,7 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
+/*
+Komponentet som håndterer innskanning av kvittering. Denne funksjonen er ikke
+komplett og har for øyeblikket ingen forretningslogikk som skal hentet ut varepriser
+fra innskanningen
 */
 import React from "react";
 
@@ -52,36 +39,39 @@ function Scanner() {
   }
 
   const handleClick = () => {
+    try {
+      const canvas = canvasRef.current;
+      canvas.width = imageRef.current.width;
+      canvas.height = imageRef.current.height;
+      const ctx = canvas.getContext('2d');
+  
+      ctx.drawImage(imageRef.current, 0, 0);
+      // ctx.putImageData(preprocessImage(canvas),0,0);
+      const dataUrl = canvas.toDataURL("image/jpeg");
     
-    const canvas = canvasRef.current;
-    canvas.width = imageRef.current.width;
-    canvas.height = imageRef.current.height;
-    const ctx = canvas.getContext('2d');
-
-    ctx.drawImage(imageRef.current, 0, 0);
-    // ctx.putImageData(preprocessImage(canvas),0,0);
-    const dataUrl = canvas.toDataURL("image/jpeg");
-  
-    Tesseract.recognize(
-      dataUrl,'eng',
-      { 
-        logger: m => console.log(m) 
-      }
-    )
-    .catch (err => {
-      console.error(err);
-    })
-    .then(result => {
-      console.log(result.data.text)
-      // Get Confidence score
-      let confidence = result.confidence
-      // Get full output
-      let text = result.data.text
-  
-      setText("Extracted text: " + text);
-      //setPin(patterns);
-    })
-  
+      Tesseract.recognize(
+        dataUrl,'eng',
+        { 
+          logger: m => console.log(m) 
+        }
+      )
+      .catch (err => {
+        console.error(err);
+      })
+      .then(result => {
+        console.log(result.data.text)
+        // Get Confidence score
+        let confidence = result.confidence
+        // Get full output
+        let text = result.data.text
+    
+        setText("Extracted text: " + text);
+        //setPin(patterns);
+      })
+    } catch (error) {
+      console.log(error)
+      console.log("Det har oppstått en feil i tegngjenkjenningsmotoren")
+    }  
   }
 
   return (

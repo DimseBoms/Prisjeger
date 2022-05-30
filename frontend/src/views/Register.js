@@ -1,3 +1,6 @@
+/*
+Komponent som håndterer registrering av bruker
+*/
 //Tore Broberg 
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';

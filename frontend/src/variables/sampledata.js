@@ -1,4 +1,7 @@
-  
+/*
+Datasettet som blir lastet som placeholder for prissammenligning
+*/
+
 export const labels = [
   "Kiwi",
   "Meny",

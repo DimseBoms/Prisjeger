@@ -1,4 +1,5 @@
 #!/bin/bash
+# Dmitriy Safiullin
 
 cd /home/pi/applikasjon/prisjeger/frontend
 

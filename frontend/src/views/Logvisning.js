@@ -1,3 +1,6 @@
+/*
+Komponent/side som viser loggen
+*/
 //Tore Broberg
 import backendApi from "../axios/backendApi";
 import { useHistory } from 'react-router-dom'
