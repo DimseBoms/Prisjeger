@@ -15,41 +15,42 @@
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-*/
-import React, { useEffect, useState, useMemo, useLayoutEffect } from "react";
-// react plugin used to create charts
-import {
-  Bar,
-  } from "react-chartjs-2";
+/**
+ * Denne viewen har i mål å vise priser på de forskjellige butikkene på et enkel vare
+ * Det er også meningen å være diagrammer og grafer for å vise hvordan prisene endrer seg 
+ * og lettere for å sammenligne.
+ * 
+ * Laget av Daniel og Gaute
+ */
 
-import { useContext } from "react/cjs/react.production.min";
+//React-hooks
+import React, { useEffect, useState } from "react";
+
+//Graf
+import { Bar } from "react-chartjs-2";
+
+//Oversetting
 import { useTranslation } from 'react-i18next';
 
-// reactstrap components
+//React-strap
 import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   CardTitle,
-  Row,
   Col,
   Input,
-  Button,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Table,
-  Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   UncontrolledDropdown,
 } from "reactstrap";
 
-// core components
+//backendApi er for å hente vare
 import BackendApi from "../axios/backendApi";
 
+//sampledata inneholder dataene som trengs for å lage diagrammer
 import {
   labels,
   datasets,
@@ -57,7 +58,14 @@ import {
 } from "../variables/sampledata"
 
 
-//Lager graf
+/**
+ * @param {*} props 
+ * @returns
+ * 
+ * Dette er funksjonen som return komponentene til å lage diagrammer.
+ * Hvis at vare har ikke blitt valgt ennå, vil den return ingenting
+ * Hvis at vare har blitt valgt, vil den sette data inn i <Bar> som er en React-diagram 
+ */
 function Graf(props) {
   return props.grafLaget !== true ? (
     <></>
@@ -80,6 +88,14 @@ function Graf(props) {
   )
 }
 
+/**
+ * @param {*} props 
+ * @returns 
+ * Dette er funksjonen som return listen med priser på varen som blir valgt.
+ * Hvis at vare ikke er valgt, return ingenting
+ * Hvis at vare blir fortsatt hentet fra database, return <Loading..>
+ * Hvis at vare er hentet, lag komponent og hent <ListeTR/> komponetene
+ */
 function Liste(props) {
   const {t} = useTranslation();
   if (props.grafLaget !== true) {
@@ -109,9 +125,17 @@ function Liste(props) {
         </CardBody>
       </Card>  
     )  
-  } else return <>FUNGER PLS!</>;
+  } else return <>Error</>;
 }
 
+/**
+ * @param {*} param0 
+ * @returns 
+ * 
+ * Dette er funksjonen som return <tr> med prisene på de forskjellige butikkene
+ * Feltet blir også grønn hvis at prisen er mindre eller = lavestePris
+ * Ene parameteren er butikkNr, som gjør at funksjonen vet hvilken butikk som skal returneres
+ */
 function ListeTR({butikkNR, props}) {
   //For å fargelegge listeradene om de er lavest pris
   let [lavestePris, setLavestePris] = useState(999);
@@ -243,6 +267,11 @@ function ListeTR({butikkNR, props}) {
   }
 }
 
+/**
+ * @param {*} loading 
+ * @returns 
+ * Hvis at loading er true, ha <>Loading</> på skjermen
+ */
 function LoadingScreen(loading) {
   return loading == true ? (
     <h1>Loading...</h1>
@@ -251,8 +280,12 @@ function LoadingScreen(loading) {
   )
 }
 
+/**
+ * @returns 
+ * Dette er hoved-funksjonen som inneholder alt av komponenter som blir laget
+ */
 function Dashboard() {
-  //Lager HMTL med chart
+  //Hooks og variabler
   const {t} = useTranslation();
   const arr = [t('last_update_lbl'), t('date_format')]
   let [grafLaget, setGrafLaget] = useState(false);
@@ -264,6 +297,7 @@ function Dashboard() {
   const [vareListe, setVareListe] = useState([]);
   const [varefilter, setVarefilter] = useState("");
 
+  //grafLaget og loading er dependency, så når de er forandre til useEffect() skje
   useEffect(() => {
     //Hvis at vare har ikke blitt søkt opp, så lag blank
     if (grafLaget) {
