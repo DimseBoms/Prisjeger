@@ -1,7 +1,9 @@
 /*
-Komponentet som håndterer innskanning av kvittering. Denne funksjonen er ikke
-komplett og har for øyeblikket ingen forretningslogikk som skal hentet ut varepriser
-fra innskanningen
+Denne siden var ment å lese inn en kvittering, kunne kjenne igjen butikk, dato, varenavn og priser. Dersom disse ble gjenkjent uten feil,
+skulle databasen oppdateres med nye priser på gitte nye datoer. Tessereact.js er implementert og fungerer, men teksten tesseract kjenner igjen 
+er så lite sammenhengende at det ville per denne versjonen være helt meningsløst å prøve å oppdatere databasen. 
+
+Daniel Vikan, Gaute Hermansen, Dmitriy Safiullin
 */
 import React from "react";
 
