@@ -20,6 +20,7 @@ Velkommen til prisjeger!
 
 For å kunne koble deg opp mot databasen er du nødt til å ha en `.env` fil liggende i /backend. Denne inneholder påloggingsinformasjonen til MongoDB og er ikke inkludert i GitHub versjonen av dette prosjektet. `.env` filen skal følge med i .ZIP versjonen av prosjektet som skal lastes opp til Canvas.
 
+### Testbrukere
 For å logge inn som administrator kan du logge inn med følgende bruker:
 mail: **admin@admin.com**  
 pw: **adminpassord**
@@ -29,8 +30,11 @@ pw: **passord**
 mail: **testbruker2@usn.no** 
 pw: **usnpassord**
 
-Ellers er nettsiden tilgjengelig på denne lenken:
+# Webapplikasjon og API - URL
+Ellers er webapplikasjonen tilgjengelig uten å måtte installere lokalt via denne lenken:
 **http://prisjeger-app.duckdns.org:9090/**
+Og API kan nås gjennom denne lenken:
+**http://prisjeger-app.duckdns.org:6969/api/**
 
 ## API
 Eksempler på tilgjengelige API kall i prisAPI:
