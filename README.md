@@ -2,18 +2,23 @@
 Velkommen til prisjeger!
 
 ## installasjon
-For å kunne kjøre nettsiden lokalt, er du nødt til å åpne prisjeger-mappen i en teksteditor og åpne to terminaler. 
-I en av terminalene, og i prisjeger-mappen skriver du først: `npm i` for å intallere node package manager.
+### Installere Node.JS og Git
+- For å kjøre nettsiden lokalt er du nødt for å ha installert node på forhånd: [https://nodejs.org/en/]
+- Git må også installeres dersom du du skal klone prosjektet programmatisk: [https://git-scm.com/downloads]
+### Klone prosjektet
+- Deretter kan du klone prosjektet: `git clone https://github.com/DimseBoms/prisjeger`
+### Starte backend
+- Deretter er du nødt for å åpne to terminalvinduer, en for backend og en for frontend.
+- I den første navigerer du til backend: `cd backend`
+- Installerer avhengigheter for backend ved hjelp av NPM: `npm i`
+- og starter backend: `npm run devStart`
+### Starte frontend
+- I det andre terminalvinduet navigerer du deg til frontend: `cd frontend`
+- Installerer avhengigheter for frontend ved hjelp av NPM: `npm i`
+- Starter frontend: `npm start`
+- Nettsiden skal nå åpne automatisk i nettleseren din.
 
-For å kunne koble deg opp mot databasen er du nødt til å ha en fil `.env` i backend. Denne fila følger med og skal ligge i zip-fila.
- 
-Deretter kan du manøvrere til backend-mappen `cd backend`.
-Her skriver du: `npm run devStart` for å koble til databaseserver i backend.
-
-I den andre terminalen kan du manøvrere til frontend-mappen `cd frontend`, og kjører kommandoen: 
-`npm start`.
-
-Nettsiden skal nå laste inn i nettleseren din. 
+For å kunne koble deg opp mot databasen er du nødt til å ha en `.env` fil liggende i /backend. Denne inneholder påloggingsinformasjonen til MongoDB og er ikke inkludert i GitHub versjonen av dette prosjektet. `.env` filen skal følge med i .ZIP versjonen av prosjektet som skal lastes opp til Canvas.
 
 For å logge inn som administrator kan du logge inn med følgende bruker:
 mail: **admin@admin.com**  
