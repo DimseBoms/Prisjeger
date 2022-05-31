@@ -28,7 +28,7 @@ Ellers er nettsiden tilgjengelig på denne lenken:
 **http://prisjeger-app.duckdns.org:9090/**
 
 ## API
-Eksempler på tilgjengelige API kalli prisAPI:
+Eksempler på tilgjengelige API kall i prisAPI:
 - Hent handlelister for en bruker:
 `http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no`
 - Hent alle prisdata for en vare:
