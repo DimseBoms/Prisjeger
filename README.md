@@ -22,13 +22,13 @@ For å kunne koble deg opp mot databasen er du nødt til å ha en `.env` fil lig
 
 ### Testbrukere
 For å logge inn som administrator kan du logge inn med følgende bruker:
-mail: **admin@admin.com**  
-pw: **adminpassord**
-Andre test-brukere:
-mail: **tore@mail.com** 
-pw: **passord**
-mail: **testbruker2@usn.no** 
-pw: **usnpassord**
+- mail: **admin@admin.com**  
+- pw: **adminpassord**
+#### Andre test-brukere:
+- mail: **tore@mail.com** 
+- pw: **passord**
+- mail: **testbruker2@usn.no** 
+- pw: **usnpassord**
 
 # Webapplikasjon og API - Tilgjengelighet
 - Ellers er webapplikasjonen tilgjengelig uten å måtte installere lokalt via denne lenken:
