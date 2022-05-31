@@ -30,46 +30,33 @@ Ellers er nettsiden tilgjengelig på denne lenken:
 ## API
 Eksempler på tilgjengelige API kalli prisAPI:
 - Hent handlelister for en bruker:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no`
+[http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no]
 - Hent alle prisdata for en vare:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram`
+[http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram]
 - Hent liste over varer:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/vareliste`
+[http://prisjeger-app.duckdns.org:6969/api/vareliste]
 - Henter all prishistorikk:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/historikk`
+[http://prisjeger-app.duckdns.org:6969/api/historikk]
 - Hent liste over tilgjengelige butikker:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/butikkliste`
+[http://prisjeger-app.duckdns.org:6969/api/butikkliste]
 - Hent prisdata for en butikk:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/butikk/Meny`
+[http://prisjeger-app.duckdns.org:6969/api/butikk/Meny]
 - Hent alle data for en vare:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram`
+[http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram]
 - Hent alle data for en vare fra en dato:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram/2021-12-12`
+[http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram/2021-12-12]
 - Hent alle data for en vare mellom to datoer:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram/2021-12-12/2022-01-30`
+[http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram/2021-12-12/2022-01-30]
 - Hent nyeste priser:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/siste`
+[http://prisjeger-app.duckdns.org:6969/api/siste]
 - Hent handlelister for en bruker:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no/liste1`
+[http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no/liste1]
 - Slett handleliste:
-- 
-`http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.com/liste3/remove`
+[http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.com/liste3/remove]
 
 ## Webskraper for prisdata
 Vi benyttet oss av en egenlaget webskraper for å hente inn initiell prisdata. Denne finner du her:
-
-`https://github.com/DimseBoms/Prisjeger-Skraper`
+[https://github.com/DimseBoms/Prisjeger-Skraper]
 ### Prosjektdeltakernes egen kode
 I backend er alle filene skrevet av gruppemedlemmene. I frontend er mange filer gjenstående fra template, men mange filer er delvis eller fullstendig omskrevet:
 ```
