@@ -54,6 +54,9 @@ Eksempler på tilgjengelige API kalli prisAPI:
 - Slett handleliste:
 `http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.com/liste3/remove`
 
+## Webskraper for prisdata
+Vi benyttet oss av en egenlaget webskraper for å hente inn initiell prisdata. Denne finnes du her:
+`https://github.com/DimseBoms/Prisjeger-Skraper`
 ### Prosjektdeltakernes egen kode
 I backend er alle filene skrevet av gruppemedlemmene. I frontend er mange filer gjenstående fra template, men mange filer er delvis eller fullstendig omskrevet:
 ```
