@@ -3,7 +3,7 @@ Initialisering og konfigurering av i18next.js. i18next er språkbiblioteket som 
 for dette prosjektet. Siden denne innleses i index.js blir oversettelser tilgjengelig globalt
 i hele prosjektet ved import og bruk av {t} variabelen. Oversettelser leses inn
 fra /frontend/public/locales{språk}/translation.json og brukes ved å gjengi en nøkkel sammen med
-variabelen {t}. Et eksempel: {t(nøkkel_som_skal_leses)}
+variabelen {t}. Et eksempel: {t('nøkkel_som_skal_leses')}
 */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
