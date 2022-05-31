@@ -19,7 +19,7 @@ import fs from 'fs'
 /* Dmitriy Safiullin */
 ruter.get('/', (req, res) => {
     console.log("Ny forespørsel etter index")
-    res.send('Home Page')
+    res.send('Prisjeger PrisAPI')
 })
 // returnerer all prishistorikk
 /* Dmitriy Safiullin */
