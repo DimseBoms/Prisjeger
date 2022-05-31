@@ -30,9 +30,9 @@ Ellers er nettsiden tilgjengelig på denne lenken:
 ## API
 Eksempler på tilgjengelige API kalli prisAPI:
 - Hent handlelister for en bruker:
-[http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no](http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no)
+[<http://prisjeger-app.duckdns.org:6969/api/handlelister/testbruker@testmail.no>]
 - Hent alle prisdata for en vare:
-[http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram](http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram8)
+[<http://prisjeger-app.duckdns.org:6969/api/vare/Fish and Crips, Findus, 480 gram>]
 - Hent liste over varer:
 [http://prisjeger-app.duckdns.org:6969/api/vareliste](http://prisjeger-app.duckdns.org:6969/api/vareliste)
 - Henter all prishistorikk:
