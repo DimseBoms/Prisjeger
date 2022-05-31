@@ -31,9 +31,9 @@ mail: **testbruker2@usn.no**
 pw: **usnpassord**
 
 # Webapplikasjon og API - URL
-Ellers er webapplikasjonen tilgjengelig uten å måtte installere lokalt via denne lenken:
+- Ellers er webapplikasjonen tilgjengelig uten å måtte installere lokalt via denne lenken:
 **http://prisjeger-app.duckdns.org:9090/**
-Og API kan nås gjennom denne lenken:
+- Og API kan nås gjennom denne lenken:
 **http://prisjeger-app.duckdns.org:6969/api/**
 
 ## API
