@@ -1,7 +1,14 @@
-/*
-Skulle være visningen som ble benyttet for å legge inn nytt språk men er for øyeblikket ikke i bruk,
-da denne funksjonen ikke har blitt implementert.
-*/
+/* 
+Målet i denne filen var å kunne hente JSON fra public/locales/translation/en
+for å bruke den som en mal når admin vil legge til nytt språk. Det var 
+tenkt at man deretter skulle kunne lagre denne JSON-fila og legge den tilbake i
+filstrukturen. Det viste seg at react ikke tillater å endre i filstruktur. Vi kunne ordnet dette
+ved å legge translation-filene i backend og hente de via server, men da vi fant ut av dette
+var det for sent å omstrukturere. Denne fila er derfor ikke fullført, men vi tenkte at vi ville
+vise hva vi hadde tenkt til å gjøre.
+
+Gaute Hermansen
+**/
 /*eslint-disable*/
 import React from "react";
 // react plugin for creating notifications over the dashboard
@@ -32,46 +39,7 @@ function addLanguage() {
                 "email" : "email adress",
                 "username" : "username",
                 "password" : "password",}
-  const notificationAlert = React.useRef();
-  const notify = (place) => {
-    var color = Math.floor(Math.random() * 5 + 1);
-    var type;
-    switch (color) {
-      case 1:
-        type = "primary";
-        break;
-      case 2:
-        type = "success";
-        break;
-      case 3:
-        type = "danger";
-        break;
-      case 4:
-        type = "warning";
-        break;
-      case 5:
-        type = "info";
-        break;
-      default:
-        break;
-    }
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            Welcome to <b>Paper Dashboard React</b> - a beautiful freebie for
-            every web developer.
-          </div>
-        </div>
-      ),
-      type: type,
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-    notificationAlert.current.notificationAlert(options);
-  };
+  
   return (
     <>
       <div className="content">
