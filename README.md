@@ -32,7 +32,7 @@ pw: **usnpassord**
 
 # Webapplikasjon og API - URL
 - Ellers er webapplikasjonen tilgjengelig uten å måtte installere lokalt via denne lenken:
-**http://prisjeger-app.duckdns.org:9090/**
+**http://prisjeger-app.duckdns.org:3000/**
 - Og API kan nås gjennom denne lenken:
 **http://prisjeger-app.duckdns.org:6969/api/**
 
