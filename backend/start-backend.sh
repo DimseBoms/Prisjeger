@@ -4,11 +4,7 @@
 # nytt dersom det slutter å kjøre ved f.eks systemkræsj.
 # Dmitriy Safiullin
 
-# Henter nvm
-echo -e "\nHenter nvm...\n"
-source /home/pi/.nvm/nvm.sh
 
 echo -e "\nForsøker å starte backend...\n"
-cd /home/pi/applikasjon/prisjeger/backend
-nvm use 16.15.0
+cd "$HOME/prisjeger/backend"
 npm start
