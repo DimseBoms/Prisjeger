@@ -1,6 +1,6 @@
 # prisjeger
 Velkommen til prisjeger!
-
+ 
 ## installasjon
 ### Installere Node.JS og Git
 - For å kjøre nettsiden lokalt er du nødt for å ha installert node på forhånd: [https://nodejs.org/en/]
