@@ -549,6 +549,44 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare', async function (req, res) {
 
 // hjelpemetode for å dekrementere/fjerne vare fra handleliste eller slette vare fra handleliste hvis den nulles ut
 /* Dmitriy Safiullin */
+ruter.post('/handlelister/:epost/:tittel/:delete/:vare', async function(req, res){
+    let dbSvar
+    brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
+        if (error) {
+            console.log(error);
+            res.status(500).json({ message: error.message })
+        }
+        else {
+            try {
+                dbSvar = response.handlelister
+                console.log(dbSvar)
+                // hjelpemetode for å inserte liste
+                res.json(fjern(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
+            } catch (err) { // feil i input parametere
+                console.log(err)
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
+            }
+        }
+    });
+})
+
+function fjern(dbSvar, epost, tittel, vare){
+    dbSvar.forEach(handleliste => {
+        console.log(handleliste)
+        if (Object.keys(handleliste) == tittel) {
+         delete handleliste[tittel][vare]       
+        
+        }
+        brukerModell.updateOne({
+            epost: epost
+        }, {$set: {
+            handlelister: dbSvar
+        }} ).then(svar => {
+            console.log(svar)
+        })
+    })
+}
+    
 function fjernVare(dbSvar, epost, tittel, vare) {
     // insert spørring for å oppdatere vare dersom listen finnes fra før
     console.log(dbSvar)
