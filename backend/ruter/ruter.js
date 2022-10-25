@@ -549,7 +549,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare', async function (req, res) {
 
 // hjelpemetode for å dekrementere/fjerne vare fra handleliste eller slette vare fra handleliste hvis den nulles ut
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/:delete/:vare', async function(req, res){
+ruter.post('/handlelister/:epost/:tittel/delete/:vare', async function(req, res){
     let dbSvar
     brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
         if (error) {
