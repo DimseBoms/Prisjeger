@@ -353,7 +353,7 @@ ruter.get('/handlelister/:epost', async function (req, res) {
     console.log(`Ny forespørsel etter handlelister for epost: ${req.params.epost}`)
     let brukernavn = req.cookies.bruker
     logger.info('bruker: ' + brukernavn + ' ' + 'henter handlelistene sine ')
-    brukerModell.findOne({ epost: brukernavn}, function (error, response) {
+    brukerModell.findOne({ epost: req.params.epost}, function (error, response) {
         if (error){
             console.log(error);
             res.status(500).json({ message: error.message })
