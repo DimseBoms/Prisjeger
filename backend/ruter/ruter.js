@@ -376,7 +376,7 @@ ruter.get('/handlelister/:epost', async function (req, res) {
                 res.json(responsArr.reverse())
             } catch (error) {
                 console.log(error)
-                res.json( {melding: "Her skjedde det noe rart gitt"} )
+                res.json( {melding: "Ingen handlelister funnet"} )
             }
         }
     }).sort(
