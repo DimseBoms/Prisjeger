@@ -413,9 +413,42 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
     );
 })
 
+// Metode for å håndtere live data på server. Denne finner ut hvilke data som er utdatert
+// hos klienten og returnerer informasjon om dette.
+/* Dmitriy Safiullin */
+ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async function (req, res) {
+    console.log(`${req.params.epost} sjekker om de er oppdatert via session: ${req.params.session}`)
+    let brukernavn = req.cookies.epost
+    let session = req.params.session
+    let pLsite = sanitize(req.params.handleliste)
+    let pNavn = sanitize(req.params.epost)
+    logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
+    brukerModell.findOne({ epost: pNavn }, function (error, response) {
+        if (error){
+            console.log(error);
+            res.status(500).json({ message: error.message })
+        }
+        else{
+            let dbSvar = response.handlelister
+            dbSvar = dbSvar.filter(value => JSON.stringify(value) !== '{}');
+            let harSendt = false
+            dbSvar.forEach(handleliste => {
+                if (Object.keys(handleliste) == pLsite) {
+                    res.json(handleliste[pLsite])
+                    harSendt = true
+                }
+            })
+            if (!harSendt) res.json({ message: "Ingen handlelister funnet"})
+        }
+    }).sort(
+        {dato: -1}
+    );
+})
+
+
 // Legger til ny tom handleliste
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
+ruter.post('/handlelister/:epost/:tittel/add/:session', async function (req, res) {
     console.log(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
@@ -438,6 +471,13 @@ ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
                 }} ).then(svar => {
                     console.log(svar)
                 })
+                // legger til ny handlelistelogg i database
+                let nyLogg = { [req.params.tittel]: {
+                    tid: [new Date().toISOString().slice(0, 10)],
+                    sessionId: [req.params.session]
+                } }
+                response.handlelistelogg.push(nyLogg)
+                
                 res.json()
             } catch (err ){ // feil i input parametere
                 console.log(err)
