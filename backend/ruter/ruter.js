@@ -413,68 +413,9 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
     );
 })
 
-// Metode for å håndtere live data på server. Denne finner ut hvilke data som er utdatert
-// hos klienten og returnerer informasjon om dette.
-/* Dmitriy Safiullin */
-ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async function (req, res) {
-    console.log(`${req.params.epost} sjekker om de er oppdatert via session: ${req.params.session}`)
-    let brukernavn = req.cookies.epost
-    let session = req.params.session
-    let pLsite = sanitize(req.params.handleliste)
-    let pNavn = sanitize(req.params.epost)
-    logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
-    brukerModell.findOne({ epost: pNavn }, function (error, response) {
-        if (error){
-            console.log(error);
-            res.status(500).json({ message: error.message })
-        }
-        else{
-            //TODO: Få denne metoden til å returnere et svar som inneholder informasjon om:
-            /* prisdataen er utdatert på klient,
-               handlelisten er utdatert på klient,
-               tidspunktet som serveren har benyttet for å kalkulere om data er utdatert  */
-            let dbSvar = response.handlelister
-            dbSvar = dbSvar.filter(value => JSON.stringify(value) !== '{}');
-            let harSendt = false
-            dbSvar.forEach(handleliste => {
-                if (Object.keys(handleliste) == pLsite) {
-                    res.json(handleliste[pLsite])
-                    harSendt = true
-                }
-            })
-            if (!harSendt) res.json({ message: "Ingen handlelister funnet"})
-        }
-    }).sort(
-        {dato: -1}
-    );
-})
-
-
-// Hjelpemetode for å legge til elementer i livedata logg på DB
-function leggTilLogg(dbRespons, epost, session, handleliste, hendelsesbeskrivelse) {
-    // Sjekker om logg for valgt handleliste er tom
-    dbRespons.handlelistelogg.every(handlelisteLoggObjekt => {
-        // Hvis den er det så lages det et nytt logg Array
-        console.log("testetstsetasdf")
-        if (Object.keys(handlelisteLoggObjekt) == handleliste) {
-            let nyLogg = { [req.params.tittel]: [{
-                tid: [new Date().toISOString().slice(0, 10)],
-                sessionId: [req.params.session],
-                hendelse: [hendelsesbeskrivelse]
-            }] }
-            dbRespons.handlelistelogg.push(nyLogg)
-            return false // bryter løkke
-        }
-        return true // fortsetter løkke
-    })
-    dbRespons.handlelistelogg.push(nyLogg)
-    // TODO: Hvis logg objekt eksisterer fra før skal den nye hendelsen legges til
-
-}
-
 // Legger til ny tom handleliste
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/add/:session', async function (req, res) {
+ruter.post('/handlelister/:epost/:tittel/add', async function (req, res) {
     console.log(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} legger til handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
@@ -497,9 +438,6 @@ ruter.post('/handlelister/:epost/:tittel/add/:session', async function (req, res
                 }} ).then(svar => {
                     console.log(svar)
                 })
-                // legger til ny handlelistelogg i database
-                leggTilLogg(response, req.params.epost, req.params.session, req.params.tittel, "Legger til ny tom handleliste")
-                // sender svar
                 res.json()
             } catch (err ){ // feil i input parametere
                 console.log(err)
@@ -526,10 +464,10 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
             try {
                 dbSvar = response.handlelister
                 // hjelpemetode for å inserte liste
-                res.json(leggTilVare(response, dbSvar, pEpost, sanitize(req.params.tittel), sanitize(req.params.vare), response.handlelistelogg))
+                res.json(leggTilVare(dbSvar, pEpost, sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err ){ // feil i input parametere
                 console.log(err)
-                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i input parameter" } )
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
             }
         }
     });
@@ -537,7 +475,7 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare', async function (req, res) {
 
 // hjelpemetode for å legge til antall på vare i handleliste
 /* Dmitriy Safiullin */
-function leggTilVare(response, dbSvar, epost, tittel, vare, handlelistelogg) {
+function leggTilVare(dbSvar, epost, tittel, vare) {
     // insert spørring for å oppdatere vare dersom listen finnes fra før
         let harSendt = false
         // brukerens handlelister itereres
@@ -566,8 +504,6 @@ function leggTilVare(response, dbSvar, epost, tittel, vare, handlelistelogg) {
                 }} ).then(svar => {
                     console.log(svar)
                 })
-                // Loggfører hendelse
-                leggTilLogg(handlelistelogg, "inkrementert ")
             }
         })
         // Legger til ny liste dersom den ikke finnes fra før
