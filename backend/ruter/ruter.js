@@ -455,6 +455,7 @@ function leggTilLogg(dbRespons, epost, session, handleliste, hendelsesbeskrivels
     // Sjekker om logg for valgt handleliste er tom
     dbRespons.handlelistelogg.every(handlelisteLoggObjekt => {
         // Hvis den er det så lages det et nytt logg Array
+        console.log("testetstsetasdf")
         if (Object.keys(handlelisteLoggObjekt) == handleliste) {
             let nyLogg = { [req.params.tittel]: [{
                 tid: [new Date().toISOString().slice(0, 10)],
