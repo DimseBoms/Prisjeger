@@ -429,6 +429,10 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
             res.status(500).json({ message: error.message })
         }
         else{
+            //TODO: Få denne metoden til å returnere et svar som inneholder informasjon om:
+            /* prisdataen er utdatert på klient,
+               handlelisten er utdatert på klient,
+               tidspunktet som serveren har benyttet for å kalkulere om data er utdatert  */
             let dbSvar = response.handlelister
             dbSvar = dbSvar.filter(value => JSON.stringify(value) !== '{}');
             let harSendt = false
@@ -449,15 +453,18 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
 // Hjelpemetode for å legge til elementer i livedata logg på DB
 function leggTilLogg(dbRespons, epost, session, handleliste, hendelsesbeskrivelse) {
     // Sjekker om logg for valgt handleliste er tom
-    dbRespons.handlelistelogg.forEach(handlelisteLoggObjekt => {
+    dbRespons.handlelistelogg.every(handlelisteLoggObjekt => {
         // Hvis den er det så lages det et nytt logg Array
         if (Object.keys(handlelisteLoggObjekt) == handleliste) {
-            let nyLogg = { [req.params.tittel]: {
+            let nyLogg = { [req.params.tittel]: [{
                 tid: [new Date().toISOString().slice(0, 10)],
                 sessionId: [req.params.session],
                 hendelse: [hendelsesbeskrivelse]
-            } }
+            }] }
+            dbRespons.handlelistelogg.push(nyLogg)
+            return false // bryter løkke
         }
+        return true // fortsetter løkke
     })
     dbRespons.handlelistelogg.push(nyLogg)
     // TODO: Hvis logg objekt eksisterer fra før skal den nye hendelsen legges til
