@@ -639,7 +639,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare/:session', async function (re
                 req.params.tittel,
                 `Sletter ${req.params.vare} fra ${req.params.tittel}`
                 )
-                // hjelpemetode for å inserte liste
+                // hjelpemetode for å fjerne liste
                 res.json(fjernVare(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err) { // feil i input parametere
                 console.log(err)
@@ -651,7 +651,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare/:session', async function (re
 
 // hjelpemetode for å dekrementere/fjerne vare fra handleliste eller slette vare fra handleliste hvis den nulles ut
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/delete/:vare', async function(req, res){
+ruter.post('/handlelister/:epost/:tittel/delete/:vare/:session', async function(req, res){
     let dbSvar
     brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
         if (error) {
@@ -662,11 +662,20 @@ ruter.post('/handlelister/:epost/:tittel/delete/:vare', async function(req, res)
             try {
                 dbSvar = response.handlelister
                 console.log(dbSvar)
+                // loggfører hendelse
+                pushLogg(
+                    brukerModell,
+                    response,
+                    req.params.epost,
+                    req.params.session,
+                    req.params.tittel,
+                    `Sletter ${req.params.vare} fra ${req.params.tittel}`
+                )
                 // hjelpemetode for å inserte liste
                 res.json(fjern(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err) { // feil i input parametere
                 console.log(err)
-                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i input parameter" } )
             }
         }
     });
@@ -721,13 +730,14 @@ function fjernVare(dbSvar, epost, tittel, vare) {
                 }} ).then(svar => {
                     console.log(svar)
                 })
+                
             }
         })
 }
 
 // Rute for å slette handleliste
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/remove/', async function (req, res) {
+ruter.post('/handlelister/:epost/:tittel/remove/:session', async function (req, res) {
     console.log(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} fjerner ${req.params.vare} fra handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
@@ -743,6 +753,15 @@ ruter.post('/handlelister/:epost/:tittel/remove/', async function (req, res) {
                 console.log(dbSvar)
                 // hjelpemetode for å slette liste
                 slettHandleliste(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel))
+                // loggfører hendelse
+                pushLogg(
+                    brukerModell,
+                    response,
+                    req.params.epost,
+                    req.params.session,
+                    req.params.tittel,
+                    `Sletter ${req.params.vare} fra ${req.params.tittel}`
+                )
                 res.json({ melding: "Slettet liste" })
             } catch (err) { // feil i input parametere
                 console.log(err)
