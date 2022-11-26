@@ -418,35 +418,66 @@ ruter.get('/handlelister/:epost/:tittel', async function (req, res) {
 /* Dmitriy Safiullin */
 ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async function (req, res) {
     console.log(`${req.params.epost} sjekker om de er oppdatert via session: ${req.params.session}`)
-    let brukernavn = req.cookies.epost
+    let brukernavn = req.params.epost
     let session = req.params.session
+    let handleliste = req.params.handleliste
+    let tidspunkt = req.params.tidspunkt
     let pLsite = sanitize(req.params.handleliste)
     let pNavn = sanitize(req.params.epost)
     logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
-    brukerModell.findOne({ epost: pNavn }, function (error, response) {
+    // Sjekker om prisdata er utdatert
+    prisdataModell.findOne({ dato: {$gte:tidspunkt} }, function (error, response) {
+        if (error) {
+            console.log(error)
+        } else {
+            if (!(response == null)) {
+                console.log(brukernavn + ": Pris utdatert")
+                sjekkOppdatert(true, tidspunkt, brukernavn, session, handleliste, res)
+            } else sjekkOppdatert(false, tidspunkt, brukernavn, session, handleliste, res)
+        }
+    })
+})
+
+// callback hjelpefunksjon for å sikre at begge verdier blir hentet før de sendes til klient
+function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handleliste, res) {
+    brukerModell.findOne({ epost: brukernavn }, function (error, response) {
         if (error){
             console.log(error);
             res.status(500).json({ message: error.message })
         }
         else{
-            //TODO: Få denne metoden til å returnere et svar som inneholder informasjon om:
-            /* prisdataen er utdatert på klient,
-               handlelisten er utdatert på klient,
-               tidspunktet som serveren har benyttet for å kalkulere om data er utdatert  */
-            let dbSvar = response.handlelister
-            dbSvar = dbSvar.filter(value => JSON.stringify(value) !== '{}');
-            let harSendt = false
-            dbSvar.forEach(handleliste => {
-                if (Object.keys(handleliste) == pLsite) {
-                    res.json(handleliste[pLsite])
-                    harSendt = true
-                }
+            console.log("PRISUTDATERT: " + prisUtdatert)
+            // Sjekker om handlelisten er utdatert
+            let handlelisteUtdatert = false
+            try {
+                response.handlelistelogg.forEach(_handleliste => {
+                    if (Object.keys(_handleliste) == handleliste) {
+                        _handleliste[handleliste].forEach(loggObjekt => { // logikk for å sjekke om klienten er utdatert
+                            if (loggObjekt["sessionId"] != session && loggObjekt["tid"] >= tidspunkt) {
+                                handlelisteUtdatert = true
+                            }
+                        })
+                    }
+                })
+            } catch (error) {
+                console.log(error)
+            }
+            // Konstruerer svar
+            res.json({
+                prisUtdatert: prisUtdatert,
+                handlelisteUtdatert: handlelisteUtdatert
             })
-            if (!harSendt) res.json({ message: "Ingen handlelister funnet"})
         }
     }).sort(
         {dato: -1}
     );
+}
+
+// Rute/Metode som produserer nåværende tidspunkt ved hjelp av nåTid() metode
+// og returnerer dette som en String til klient
+/* Dmitriy Safiullin */
+ruter.get('/tid', async function (req, res) {
+    res.json(nåTid(new Date()))
 })
 
 // Hjelpemetode for å hente nåværende tidspunkt i "yyyy-MM-dd hh:mm:ss" format
@@ -474,9 +505,9 @@ function nåTid(dateObj) {
 function pushLogg(brukerModell, epost, session, handleliste, hendelsesbeskrivelse) {
     // lager indre logg objekt
     let nyLogg = {
-        tid: [nåTid(new Date())],
-        sessionId: [session],
-        hendelse: [hendelsesbeskrivelse]
+        tid: nåTid(new Date()),
+        sessionId: session,
+        hendelse: hendelsesbeskrivelse
     } // pusher objekt til DB
     brukerModell.updateOne({
         epost: epost
@@ -515,7 +546,6 @@ ruter.post('/handlelister/:epost/:tittel/add/:session', async function (req, res
                 // legger til ny handlelistelogg i database
                 pushLogg(
                     brukerModell,
-                    response,
                     req.params.epost,
                     req.params.session,
                     req.params.tittel,
@@ -533,7 +563,7 @@ ruter.post('/handlelister/:epost/:tittel/add/:session', async function (req, res
 
 // Legger til vare i handleliste
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/add/:vare/:session', async function (req, res) {
+ruter.post('/handlelister/:epost/:tittel/addvare/:vare/:session', async function (req, res) {
     console.log(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
     logger.info(`${req.params.epost} legger til ${req.params.vare} i handleliste: ${req.params.tittel}`)
     // første databasespørring for å finne ut om handlelisten eksisterer fra før
@@ -546,9 +576,18 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare/:session', async function (re
         }
         else {
             try {
+                // loggfører hendelse
+                console.log("REQ.PARAMS.EPOST ER: " + req.params.epost)
+                pushLogg(
+                    brukerModell,
+                    req.params.epost,
+                    req.params.session,
+                    req.params.tittel,
+                    `Legger til ${req.params.vare} i ${req.params.tittel}`
+                )
                 dbSvar = response.handlelister
                 // hjelpemetode for å inserte liste
-                res.json(leggTilVare(response, dbSvar, pEpost, sanitize(req.params.tittel), sanitize(req.params.vare), response.handlelistelogg, req.params.session))
+                res.json(leggTilVare(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err ){ // feil i input parametere
                 console.log(err)
                 res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i input parameter" } )
@@ -559,7 +598,7 @@ ruter.post('/handlelister/:epost/:tittel/add/:vare/:session', async function (re
 
 // hjelpemetode for å legge til antall på vare i handleliste
 /* Dmitriy Safiullin */
-function leggTilVare(response, dbSvar, epost, tittel, vare, handlelistelogg, session) {
+function leggTilVare(dbSvar, epost, tittel, vare) {
     // insert spørring for å oppdatere vare dersom listen finnes fra før
         let harSendt = false
         // brukerens handlelister itereres
@@ -577,9 +616,9 @@ function leggTilVare(response, dbSvar, epost, tittel, vare, handlelistelogg, ses
                     // verdi finnes ikke fra før
                 }
                 if (gammelAnt === undefined) gammelAnt = 0
-                console.log(`gammelant+1: ${gammelAnt + 1}`)
+                //console.log(`gammelant+1: ${gammelAnt + 1}`)
                 handleliste[tittel][vare] = gammelAnt + 1
-                console.log(dbSvar)
+                //console.log(dbSvar)
                 // sender spørring
                 brukerModell.updateOne({
                     epost: epost
@@ -603,15 +642,6 @@ function leggTilVare(response, dbSvar, epost, tittel, vare, handlelistelogg, ses
             console.log(svar)
         })
     }
-    // loggfører hendelse
-    pushLogg(
-        brukerModell,
-        response,
-        epost,
-        session,
-        tittel,
-        `Legger til ${vare} i ${tittel}`
-    )
 }
 
 // Fjerner vare fra handleliste
@@ -633,13 +663,12 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare/:session', async function (re
                 // loggfører hendelse
                 pushLogg(
                 brukerModell,
-                response,
                 req.params.epost,
                 req.params.session,
                 req.params.tittel,
                 `Sletter ${req.params.vare} fra ${req.params.tittel}`
                 )
-                // hjelpemetode for å fjerne liste
+                // hjelpemetode for å inserte liste
                 res.json(fjernVare(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err) { // feil i input parametere
                 console.log(err)
@@ -651,7 +680,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare/:session', async function (re
 
 // hjelpemetode for å dekrementere/fjerne vare fra handleliste eller slette vare fra handleliste hvis den nulles ut
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/delete/:vare/:session', async function(req, res){
+ruter.post('/handlelister/:epost/:tittel/delete/:vare', async function(req, res){
     let dbSvar
     brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
         if (error) {
@@ -662,20 +691,11 @@ ruter.post('/handlelister/:epost/:tittel/delete/:vare/:session', async function(
             try {
                 dbSvar = response.handlelister
                 console.log(dbSvar)
-                // loggfører hendelse
-                pushLogg(
-                    brukerModell,
-                    response,
-                    req.params.epost,
-                    req.params.session,
-                    req.params.tittel,
-                    `Sletter ${req.params.vare} fra ${req.params.tittel}`
-                )
                 // hjelpemetode for å inserte liste
                 res.json(fjern(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err) { // feil i input parametere
                 console.log(err)
-                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i input parameter" } )
+                res.json( { statuskode: 0, melding: "API mottok uforventet respons fra databasen, trolig feil i inpur parameter" } )
             }
         }
     });
@@ -697,7 +717,7 @@ function fjern(dbSvar, epost, tittel, vare){
         })
     })
 }
-    
+
 function fjernVare(dbSvar, epost, tittel, vare) {
     // insert spørring for å oppdatere vare dersom listen finnes fra før
     console.log(dbSvar)
@@ -721,7 +741,6 @@ function fjernVare(dbSvar, epost, tittel, vare) {
                 // Fjerner vare fra handleliste hvis den blir tom
                 if (handleliste[tittel][vare] <= 0) delete handleliste[tittel][vare]
                 console.log(dbSvar)
-
                 // sender spørring
                 brukerModell.updateOne({
                     epost: epost
@@ -730,7 +749,14 @@ function fjernVare(dbSvar, epost, tittel, vare) {
                 }} ).then(svar => {
                     console.log(svar)
                 })
-                
+                // loggfører hendelse
+                pushLogg(
+                    brukerModell,
+                    req.params.epost,
+                    req.params.session,
+                    req.params.tittel,
+                    `Sletter ${req.params.vare} fra ${req.params.tittel}`
+                )
             }
         })
 }
@@ -756,7 +782,6 @@ ruter.post('/handlelister/:epost/:tittel/remove/:session', async function (req, 
                 // loggfører hendelse
                 pushLogg(
                     brukerModell,
-                    response,
                     req.params.epost,
                     req.params.session,
                     req.params.tittel,
