@@ -10,7 +10,7 @@ const Brukere = new mongoose.Schema({
     epost: {type: String, required: true},
     passord: {type: String, required: true},
     handlelister: {type: Array},
-    handlelistelogg: {type: Object}
+    handlelistelogg: {type: Array}
 }, 
 { collection: 'brukere' } )
 
