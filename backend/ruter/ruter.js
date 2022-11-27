@@ -458,6 +458,7 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
                 })
             } catch (error) {
                 console.log(`Feilmelding: ${brukernavn}: forsøker å lese en ikke-eksisterende logg`)
+                console.log(error)
             }
             // Konstruerer svar
             console.log(`${brukernavn}: prisUtdatert: ${prisUtdatert} handlelisteUtdatert: ${handlelisteUtdatert}`)
