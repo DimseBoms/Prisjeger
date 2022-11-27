@@ -457,6 +457,7 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
                     })
                 })
             } catch (error) {
+                console.log(error)
                 console.log(`Feilmelding: ${brukernavn}: forsøker å lese en ikke-eksisterende logg`)
             }
             // Konstruerer svar
