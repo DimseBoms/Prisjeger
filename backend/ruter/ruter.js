@@ -422,6 +422,7 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
     let session = req.params.session
     let handleliste = req.params.handleliste
     let tidspunkt = req.params.tidspunkt
+    console.log(`${tidspunkt}, ${epost}, ${session}, ${handleliste}`)
     let pLsite = sanitize(req.params.handleliste)
     let pNavn = sanitize(req.params.epost)
     logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
@@ -431,7 +432,6 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
             console.log(error)
         } else {
             if (!(response == null)) {
-                console.log(brukernavn + ": Pris utdatert")
                 sjekkOppdatert(true, tidspunkt, brukernavn, session, handleliste, res)
             } else sjekkOppdatert(false, tidspunkt, brukernavn, session, handleliste, res)
         }
@@ -463,6 +463,7 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
                 console.log(error)
             }
             // Konstruerer svar
+            console.log(`${brukernavn}: prisUtdatert: ${prisUtdatert} handlelisteUtdatert: ${handlelisteUtdatert}`)
             res.json({
                 prisUtdatert: prisUtdatert,
                 handlelisteUtdatert: handlelisteUtdatert
