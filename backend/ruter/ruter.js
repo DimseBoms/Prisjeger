@@ -422,7 +422,7 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
     let session = req.params.session
     let handleliste = req.params.handleliste
     let tidspunkt = req.params.tidspunkt
-    console.log(`${tidspunkt}, ${epost}, ${session}, ${handleliste}`)
+    console.log(`${tidspunkt}, ${brukernavn}, ${session}, ${handleliste}`)
     let pLsite = sanitize(req.params.handleliste)
     let pNavn = sanitize(req.params.epost)
     logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
@@ -446,21 +446,18 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
             res.status(500).json({ message: error.message })
         }
         else{
-            console.log("PRISUTDATERT: " + prisUtdatert)
             // Sjekker om handlelisten er utdatert
             let handlelisteUtdatert = false
             try {
-                response.handlelistelogg.forEach(_handleliste => {
-                    if (Object.keys(_handleliste) == handleliste) {
-                        _handleliste[handleliste].forEach(loggObjekt => { // logikk for å sjekke om klienten er utdatert
-                            if (loggObjekt["sessionId"] != session && loggObjekt["tid"] >= tidspunkt) {
-                                handlelisteUtdatert = true
-                            }
-                        })
-                    }
+                response.handlelistelogg.forEach(handlelisteLogg => {
+                    handlelisteLogg[handleliste].forEach(loggObjekt => {
+                        if (loggObjekt["sessionId"] != session && loggObjekt["tid"] >= tidspunkt) {
+                            handlelisteUtdatert = true
+                        }
+                    })
                 })
             } catch (error) {
-                console.log(error)
+                console.log(`Feilmelding: ${brukernavn}: forsøker å lese en ikke-eksisterende logg`)
             }
             // Konstruerer svar
             console.log(`${brukernavn}: prisUtdatert: ${prisUtdatert} handlelisteUtdatert: ${handlelisteUtdatert}`)
@@ -681,7 +678,7 @@ ruter.post('/handlelister/:epost/:tittel/pop/:vare/:session', async function (re
 
 // hjelpemetode for å dekrementere/fjerne vare fra handleliste eller slette vare fra handleliste hvis den nulles ut
 /* Dmitriy Safiullin */
-ruter.post('/handlelister/:epost/:tittel/delete/:vare', async function(req, res){
+ruter.post('/handlelister/:epost/:tittel/delete/:vare/:session', async function(req, res){
     let dbSvar
     brukerModell.findOne({ epost: sanitize(req.params.epost)}, function (error, response) {
         if (error) {
@@ -692,6 +689,14 @@ ruter.post('/handlelister/:epost/:tittel/delete/:vare', async function(req, res)
             try {
                 dbSvar = response.handlelister
                 console.log(dbSvar)
+                // loggfører hendelse
+                pushLogg(
+                    brukerModell,
+                    req.params.epost,
+                    req.params.session,
+                    req.params.tittel,
+                    `Sletter ${req.params.vare} fra ${req.params.tittel}`
+                )
                 // hjelpemetode for å inserte liste
                 res.json(fjern(dbSvar, sanitize(req.params.epost), sanitize(req.params.tittel), sanitize(req.params.vare)))
             } catch (err) { // feil i input parametere
