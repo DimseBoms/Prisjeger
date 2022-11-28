@@ -972,7 +972,8 @@ ruter.post('/login',async function (req, res) {
     
      let finnbruker =  await brukerModell.findOne({epost});
           if(!finnbruker){
-          res.json('bruker finnes ikke')
+         res.json({melding: 'bruker finnes ikke', bruker: token})   
+
       }
 else{
           bcrypt.compare(bruker.passord, finnbruker.passord).then(liktPw=>{
