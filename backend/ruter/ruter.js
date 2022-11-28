@@ -477,7 +477,7 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
                 // sjekker om handleliste er utdatert
                 console.log("RESPONSE:")
                 console.log(response)
-                response.handlelisteLogg[handleliste].forEach(loggObjekt => {
+                response.handlelistelogg[handleliste].forEach(loggObjekt => {
                     if (loggObjekt["sessionId"] != session && loggObjekt["tid"] >= tidspunkt) {
                         handlelisteUtdatert = true
                     }
