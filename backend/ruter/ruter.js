@@ -428,7 +428,7 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
     logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
     // Sjekker om handlelistelogg er korrupt
     try {
-        const _bruker = brukerModell.findOne({ epost: epost })
+        const _bruker = brukerModell.findOne({ epost: brukernavn })
         // Hvis korrupt, så slett
         if (_bruker.handlelistelogg.isArray())
         _bruker.handlelistelogg = undefined
