@@ -458,9 +458,23 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
             res.status(500).json({ message: error.message })
         }
         else{
-            // Sjekker om handlelisten er utdatert
             let handlelisteUtdatert = false
             try {
+                // sjekker om handlelistelogg er korrupt
+                try {
+                    if (Array.isArray(response.handlelistelogg)) {
+                        brukerModell.updateOne({
+                            epost: epost
+                        }, {$set: {
+                            handlelistelogg: undefined
+                        }} ).then(svar => {
+                            console.log(svar)
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+                // sjekker om handleliste er utdatert
                 response.handlelistelogg.forEach(handlelisteLogg => {
                     handlelisteLogg[handleliste].forEach(loggObjekt => {
                         if (loggObjekt["sessionId"] != session && loggObjekt["tid"] >= tidspunkt) {
