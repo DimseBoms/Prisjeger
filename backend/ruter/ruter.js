@@ -426,6 +426,18 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
     let pLsite = sanitize(req.params.handleliste)
     let pNavn = sanitize(req.params.epost)
     logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
+    // Sjekker om handlelistelogg er korrupt
+    try {
+        const _bruker = brukerModell.findOne({ epost: epost })
+        // Hvis korrupt, så slett
+        if (_bruker.__v == 0)
+        _bruker.handlelistelogg = undefined
+        _bruker.__v = undefined
+        // Save changes
+        user.save()
+    } catch (error) {
+        console.log(error)
+    }
     // Sjekker om prisdata er utdatert
     prisdataModell.findOne({ dato: {$gte:tidspunkt} }, function (error, response) {
         if (error) {
