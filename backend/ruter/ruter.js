@@ -430,7 +430,7 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
     try {
         const _bruker = brukerModell.findOne({ epost: brukernavn })
         // Hvis korrupt, så slett
-        if (_bruker.handlelistelogg.isArray())
+        if (_bruker.handlelistelogg != undefined && _bruker.handlelistelogg.isArray())
         _bruker.handlelistelogg = undefined
         _bruker.__v = undefined
         // Save changes
