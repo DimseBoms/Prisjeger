@@ -427,17 +427,17 @@ ruter.get('/sjekkoppdatert/:tidspunkt/:epost/:session/:handleliste', async funct
     let pNavn = sanitize(req.params.epost)
     logger.info('bruker: ' + brukernavn + ' ' + 'ser etter oppdateringer :' + pLsite + " : " + session)
     // Sjekker om handlelistelogg er korrupt
-    try {
-        const _bruker = brukerModell.findOne({ epost: brukernavn })
-        // Hvis korrupt, så slett
-        if (_bruker.handlelistelogg != undefined && _bruker.handlelistelogg.isArray())
-        _bruker.handlelistelogg = undefined
-        _bruker.__v = undefined
-        // Save changes
-        user.save()
-    } catch (error) {
-        console.log(error)
-    }
+    // try {
+    //     const _bruker = brukerModell.findOne({ epost: brukernavn })
+    //     // Hvis korrupt, så slett
+    //     if (_bruker.handlelistelogg != undefined && _bruker.handlelistelogg.isArray())
+    //     _bruker.handlelistelogg = undefined
+    //     _bruker.__v = undefined
+    //     // Save changes
+    //     user.save()
+    // } catch (error) {
+    //     console.log(error)
+    // }
     // Sjekker om prisdata er utdatert
     prisdataModell.findOne({ dato: {$gte:tidspunkt} }, function (error, response) {
         if (error) {
@@ -515,17 +515,17 @@ function nåTid(dateObj) {
 // Hjelpemetode for å legge til elementer i livedata logg på DB
 async function pushLogg(brukerModell, epost, session, handleliste, hendelsesbeskrivelse) {
     // sjekker om handlelistelogg er blitt laget riktig
-    try {
-        const _bruker = brukerModell.findOne({ epost: epost })
-        // Hvis korrupt, så slett
-        if (_bruker.handlelistelogg.isArray())
-        _bruker.handlelistelogg = undefined
-        _bruker.__v = undefined
-        // Save changes
-        user.save()
-    } catch (error) {
-        console.log(error)
-    }
+    // try {
+    //     const _bruker = brukerModell.findOne({ epost: epost })
+    //     // Hvis korrupt, så slett
+    //     if (_bruker.handlelistelogg.isArray())
+    //     _bruker.handlelistelogg = undefined
+    //     _bruker.__v = undefined
+    //     // Save changes
+    //     user.save()
+    // } catch (error) {
+    //     console.log(error)
+    // }
     // lager indre logg objekt
     let nyLogg = {
         tid: nåTid(new Date()),
@@ -545,12 +545,12 @@ async function pushLogg(brukerModell, epost, session, handleliste, hendelsesbesk
         console.log(error)
         console.log("Forsøker å slette gammel logg da problemet forekommer av ødelagt logg...")
         try {
-            // Retrieve document
-            const user = await brukerModell.findOne({ epost: epost })
-            // Delete role field
-            user.handlelistelogg = undefined
-            // Save changes
-            await user.save()
+            // // Retrieve document
+            // const user = await brukerModell.findOne({ epost: epost })
+            // // Delete role field
+            // user.handlelistelogg = undefined
+            // // Save changes
+            // await user.save()
         } catch (error) {
             console.log(error)
         }
