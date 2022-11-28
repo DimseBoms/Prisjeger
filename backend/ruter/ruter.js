@@ -501,20 +501,37 @@ function nåTid(dateObj) {
 }
 
 // Hjelpemetode for å legge til elementer i livedata logg på DB
-function pushLogg(brukerModell, epost, session, handleliste, hendelsesbeskrivelse) {
+async function pushLogg(brukerModell, epost, session, handleliste, hendelsesbeskrivelse) {
     // lager indre logg objekt
     let nyLogg = {
         tid: nåTid(new Date()),
         sessionId: session,
         hendelse: hendelsesbeskrivelse
     } // pusher objekt til DB
-    brukerModell.updateOne({
-        epost: epost
-    }, {$push: {
-        [`handlelistelogg.${handleliste}`]: nyLogg
-    }} ).then(svar => {
-        console.log(svar)
-    })
+    try {
+        brukerModell.updateOne({
+            epost: epost
+        }, {$push: {
+            [`handlelistelogg.${handleliste}`]: nyLogg
+        }} ).then(svar => {
+            console.log(svar)
+        })
+    } catch (error) {
+        console.log("Klarte ikke sende ny logg:")
+        console.log(error)
+        console.log("Forsøker å slette gammel log da problemet forekommer av ødelagt logg...")
+        try {
+            // Retrieve document
+            const user = await User.findOne({ epost: epost })
+            // Delete role field
+            user.handlelistelogg = undefined
+            // Save changes
+            await user.save()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 // Legger til ny tom handleliste
