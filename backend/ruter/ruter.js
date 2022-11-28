@@ -972,7 +972,7 @@ ruter.post('/login',async function (req, res) {
     
      let finnbruker =  await brukerModell.findOne({epost});
           if(!finnbruker){
-         res.json({melding: 'bruker finnes ikke', bruker: token})   
+         res.json({melding: 'bruker finnes ikke'})   
 
       }
 else{
