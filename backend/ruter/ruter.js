@@ -528,18 +528,6 @@ function nåTid(dateObj) {
 
 // Hjelpemetode for å legge til elementer i livedata logg på DB
 async function pushLogg(brukerModell, epost, session, handleliste, hendelsesbeskrivelse) {
-    // sjekker om handlelistelogg er blitt laget riktig
-    // try {
-    //     const _bruker = brukerModell.findOne({ epost: epost })
-    //     // Hvis korrupt, så slett
-    //     if (_bruker.handlelistelogg.isArray())
-    //     _bruker.handlelistelogg = undefined
-    //     _bruker.__v = undefined
-    //     // Save changes
-    //     user.save()
-    // } catch (error) {
-    //     console.log(error)
-    // }
     // lager indre logg objekt
     let nyLogg = {
         tid: nåTid(new Date()),
