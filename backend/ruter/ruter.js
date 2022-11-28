@@ -475,11 +475,13 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
                     console.log(error)
                 }
                 // sjekker om handleliste er utdatert
-                    response.handlelisteLogg[handleliste].forEach(loggObjekt => {
-                        if (loggObjekt["sessionId"] != session && loggObjekt["tid"] >= tidspunkt) {
-                            handlelisteUtdatert = true
-                        }
-                    })
+                console.log("RESPONSE:")
+                console.log(response)
+                response.handlelisteLogg[handleliste].forEach(loggObjekt => {
+                    if (loggObjekt["sessionId"] != session && loggObjekt["tid"] >= tidspunkt) {
+                        handlelisteUtdatert = true
+                    }
+                })
             } catch (error) {
                 console.log(error)
                 console.log(`Feilmelding: ${brukernavn}: forsøker å lese en ikke-eksisterende logg`)
