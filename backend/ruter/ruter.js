@@ -457,8 +457,8 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
                     })
                 })
             } catch (error) {
-                console.log(`Feilmelding: ${brukernavn}: forsøker å lese en ikke-eksisterende logg`)
                 console.log(error)
+                console.log(`Feilmelding: ${brukernavn}: forsøker å lese en ikke-eksisterende logg`)
             }
             // Konstruerer svar
             console.log(`${brukernavn}: prisUtdatert: ${prisUtdatert} handlelisteUtdatert: ${handlelisteUtdatert}`)
@@ -501,20 +501,36 @@ function nåTid(dateObj) {
 }
 
 // Hjelpemetode for å legge til elementer i livedata logg på DB
-function pushLogg(brukerModell, epost, session, handleliste, hendelsesbeskrivelse) {
+async function pushLogg(brukerModell, epost, session, handleliste, hendelsesbeskrivelse) {
     // lager indre logg objekt
     let nyLogg = {
         tid: nåTid(new Date()),
         sessionId: session,
         hendelse: hendelsesbeskrivelse
     } // pusher objekt til DB
-    brukerModell.updateOne({
-        epost: epost
-    }, {$push: {
-        [`handlelistelogg.${handleliste}`]: nyLogg
-    }} ).then(svar => {
-        console.log(svar)
-    })
+    try {
+        brukerModell.updateOne({
+            epost: epost
+        }, {$push: {
+            [`handlelistelogg.${handleliste}`]: nyLogg
+        }} ).then(svar => {
+            console.log(svar)
+        })
+    } catch (error) {
+        console.log("Klarte ikke sende ny logg:")
+        console.log(error)
+        console.log("Forsøker å slette gammel logg da problemet forekommer av ødelagt logg...")
+        try {
+            // Retrieve document
+            const user = await User.findOne({ epost: epost })
+            // Delete role field
+            user.handlelistelogg = undefined
+            // Save changes
+            await user.save()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 // Legger til ny tom handleliste
@@ -972,8 +988,7 @@ ruter.post('/login',async function (req, res) {
     
      let finnbruker =  await brukerModell.findOne({epost});
           if(!finnbruker){
-         res.json({melding: 'bruker finnes ikke'})   
-
+          res.json('bruker finnes ikke')
       }
 else{
           bcrypt.compare(bruker.passord, finnbruker.passord).then(liktPw=>{
@@ -997,7 +1012,7 @@ else{
         }
         }
     catch(error){
-    console.log(error);
+
     }
 })
 
