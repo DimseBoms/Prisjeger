@@ -982,7 +982,7 @@ ruter.post('/regist', async function (req, res) {
                     })
                 });
                 console.log(nyBruker.passord)
-                res.json('bruker regisrert')    
+                res.json('bruker registrert')    
                 console.log('bruker opprettet')    
             }
     }) }
