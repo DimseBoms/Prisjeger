@@ -464,7 +464,7 @@ function sjekkOppdatert(prisUtdatert, tidspunkt, brukernavn, session, handlelist
                 try {
                     if (Array.isArray(response.handlelistelogg)) {
                         brukerModell.updateOne({
-                            epost: epost
+                            epost: brukernavn
                         }, {$set: {
                             handlelistelogg: undefined
                         }} ).then(svar => {
